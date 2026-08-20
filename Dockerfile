@@ -11,7 +11,7 @@ WORKDIR /app
 # Copy lockfile and manifest first to leverage Docker layer caching.
 COPY package.json package-lock.json* ./
 
-RUN npm ci
+RUN npm install --no-audit --no-fund
 
 # ─────────────────────────────────────────────
 # Stage 2 — Builder
