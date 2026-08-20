@@ -1,0 +1,208 @@
+import type { Metadata } from "next";
+import type { ReactElement } from "react";
+import {
+  Mail,
+  Phone,
+  MapPin,
+  Globe,
+  AtSign,
+  Send,
+  Share2,
+  type LucideIcon,
+} from "lucide-react";
+import ContactForm from "@/components/ContactForm";
+
+export const metadata: Metadata = {
+  title: "Contact | SouthEast Properties",
+  description:
+    "Get in touch with SouthEast Properties. Visit our Observatory office, call, email, or send us a message online.",
+};
+
+type ContactItem = {
+  icon: LucideIcon;
+  label: string;
+  value: string;
+  href: string;
+};
+
+const CONTACT_ITEMS: ReadonlyArray<ContactItem> = [
+  {
+    icon: Mail,
+    label: "Email",
+    value: "info@southeastproperties.co.za",
+    href: "mailto:info@southeastproperties.co.za",
+  },
+  {
+    icon: Phone,
+    label: "Phone",
+    value: "+27 (0) 21 000 0000",
+    href: "tel:+27210000000",
+  },
+  {
+    icon: MapPin,
+    label: "Office",
+    value: "42 Lower Main Road, Observatory, Cape Town, 7925",
+    href: "https://maps.google.com/?q=Observatory+Cape+Town",
+  },
+];
+
+type SocialLink = {
+  label: string;
+  href: string;
+  icon: LucideIcon;
+};
+
+const SOCIAL_LINKS: ReadonlyArray<SocialLink> = [
+  { label: "Facebook", href: "https://www.facebook.com/", icon: Globe },
+  { label: "Instagram", href: "https://www.instagram.com/", icon: AtSign },
+  { label: "X (Twitter)", href: "https://x.com/", icon: Send },
+  { label: "LinkedIn", href: "https://www.linkedin.com/", icon: Share2 },
+];
+
+export default function ContactPage(): ReactElement {
+  return (
+    <div className="bg-[var(--color-background)]">
+      <div className="mx-auto w-full max-w-7xl px-6 py-16 sm:px-8 sm:py-20 lg:px-10 lg:py-24">
+        {/* Page header */}
+        <div className="max-w-2xl">
+          <span className="inline-flex items-center gap-2 font-mono text-[10px] font-medium uppercase tracking-[0.25em] text-[var(--color-primary)]">
+            <span
+              aria-hidden="true"
+              className="inline-block h-px w-8 bg-[var(--color-primary)]"
+            />
+            Get in Touch
+          </span>
+          <h1 className="mt-3 text-3xl font-semibold tracking-tight text-[var(--color-foreground)] sm:text-4xl lg:text-5xl text-balance">
+            Contact{" "}
+            <span className="text-[var(--color-primary)]">SouthEast</span>
+          </h1>
+          <p className="mt-3 text-sm leading-relaxed text-[var(--color-secondary)] sm:text-base">
+            Whether you&apos;re looking for a new home, exploring management
+            services, or simply have a question — we&apos;d love to hear from
+            you.
+          </p>
+        </div>
+
+        {/* Two-column layout */}
+        <div className="mt-12 grid grid-cols-1 gap-8 lg:grid-cols-2 lg:gap-16">
+          {/* Left: Contact details + socials */}
+          <div className="space-y-8">
+            {/* Contact items */}
+            <div>
+              <h2 className="text-xl font-semibold tracking-tight text-[var(--color-foreground)] text-balance">
+                Contact Details
+              </h2>
+              <ul className="mt-6 space-y-5">
+                {CONTACT_ITEMS.map((item) => {
+                  const Icon = item.icon;
+                  return (
+                    <li key={item.label}>
+                      <a
+                        href={item.href}
+                        className="group flex items-center gap-4 rounded-xl border border-[var(--border-subtle)] dark:border-white/10 bg-[var(--bg-base)] dark:bg-[var(--bg-surface)] p-5 transition-all hover:border-[var(--brand-navy)]/40 dark:hover:border-amber-400/30 hover:shadow-md"
+                      >
+                        <div
+                          className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-amber-400/10 text-[var(--brand-navy)] dark:text-amber-400"
+                          aria-hidden="true"
+                        >
+                          <Icon className="h-5 w-5" />
+                        </div>
+                        <div className="min-w-0 flex-1">
+                          <p className="text-xs font-medium uppercase tracking-[0.15em] text-[var(--color-secondary)]">
+                            {item.label}
+                          </p>
+                          <p className="mt-1 text-sm font-medium leading-snug text-[var(--color-foreground)] group-hover:text-[var(--color-primary)]">
+                            {item.value}
+                          </p>
+                        </div>
+                      </a>
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
+
+            {/* Social links */}
+            <div>
+              <h2 className="text-xl font-semibold tracking-tight text-[var(--color-foreground)] text-balance">
+                Follow Us
+              </h2>
+              <p className="mt-2 text-sm text-[var(--color-secondary)]">
+                Stay connected for new listings, market insights, and exclusive
+                property opportunities.
+              </p>
+              <ul className="mt-5 flex items-center gap-3">
+                {SOCIAL_LINKS.map((social) => {
+                  const Icon = social.icon;
+                  return (
+                    <li key={social.label}>
+                      <a
+                        href={social.href}
+                        aria-label={social.label}
+                        rel="noopener noreferrer"
+                        target="_blank"
+                        className="inline-flex h-12 w-12 items-center justify-center rounded-full border border-[var(--border-subtle)] dark:border-white/10 text-[var(--text-primary)] transition-all hover:border-[var(--brand-navy)] hover:bg-[var(--brand-navy)] hover:text-white dark:hover:border-amber-400 dark:hover:bg-amber-400/10 dark:hover:text-amber-400"
+                      >
+                        <Icon className="h-5 w-5" aria-hidden="true" />
+                      </a>
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
+
+            {/* Operating Hours & Response SLA */}
+            <div className="rounded-2xl border border-[var(--border-subtle)] bg-[var(--bg-base)] dark:bg-[var(--bg-surface)] dark:border-white/10 p-6 shadow-sm">
+              <h2 className="text-xl font-semibold tracking-tight text-[var(--color-foreground)] text-balance">
+                Operating Hours &amp; Response SLA
+              </h2>
+              <p className="mt-2 text-sm text-[var(--color-secondary)]">
+                We typically reply to all enquiries within 24 hours during
+                business hours.
+              </p>
+              <dl className="mt-5 space-y-3">
+                <div className="flex items-center justify-between gap-4 border-b border-[var(--border-subtle)] pb-3">
+                  <dt className="text-xs font-semibold uppercase tracking-[0.15em] text-[var(--color-secondary)]">
+                    Mon — Fri
+                  </dt>
+                  <dd className="text-sm font-medium text-[var(--color-foreground)]">
+                    08:00 — 17:00
+                  </dd>
+                </div>
+                <div className="flex items-center justify-between gap-4 border-b border-[var(--border-subtle)] pb-3">
+                  <dt className="text-xs font-semibold uppercase tracking-[0.15em] text-[var(--color-secondary)]">
+                    Saturday
+                  </dt>
+                  <dd className="text-sm font-medium text-[var(--color-foreground)]">
+                    09:00 — 13:00
+                  </dd>
+                </div>
+                <div className="flex items-center justify-between gap-4">
+                  <dt className="text-xs font-semibold uppercase tracking-[0.15em] text-[var(--color-secondary)]">
+                    Emergency
+                  </dt>
+                  <dd className="text-sm font-medium text-[var(--color-foreground)]">
+                    24/7 for tenants
+                  </dd>
+                </div>
+              </dl>
+            </div>
+          </div>
+
+          {/* Right: General inquiry form */}
+          <div className="flex flex-col rounded-2xl border border-[var(--border-subtle)] bg-[var(--bg-base)] dark:bg-[var(--bg-surface)] dark:border-white/10 p-6 shadow-sm sm:p-8 lg:p-10">
+            <h2 className="text-xl font-semibold tracking-tight text-[var(--color-foreground)] text-balance">
+              Send Us a Message
+            </h2>
+            <p className="mt-2 text-sm text-[var(--color-secondary)]">
+              Fill in the form below and we&apos;ll respond within 24 hours.
+            </p>
+            <div className="mt-6 flex flex-1 flex-col">
+              <ContactForm />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}

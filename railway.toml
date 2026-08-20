@@ -1,0 +1,12 @@
+[deploy]
+# Railway will build using the existing multi-stage Dockerfile.
+# The standalone Next.js server listens on PORT=3000 (set in Dockerfile).
+
+[deploy.healthcheck]
+path = "/"
+timeout = 30
+interval = 10
+
+[deploy.restart]
+policy = "ON_FAILURE"
+max_retries = 3

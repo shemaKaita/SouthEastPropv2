@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 800" width="600" height="800">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#12285A" />
+      <stop offset="100%" stop-color="#091229" />
+    </linearGradient>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M 40 0 L 0 0 0 40" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="1" />
+    </pattern>
+  </defs>
+  <rect width="600" height="800" fill="url(#bg)" />
+  <rect width="600" height="800" fill="url(#grid)" />
+  <!-- Decorative rule -->
+  <line x1="240" y1="280" x2="360" y2="280" stroke="#FBBF24" stroke-width="2" />
+  <!-- Monogram -->
+  <text x="300" y="470" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="240" font-weight="700" fill="#F8FAFC" letter-spacing="-8">MK</text>
+  <!-- Label -->
+  <text x="300" y="560" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="18" fill="#F8FAFC" letter-spacing="6" font-weight="500">MUTONI KAITAKIRWA</text>
+  <text x="300" y="590" text-anchor="middle" font-family="monospace" font-size="11" fill="#FBBF24" letter-spacing="4">FOUNDER</text>
+</svg>

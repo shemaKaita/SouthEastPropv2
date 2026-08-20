@@ -38,4 +38,9 @@ yarn-error.log*
 
 # typescript
 *.tsbuildinfo
+
+# UI audit artifacts (prevent Tailwind v4 from scanning markdown for classes)
+/reports
+/screenshots
+
 next-env.d.ts

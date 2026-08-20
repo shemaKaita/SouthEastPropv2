@@ -1,22 +1,132 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* ── Leaflet zoom-control theming — brand tokens (Pass 11 fix) ── */
+.leaflet-bar,
+.leaflet-bar a,
+.leaflet-bar a:hover {
+  background-color: var(--bg-surface) !important;
+  color: var(--text-primary) !important;
+  border-color: var(--border-subtle) !important;
+}
+
+html.dark .leaflet-bar,
+html.dark .leaflet-bar a,
+html.dark .leaflet-bar a:hover {
+  background-color: var(--bg-surface) !important;
+  color: var(--text-primary) !important;
+  border-color: var(--border-subtle) !important;
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.65) !important;
+}
+
+/* ──────────────────────────────────────────────
+   SouthEast Properties — Brand Identity Token System
+   Tailwind v4 CSS-based config (no tailwind.config.ts)
+   ────────────────────────────────────────────── */
+
+@layer base {
+  :root {
+    /* ── Brand Identity Tokens ── */
+    --bg-base: #ffffff; /* Page background */
+    --bg-surface: #f8fafc; /* Elevated card background */
+    --text-primary: #12285a; /* Deep navy — crisp light-mode headings */
+    --text-secondary: #475569; /* Slate-600 — readable body copy */
+    --brand-navy: #12285a; /* Primary brand structural blue */
+    --accent-yellow: #fbbf24; /* High-energy action yellow */
+    --accent-yellow-hover: #fcd34d; /* Lighter yellow on hover */
+    --border-subtle: #e2e8f0; /* Slate-200 — subtle dividers */
+    --stripe-color: rgba(
+      18,
+      40,
+      90,
+      0.05
+    ); /* Faint navy stripes — light mode */
+
+    /* ── Component-facing mappings (backward compatible) ── */
+    /* Existing components reference these via var(--color-*) */
+    --background: var(--bg-base);
+    --foreground: var(--text-secondary);
+    --color-primary: var(--text-primary);
+    --color-primary-surface: var(--brand-navy);
+    --color-secondary: #64748b; /* Slate-500 — muted labels, borders */
+  }
+
+  html.dark {
+    /* ── Brand Identity Tokens (Dark) ── */
+    --bg-base: #091229; /* Rich midnight navy — replaces #0A0A0A */
+    --bg-surface: #0e1a38; /* Elevated card background */
+    --text-primary: #f8fafc; /* Soft white — eliminates halation */
+    --text-secondary: #cbd5e1; /* Soft slate-300 — reduces glare */
+    --brand-navy: #12285a; /* Navy stays constant for structural fills */
+    --accent-yellow: #fcd34d; /* Lighter yellow for dark-mode contrast */
+    --accent-yellow-hover: #fbbf24;
+    --border-subtle: rgba(255, 255, 255, 0.15);
+    --stripe-color: rgba(
+      255,
+      255,
+      255,
+      0.03
+    ); /* Faint white stripes — dark mode (original subtlety) */
+
+    /* ── Component-facing mappings (Dark) ── */
+    --background: var(--bg-base);
+    --foreground: var(--text-secondary);
+    --color-primary: var(--text-primary);
+    --color-primary-surface: var(--brand-navy);
+    --color-secondary: #94a3b8; /* Slate-400 — muted text in dark */
+  }
+
+  /* ── Global focus ring (addresses audit issue #14) ── */
+  *:focus-visible {
+    @apply ring-2 ring-[var(--accent-yellow)] ring-offset-2;
+    --tw-ring-offset-color: var(--bg-base);
+  }
+
+  /* ── Heading balance (Step 16) ── */
+  h1,
+  h2 {
+    text-wrap: balance;
+  }
+
+  /* ── Form placeholder contrast (Step 17) ── */
+  input::placeholder,
+  textarea::placeholder {
+    color: #64748b; /* slate-500 */
+    opacity: 1;
+  }
+}
+
+html.dark input::placeholder,
+html.dark textarea::placeholder {
+  color: #94a3b8; /* slate-400 */
 }
 
 @theme inline {
+  /* ── Existing color utilities (backward compatible) ── */
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-primary: var(--color-primary);
+  --color-primary-surface: var(--color-primary-surface);
+  --color-secondary: var(--color-secondary);
+
+  /* ── New brand identity utilities ── */
+  --color-brand-navy: var(--brand-navy);
+  --color-accent-yellow: var(--accent-yellow);
+  --color-accent-yellow-hover: var(--accent-yellow-hover);
+  --color-bg-base: var(--bg-base);
+  --color-bg-surface: var(--bg-surface);
+  --color-text-primary: var(--text-primary);
+  --color-text-secondary: var(--text-secondary);
+  --color-border-subtle: var(--border-subtle);
+
+  /* ── Fonts ── */
+  --color-navy-700: #12285a;
+  --color-navy-800: #0e1a38;
+  --color-navy-900: #091229;
+
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
 }
 
 body {
