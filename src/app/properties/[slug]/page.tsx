@@ -114,7 +114,7 @@ export default async function PropertyDetailPage({
         </Link>
 
         {/* Bento Box image gallery */}
-        <div className="relative pb-20">
+        <div>
           <div className="grid grid-cols-1 gap-4 lg:grid-cols-2 lg:gap-5">
             {/* Featured image - left */}
             <div className="relative aspect-[4/3] overflow-hidden rounded-2xl lg:aspect-[4/3] lg:min-h-[480px]">
@@ -147,17 +147,15 @@ export default async function PropertyDetailPage({
             </div>
           </div>
 
-          {/* Mobile/tablet Enquire Now pill — anchored to gallery bottom edge, lg:hidden */}
-          <div className="absolute -bottom-5 left-1/2 z-30 -translate-x-1/2 lg:hidden">
-            <div className="rounded-full bg-[var(--bg-base)]/90 px-5 py-2 shadow-md backdrop-blur-sm">
-              <a
-                href="#enquiry-form"
-                className="inline-flex h-12 items-center justify-center gap-2 rounded-full bg-[var(--accent-yellow)] px-8 text-base font-bold text-navy-900 shadow-lg transition-all hover:bg-[var(--accent-yellow-hover)]"
-              >
-                Enquire Now
-                <ArrowRight className="h-5 w-5" />
-              </a>
-            </div>
+          {/* Mobile/tablet Enquire Now pill — sits below gallery, lg:hidden */}
+          <div className="mt-8 flex justify-center lg:hidden">
+            <a
+              href="#enquiry-form"
+              className="inline-flex h-12 items-center justify-center gap-2 rounded-full bg-[var(--accent-yellow)] px-8 text-base font-bold text-navy-900 shadow-lg transition-all hover:-translate-y-0.5 hover:bg-[var(--accent-yellow-hover)] hover:shadow-xl active:translate-y-0 active:shadow-lg"
+            >
+              Enquire Now
+              <ArrowRight className="h-5 w-5" />
+            </a>
           </div>
         </div>
 
