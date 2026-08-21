@@ -3,31 +3,21 @@
 import { useState, type FormEvent } from "react";
 import { ArrowRight, CheckCircle2 } from "lucide-react";
 
-type SubmittedPayload = {
-  name: string;
-  email: string;
-  moveInDate: string;
-  message: string;
-};
-
 export default function EnquireNowForm() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [moveInDate, setMoveInDate] = useState("");
   const [message, setMessage] = useState("");
   const [submitted, setSubmitted] = useState(false);
-  const [payload, setPayload] = useState<SubmittedPayload | null>(null);
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
-    // eslint-disable-next-line no-console
     console.log("Enquiry submitted", {
       name,
       email,
       moveInDate,
       message,
     });
-    setPayload({ name, email, moveInDate, message });
     setSubmitted(true);
   };
 
@@ -36,7 +26,6 @@ export default function EnquireNowForm() {
     setEmail("");
     setMoveInDate("");
     setMessage("");
-    setPayload(null);
     setSubmitted(false);
   };
 

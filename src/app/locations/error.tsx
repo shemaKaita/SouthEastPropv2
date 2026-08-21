@@ -13,7 +13,6 @@ export default function LocationsError({
   reset: () => void;
 }): ReactElement {
   useEffect(() => {
-    // eslint-disable-next-line no-console
     console.error("Map error:", error);
   }, [error]);
 

@@ -3,13 +3,6 @@
 import { useState, type FormEvent } from "react";
 import { ArrowRight, CheckCircle2 } from "lucide-react";
 
-type SubmittedPayload = {
-  name: string;
-  email: string;
-  subject: string;
-  message: string;
-};
-
 export default function ContactForm() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -19,7 +12,6 @@ export default function ContactForm() {
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
-    // eslint-disable-next-line no-console
     console.log("Contact form submitted", {
       name,
       email,

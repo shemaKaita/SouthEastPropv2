@@ -95,6 +95,7 @@ export default function OurStoryPage(): ReactElement {
                   alt="Mutoni Kaitakirwa, founder of SouthEast Properties"
                   fill
                   sizes="(max-width: 1024px) 100vw, 420px"
+                  loading="eager"
                   className="object-cover"
                 />
                 {/* Subtle corner accent */}

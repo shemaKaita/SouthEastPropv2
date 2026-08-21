@@ -3,7 +3,7 @@
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import { MapContainer, Marker, Popup, TileLayer, useMap } from "react-leaflet";
-import { useEffect, useState } from "react";
+import { useEffect, useSyncExternalStore } from "react";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 
@@ -39,16 +39,15 @@ function FitBoundsToMarkers() {
 }
 
 export default function PropertyMapView() {
-  const [selectedId, setSelectedId] = useState<string | null>(null);
-  const [isDarkMode, setIsDarkMode] = useState(false);
-
-  useEffect(() => {
-    const media = window.matchMedia("(prefers-color-scheme: dark)");
-    setIsDarkMode(media.matches);
-    const handler = (e: MediaQueryListEvent) => setIsDarkMode(e.matches);
-    media.addEventListener("change", handler);
-    return () => media.removeEventListener("change", handler);
-  }, []);
+  const isDarkMode = useSyncExternalStore(
+    (callback: () => void) => {
+      const media = window.matchMedia("(prefers-color-scheme: dark)");
+      media.addEventListener("change", callback);
+      return () => media.removeEventListener("change", callback);
+    },
+    () => window.matchMedia("(prefers-color-scheme: dark)").matches,
+    () => false,
+  );
 
   return (
     <div className="relative h-full w-full">
@@ -146,9 +145,6 @@ export default function PropertyMapView() {
             key={property.slug}
             position={[property.lat, property.lng]}
             icon={markerIcon}
-            eventHandlers={{
-              click: () => setSelectedId(property.slug),
-            }}
           >
             <Popup maxWidth={260} closeButton={false} autoPan={false}>
               <div className="min-w-[220px] rounded-xl bg-[var(--bg-surface)] p-4">

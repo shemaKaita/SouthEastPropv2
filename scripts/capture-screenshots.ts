@@ -114,7 +114,7 @@ async function main() {
               timeout: 10000,
             });
             await page.waitForTimeout(500);
-          } catch (e) {
+          } catch {
             console.warn(
               `Map tiles not loaded for ${route.path}, continuing...`,
             );
