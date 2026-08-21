@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useSyncExternalStore } from "react";
 import { createPortal } from "react-dom";
 import { Menu, X, Phone, Mail, MapPin, Sun, Moon } from "lucide-react";
 import Logo from "@/components/Logo";
@@ -25,21 +25,34 @@ export default function Navbar() {
   const pathname = usePathname();
   const [scrolled, setScrolled] = useState<boolean>(false);
   const [mobileOpen, setMobileOpen] = useState<boolean>(false);
-  const [mounted, setMounted] = useState<boolean>(false);
-  const [theme, setTheme] = useState<"light" | "dark">("light");
-
-  useEffect(() => {
-    setMounted(true);
-    const isDark = document.documentElement.classList.contains("dark");
-    setTheme(isDark ? "dark" : "light");
-  }, []);
+  // useSyncExternalStore returns false during SSR, true on client — no hydration mismatch.
+  const mounted = useSyncExternalStore(
+    () => () => undefined,
+    () => true,
+    () => false,
+  );
+  // Read theme from the DOM class list — no useState/useEffect needed.
+  // toggleTheme updates the class + cookie; this re-reads on the next render.
+  const theme = useSyncExternalStore(
+    (callback: () => void) => {
+      const observer = new MutationObserver(callback);
+      observer.observe(document.documentElement, {
+        attributes: true,
+        attributeFilter: ["class"],
+      });
+      return () => observer.disconnect();
+    },
+    () =>
+      document.documentElement.classList.contains("dark") ? "dark" : "light",
+    () => "light" as const,
+  );
 
   const toggleTheme = (): void => {
     const next = theme === "dark" ? "light" : "dark";
-    setTheme(next);
     document.documentElement.classList.toggle("dark", next === "dark");
     try {
       localStorage.setItem("theme", next);
+      document.cookie = `theme=${next};path=/;max-age=31536000;samesite=lax`;
     } catch {
       /* ignore */
     }
