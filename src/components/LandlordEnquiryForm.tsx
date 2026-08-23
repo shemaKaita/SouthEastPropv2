@@ -1,190 +1,154 @@
 "use client";
 
-import { useState, type FormEvent } from "react";
-import { ArrowRight, CheckCircle2 } from "lucide-react";
+import { useState } from "react";
+import { ArrowRight } from "lucide-react";
+import { useFormState } from "@/hooks/useFormState";
+import { submitLandlordForm } from "@/actions/landlord";
+import type { LandlordFormData, FormErrors } from "@/types/forms";
+import FormField from "@/components/ui/FormField";
+import FormSelect from "@/components/ui/FormSelect";
+import FormSuccess from "@/components/ui/FormSuccess";
+import { inputClassName, labelClassName } from "@/components/ui/formStyles";
 
-type SubmittedPayload = {
-  name: string;
-  email: string;
-  phone: string;
-  location: string;
-  propertyType: string;
-  units: string;
+const PROPERTY_TYPE_OPTIONS = [
+  { value: "co-living", label: "Co-living" },
+  { value: "single-unit", label: "Single Unit" },
+  { value: "entire-block", label: "Entire Block" },
+];
+
+const INITIAL_VALUES: LandlordFormData = {
+  name: "",
+  email: "",
+  phone: "",
+  location: "",
+  propertyType: "",
+  units: "",
 };
 
+function validate(
+  values: LandlordFormData,
+): FormErrors<LandlordFormData> | undefined {
+  const errors: FormErrors<LandlordFormData> = {};
+  if (!values.name.trim()) errors.name = "Name is required";
+  if (!values.email.trim()) errors.email = "Email is required";
+  else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(values.email))
+    errors.email = "Invalid email format";
+  if (!values.phone.trim()) errors.phone = "Phone number is required";
+  if (!values.location.trim()) errors.location = "Location is required";
+  if (!values.propertyType) errors.propertyType = "Property type is required";
+  return Object.keys(errors).length > 0 ? errors : undefined;
+}
+
 export default function LandlordEnquiryForm() {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [phone, setPhone] = useState("");
-  const [location, setLocation] = useState("");
-  const [propertyType, setPropertyType] = useState("");
-  const [units, setUnits] = useState("");
-  const [submitted, setSubmitted] = useState(false);
-  const [payload, setPayload] = useState<SubmittedPayload | null>(null);
+  const [submitPayload, setSubmitPayload] = useState<LandlordFormData | null>(
+    null,
+  );
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>): void => {
-    e.preventDefault();
-    console.log("Landlord enquiry submitted", {
-      name,
-      email,
-      phone,
-      location,
-      propertyType,
-      units,
-    });
-    setPayload({ name, email, phone, location, propertyType, units });
-    setSubmitted(true);
-  };
+  const {
+    values,
+    errors,
+    status,
+    serverError,
+    setField,
+    handleSubmit,
+    reset,
+    isSubmitting,
+  } = useFormState<LandlordFormData>({
+    initialValues: INITIAL_VALUES,
+    validate,
+    onSubmit: async (data) => {
+      const result = await submitLandlordForm(data);
+      if (!result.success) {
+        throw new Error(result.message);
+      }
+      setSubmitPayload(result.data ?? data);
+    },
+  });
 
-  const handleReset = (): void => {
-    setName("");
-    setEmail("");
-    setPhone("");
-    setLocation("");
-    setPropertyType("");
-    setUnits("");
-    setPayload(null);
-    setSubmitted(false);
-  };
-
-  if (submitted) {
+  if (status === "success") {
+    const firstName = submitPayload?.name?.split(" ")[0];
     return (
-      <div
-        role="status"
-        aria-live="polite"
-        className="flex flex-col items-center justify-center rounded-2xl border border-[var(--color-secondary)]/30 bg-[var(--color-background)] p-10 text-center shadow-sm sm:p-12"
-      >
-        <div
-          className="flex h-16 w-16 items-center justify-center rounded-full bg-[var(--color-primary)] text-white shadow-[0_8px_20px_-10px_rgba(18,40,90,0.6)]"
-          aria-hidden="true"
-        >
-          <CheckCircle2 className="h-8 w-8" strokeWidth={1.75} />
-        </div>
-        <h3 className="mt-6 text-2xl font-semibold tracking-tight text-[var(--color-foreground)] sm:text-3xl">
-          Thank you{payload?.name ? `, ${payload.name.split(" ")[0]}` : ""}!
-        </h3>
-        <p className="mt-3 max-w-md text-sm leading-relaxed text-[var(--color-foreground)]/70 sm:text-base">
-          We&apos;ll be in touch within 24 hours to discuss your management
-          proposal and outline next steps for your property.
-        </p>
-        <button
-          type="button"
-          onClick={handleReset}
-          className="mt-8 inline-flex h-12 items-center justify-center rounded-full border border-[var(--color-secondary)]/40 px-6 text-sm font-semibold text-[var(--color-foreground)] transition-all hover:border-[var(--color-primary)] hover:text-[var(--color-primary)]"
-        >
-          Submit another enquiry
-        </button>
-      </div>
+      <FormSuccess
+        title={`Thank you${firstName ? `, ${firstName}` : ""}!`}
+        message="We'll be in touch within 24 hours to discuss your management proposal and outline next steps for your property."
+        buttonText="Submit another enquiry"
+        onReset={() => {
+          setSubmitPayload(null);
+          reset();
+        }}
+      />
     );
   }
 
-  const inputClassName =
-    "w-full rounded-xl bg-slate-50 dark:bg-navy-900/60 border border-slate-300 dark:border-white/20 px-4 py-3 h-12 text-sm text-[var(--text-primary)] placeholder:text-slate-500 dark:placeholder:text-slate-400 focus:border-[var(--accent-yellow)] focus:ring-1 focus:ring-[var(--accent-yellow)] outline-none transition-all";
-
-  const selectClassName = `${inputClassName} appearance-none bg-[length:20px] bg-[right_0.75rem_center] bg-no-repeat pr-10`;
-  const chevronBg =
-    "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='%23475569' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E\")";
-
-  const labelClassName =
-    "block text-xs font-semibold uppercase tracking-[0.15em] text-slate-700 dark:text-slate-300 mb-2";
-
   return (
-    <form onSubmit={handleSubmit} className="space-y-6" noValidate={false}>
+    <form onSubmit={handleSubmit} className="space-y-6" noValidate>
       {/* Name + Email row */}
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
-        <div>
-          <label htmlFor="name" className={labelClassName}>
-            Full Name
-          </label>
-          <input
-            id="name"
-            type="text"
-            name="name"
-            required
-            autoComplete="name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            className={inputClassName}
-            placeholder="Jane Doe"
-          />
-        </div>
-        <div>
-          <label htmlFor="email" className={labelClassName}>
-            Email Address
-          </label>
-          <input
-            id="email"
-            type="email"
-            name="email"
-            required
-            autoComplete="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className={inputClassName}
-            placeholder="jane@example.com"
-          />
-        </div>
+        <FormField
+          id="name"
+          label="Full Name"
+          name="name"
+          value={values.name}
+          onChange={(v) => setField("name", v)}
+          placeholder="Jane Doe"
+          required
+          autoComplete="name"
+          error={errors.name}
+        />
+        <FormField
+          id="email"
+          label="Email Address"
+          type="email"
+          name="email"
+          value={values.email}
+          onChange={(v) => setField("email", v)}
+          placeholder="jane@example.com"
+          required
+          autoComplete="email"
+          error={errors.email}
+        />
       </div>
 
       {/* Location + Property Type row */}
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
-        <div>
-          <label htmlFor="location" className={labelClassName}>
-            Property Location
-          </label>
-          <input
-            id="location"
-            type="text"
-            name="location"
-            required
-            autoComplete="address-level2"
-            value={location}
-            onChange={(e) => setLocation(e.target.value)}
-            className={inputClassName}
-            placeholder="Observatory, Cape Town"
-          />
-        </div>
-        <div>
-          <label htmlFor="propertyType" className={labelClassName}>
-            Property Type
-          </label>
-          <select
-            id="propertyType"
-            name="propertyType"
-            required
-            value={propertyType}
-            onChange={(e) => setPropertyType(e.target.value)}
-            className={selectClassName}
-            style={{ backgroundImage: chevronBg }}
-          >
-            <option value="" disabled>
-              Select a property type…
-            </option>
-            <option value="co-living">Co-living</option>
-            <option value="single-unit">Single Unit</option>
-            <option value="entire-block">Entire Block</option>
-          </select>
-        </div>
+        <FormField
+          id="location"
+          label="Property Location"
+          name="location"
+          value={values.location}
+          onChange={(v) => setField("location", v)}
+          placeholder="Observatory, Cape Town"
+          required
+          autoComplete="address-level2"
+          error={errors.location}
+        />
+        <FormSelect
+          id="propertyType"
+          label="Property Type"
+          name="propertyType"
+          value={values.propertyType}
+          onChange={(v) => setField("propertyType", v)}
+          options={PROPERTY_TYPE_OPTIONS}
+          required
+          placeholder="Select a property type…"
+          error={errors.propertyType}
+        />
       </div>
 
       {/* Phone + Units row */}
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
-        <div>
-          <label htmlFor="phone" className={labelClassName}>
-            Phone Number
-          </label>
-          <input
-            id="phone"
-            type="tel"
-            name="phone"
-            required
-            autoComplete="tel"
-            value={phone}
-            onChange={(e) => setPhone(e.target.value)}
-            className={inputClassName}
-            placeholder="+27 82 123 4567"
-          />
-        </div>
+        <FormField
+          id="phone"
+          label="Phone Number"
+          type="tel"
+          name="phone"
+          value={values.phone}
+          onChange={(v) => setField("phone", v)}
+          placeholder="+27 82 123 4567"
+          required
+          autoComplete="tel"
+          error={errors.phone}
+        />
         <div>
           <label htmlFor="units" className={labelClassName}>
             Number of Units
@@ -194,28 +158,32 @@ export default function LandlordEnquiryForm() {
             type="number"
             name="units"
             min="1"
-            value={units}
-            onChange={(e) => setUnits(e.target.value)}
+            value={values.units}
+            onChange={(e) => setField("units", e.target.value)}
             className={inputClassName}
             placeholder="1"
           />
         </div>
       </div>
 
+      {serverError && (
+        <p
+          className="text-sm font-medium text-red-500 dark:text-red-400"
+          role="alert"
+        >
+          {serverError}
+        </p>
+      )}
+
       {/* Submit button */}
       <div className="space-y-2 pt-2">
-        <p
-          aria-live="polite"
-          className="min-h-[1.25rem] text-sm text-[var(--color-secondary)]"
-        >
-          {submitted ? "Enquiry sent — we&apos;ll be in touch soon." : ""}
-        </p>
         <button
           type="submit"
-          className="inline-flex h-12 w-full items-center justify-center gap-2 rounded-full bg-[var(--accent-yellow)] px-6 text-sm font-bold text-navy-900 transition-all hover:bg-[var(--accent-yellow-hover)] hover:scale-[1.02] hover:shadow-2xl sm:h-14 sm:px-8 sm:text-base sm:w-auto"
+          disabled={isSubmitting}
+          className="inline-flex h-12 w-full items-center justify-center gap-2 rounded-full bg-[var(--accent-yellow)] px-6 text-sm font-bold text-navy-900 transition-all hover:bg-[var(--accent-yellow-hover)] hover:scale-[1.02] hover:shadow-2xl disabled:opacity-60 disabled:cursor-not-allowed sm:h-14 sm:px-8 sm:text-base sm:w-auto"
         >
-          Submit Enquiry
-          <ArrowRight className="h-4 w-4 sm:h-5 sm:w-5" />
+          {isSubmitting ? "Submitting…" : "Submit Enquiry"}
+          {!isSubmitting && <ArrowRight className="h-4 w-4 sm:h-5 sm:w-5" />}
         </button>
       </div>
     </form>
