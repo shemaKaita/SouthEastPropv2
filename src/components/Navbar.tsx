@@ -1,8 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { usePathname, useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { Menu, X, Phone, Mail, MapPin, Sun, Moon } from "lucide-react";
 import Logo from "@/components/Logo";
@@ -14,6 +14,7 @@ import { NAV_ITEMS, CONTACT_DETAILS } from "@/lib/constants";
 
 export default function Navbar() {
   const pathname = usePathname();
+  const router = useRouter();
   const [mobileOpen, setMobileOpen] = useState<boolean>(false);
   const mounted = useMounted();
   const { theme, toggleTheme } = useTheme();
@@ -22,6 +23,19 @@ export default function Navbar() {
     href === "/"
       ? pathname === "/"
       : pathname === href || pathname.startsWith(href + "/");
+
+  // Eagerly prefetch all top-nav routes on mount so first click is instant.
+  // Next's <Link> uses IntersectionObserver (200px rootMargin) to gate prefetching,
+  // which creates a race condition on real networks: if the user clicks within
+  // ~300ms of page load, the RSC payload hasn't been fetched yet and the click
+  // triggers an on-demand fetch + full React reconciliation (~200-400ms delay).
+  // By calling router.prefetch() on mount we start all 4 other routes' RSC
+  // fetches immediately, eliminating the race.
+  useEffect(() => {
+    for (const item of NAV_ITEMS) {
+      if (item.href !== pathname) router.prefetch(item.href);
+    }
+  }, [router, pathname]);
 
   useBodyScrollLock(mobileOpen);
 
