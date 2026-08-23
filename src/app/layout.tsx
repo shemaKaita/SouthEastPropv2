@@ -29,6 +29,28 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       suppressHydrationWarning
     >
       <head>
+        {/* Preconnect to map tile CDN subdomains (Leaflet uses a/b/c.basemaps.cartocdn.com) */}
+        <link
+          rel="preconnect"
+          href="https://a.basemaps.cartocdn.com"
+          crossOrigin="anonymous"
+        />
+        <link
+          rel="preconnect"
+          href="https://b.basemaps.cartocdn.com"
+          crossOrigin="anonymous"
+        />
+        <link
+          rel="preconnect"
+          href="https://c.basemaps.cartocdn.com"
+          crossOrigin="anonymous"
+        />
+        {/* DNS prefetch for Unsplash images used in static map fallback */}
+        <link
+          rel="preconnect"
+          href="https://images.unsplash.com"
+          crossOrigin="anonymous"
+        />
         <script
           dangerouslySetInnerHTML={{
             __html: `(() => { try { const t = localStorage.getItem('theme'); if (t === 'dark' || (!t && window.matchMedia('(prefers-color-scheme: dark)').matches)) { document.documentElement.classList.add('dark'); } } catch {} })();`,
