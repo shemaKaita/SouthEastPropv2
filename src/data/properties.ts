@@ -1,36 +1,6 @@
-export type AmenityIcon =
-  | "Wifi"
-  | "Car"
-  | "Shield"
-  | "Waves"
-  | "Wind"
-  | "Dumbbell"
-  | "WashingMachine"
-  | "Tv";
+import type { Property } from "@/types/property";
 
-export type Amenity = {
-  icon: AmenityIcon;
-  label: string;
-};
-
-export type Property = {
-  slug: string;
-  title: string;
-  location: string;
-  price: string;
-  priceLabel: string;
-  beds: number;
-  baths: number;
-  area: number;
-  lat: number;
-  lng: number;
-  availability: string;
-  badge: string;
-  featuredImage: string;
-  galleryImages: string[];
-  description: string;
-  amenities: Amenity[];
-};
+export type { Property, Amenity, AmenityIcon } from "@/types/property";
 
 export const PROPERTIES: ReadonlyArray<Property> = [
   {
@@ -198,12 +168,5 @@ export const PROPERTIES: ReadonlyArray<Property> = [
   },
 ];
 
-export async function getPropertyBySlug(
-  slug: string,
-): Promise<Property | null> {
-  return PROPERTIES.find((p) => p.slug === slug) ?? null;
-}
-
-export async function getAllPropertySlugs(): Promise<{ slug: string }[]> {
-  return PROPERTIES.map((p) => ({ slug: p.slug }));
-}
+// Data access functions have moved to src/lib/properties.ts (repository layer).
+// Import from there instead of this file.
