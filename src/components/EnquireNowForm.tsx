@@ -1,113 +1,103 @@
 "use client";
 
-import { useState, type FormEvent } from "react";
-import { ArrowRight, CheckCircle2 } from "lucide-react";
+import { ArrowRight } from "lucide-react";
+import { useFormState } from "@/hooks/useFormState";
+import { submitEnquiryForm } from "@/actions/enquiry";
+import type { EnquiryFormData, FormErrors } from "@/types/forms";
+import FormField from "@/components/ui/FormField";
+import FormSuccess from "@/components/ui/FormSuccess";
+import { inputClassName, labelClassName } from "@/components/ui/formStyles";
 
-type SubmittedPayload = {
-  name: string;
-  email: string;
-  moveInDate: string;
-  message: string;
-};
+const dateInputClassName = `${inputClassName} [&::-webkit-calendar-picker-indicator]:invert-[0.85] [&::-webkit-calendar-picker-indicator]:opacity-70 scheme:dark`;
 
-export default function EnquireNowForm() {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [moveInDate, setMoveInDate] = useState("");
-  const [message, setMessage] = useState("");
-  const [submitted, setSubmitted] = useState(false);
-  const [payload, setPayload] = useState<SubmittedPayload | null>(null);
+function validate(
+  values: EnquiryFormData,
+): FormErrors<EnquiryFormData> | undefined {
+  const errors: FormErrors<EnquiryFormData> = {};
+  if (!values.name.trim()) errors.name = "Name is required";
+  if (!values.email.trim()) errors.email = "Email is required";
+  else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(values.email))
+    errors.email = "Invalid email format";
+  if (!values.message.trim()) errors.message = "Message is required";
+  return Object.keys(errors).length > 0 ? errors : undefined;
+}
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>): void => {
-    e.preventDefault();
-    // eslint-disable-next-line no-console
-    console.log("Enquiry submitted", {
-      name,
-      email,
-      moveInDate,
-      message,
-    });
-    setPayload({ name, email, moveInDate, message });
-    setSubmitted(true);
+export default function EnquireNowForm({
+  propertySlug = "",
+  propertyTitle = "",
+}: {
+  propertySlug?: string;
+  propertyTitle?: string;
+}) {
+  const INITIAL_VALUES: EnquiryFormData = {
+    name: "",
+    email: "",
+    moveInDate: "",
+    message: "",
+    propertySlug,
   };
 
-  const handleReset = (): void => {
-    setName("");
-    setEmail("");
-    setMoveInDate("");
-    setMessage("");
-    setPayload(null);
-    setSubmitted(false);
-  };
+  const {
+    values,
+    errors,
+    status,
+    serverError,
+    setField,
+    handleSubmit,
+    reset,
+    isSubmitting,
+  } = useFormState<EnquiryFormData>({
+    initialValues: INITIAL_VALUES,
+    validate,
+    onSubmit: async (data) => {
+      const result = await submitEnquiryForm(data);
+      if (!result.success) {
+        throw new Error(result.message);
+      }
+    },
+  });
 
-  if (submitted) {
+  if (status === "success") {
     return (
-      <div
-        role="status"
-        aria-live="polite"
-        className="flex flex-col items-center justify-center rounded-2xl border border-[var(--color-secondary)]/30 bg-[var(--color-background)] p-8 text-center shadow-sm"
-      >
-        <div
-          className="flex h-14 w-14 items-center justify-center rounded-full bg-[var(--color-primary)] text-white shadow-[0_8px_20px_-10px_rgba(18,40,90,0.6)]"
-          aria-hidden="true"
-        >
-          <CheckCircle2 className="h-7 w-7" strokeWidth={1.75} />
-        </div>
-        <p className="mt-5 text-sm leading-relaxed text-[var(--color-foreground)]/80 sm:text-base">
-          Thank you! We&apos;ll be in touch within 24 hours.
-        </p>
-        <button
-          type="button"
-          onClick={handleReset}
-          className="mt-6 inline-flex h-12 items-center justify-center rounded-full border border-[var(--color-secondary)]/40 px-5 text-sm font-semibold text-[var(--color-foreground)] transition-all hover:border-[var(--color-primary)] hover:text-[var(--color-primary)]"
-        >
-          Send another enquiry
-        </button>
-      </div>
+      <FormSuccess
+        title="Thank you! We'll be in touch within 24 hours."
+        message={
+          propertyTitle
+            ? `Your enquiry for "${propertyTitle}" has been received.`
+            : "Your enquiry has been received."
+        }
+        buttonText="Send another enquiry"
+        onReset={reset}
+      />
     );
   }
 
-  const inputClassName =
-    "w-full rounded-xl bg-slate-50 dark:bg-navy-900/60 border border-slate-300 dark:border-white/20 px-4 py-2.5 text-sm text-[var(--text-primary)] placeholder:text-slate-500 dark:placeholder:text-slate-400 focus:border-[var(--accent-yellow)] focus:ring-1 focus:ring-[var(--accent-yellow)] outline-none transition-all min-h-12 [&::-webkit-calendar-picker-indicator]:invert-[0.85] [&::-webkit-calendar-picker-indicator]:opacity-70 scheme:dark";
-
-  const labelClassName =
-    "block text-xs font-semibold uppercase tracking-[0.15em] text-slate-700 dark:text-slate-300 mb-2";
-
   return (
-    <form onSubmit={handleSubmit} className="space-y-5" noValidate={false}>
-      <div>
-        <label htmlFor="enquire-name" className={labelClassName}>
-          Full Name
-        </label>
-        <input
-          id="enquire-name"
-          type="text"
-          name="name"
-          required
-          autoComplete="name"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          className={inputClassName}
-          placeholder="Jane Doe"
-        />
-      </div>
+    <form onSubmit={handleSubmit} className="space-y-5" noValidate>
+      <FormField
+        id="enquire-name"
+        label="Full Name"
+        name="name"
+        value={values.name}
+        onChange={(v) => setField("name", v)}
+        placeholder="Jane Doe"
+        required
+        autoComplete="name"
+        error={errors.name}
+      />
 
-      <div>
-        <label htmlFor="enquire-email" className={labelClassName}>
-          Email Address
-        </label>
-        <input
-          id="enquire-email"
-          type="email"
-          name="email"
-          required
-          autoComplete="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          className={inputClassName}
-          placeholder="jane@example.com"
-        />
-      </div>
+      <FormField
+        id="enquire-email"
+        label="Email Address"
+        type="email"
+        name="email"
+        value={values.email}
+        onChange={(v) => setField("email", v)}
+        placeholder="jane@example.com"
+        required
+        autoComplete="email"
+        error={errors.email}
+      />
 
       <div>
         <label htmlFor="enquire-move-in" className={labelClassName}>
@@ -118,9 +108,9 @@ export default function EnquireNowForm() {
           type="date"
           name="moveInDate"
           required
-          value={moveInDate}
-          onChange={(e) => setMoveInDate(e.target.value)}
-          className={inputClassName}
+          value={values.moveInDate}
+          onChange={(e) => setField("moveInDate", e.target.value)}
+          className={dateInputClassName}
         />
       </div>
 
@@ -133,26 +123,38 @@ export default function EnquireNowForm() {
           name="message"
           rows={4}
           required
-          value={message}
-          onChange={(e) => setMessage(e.target.value)}
+          value={values.message}
+          onChange={(e) => setField("message", e.target.value)}
           className={`${inputClassName} min-h-32 resize-none`}
           placeholder="Tell us a bit about what you're looking for…"
+          aria-invalid={errors.message ? true : undefined}
         />
+        {errors.message && (
+          <p
+            className="mt-1.5 text-xs font-medium text-red-500 dark:text-red-400"
+            role="alert"
+          >
+            {errors.message}
+          </p>
+        )}
       </div>
 
-      <p
-        aria-live="polite"
-        className="min-h-[1.25rem] text-sm text-[var(--color-secondary)]"
-      >
-        {submitted ? "Enquiry sent — we&apos;ll be in touch soon." : ""}
-      </p>
+      {serverError && (
+        <p
+          className="text-sm font-medium text-red-500 dark:text-red-400"
+          role="alert"
+        >
+          {serverError}
+        </p>
+      )}
 
       <button
         type="submit"
-        className="inline-flex h-12 w-full items-center justify-center gap-2 rounded-full bg-[var(--accent-yellow)] px-6 text-sm font-bold text-navy-900 transition-all hover:bg-[var(--accent-yellow-hover)] hover:scale-[1.02] hover:shadow-2xl sm:h-14 sm:px-8 sm:text-base sm:w-auto"
+        disabled={isSubmitting}
+        className="inline-flex h-12 w-full items-center justify-center gap-2 rounded-full bg-[var(--accent-yellow)] px-6 text-sm font-bold text-navy-900 transition-all hover:bg-[var(--accent-yellow-hover)] hover:scale-[1.02] hover:shadow-2xl disabled:opacity-60 disabled:cursor-not-allowed sm:h-14 sm:px-8 sm:text-base sm:w-auto"
       >
-        Enquire Now
-        <ArrowRight className="h-4 w-4 sm:h-5 sm:w-5" />
+        {isSubmitting ? "Submitting…" : "Enquire Now"}
+        {!isSubmitting && <ArrowRight className="h-4 w-4 sm:h-5 sm:w-5" />}
       </button>
     </form>
   );

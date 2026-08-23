@@ -55,11 +55,26 @@ async function main() {
         try {
           localStorage.setItem("theme", dark ? "dark" : "light");
         } catch {}
+        // Broad net: any shadow-DOM-housing element + every toast/dialog attr Next emits.
+        // Hide at the CSS layer so it never paints, even if removal races the mount.
         const css =
-          "nextjs-portal,[data-nextjs-toast],[data-nextjs-dialog-overlay],[data-nextjs-toast-wrapper],[data-nextjs-build-error-toast]{display:none!important;visibility:hidden!important;pointer-events:none!important;opacity:0!important;}";
+          "nextjs-portal,[data-nextjs-toast],[data-nextjs-dialog-overlay],[data-nextjs-toast-wrapper],[data-nextjs-build-error-toast],[data-nextjs-dev-tools-panel],[data-nextjs-dev-tools],[data-nextjs-dev-tools-button],nextjs-portal *{display:none!important;visibility:hidden!important;pointer-events:none!important;opacity:0!important;width:0!important;height:0!important;}";
         const s = document.createElement("style");
         s.textContent = css;
         document.head.appendChild(s);
+        // MutationObserver: yank any dev portal that appears after mount (e.g. when
+        // navigating between routes triggers a portal re-render).
+        const mo = new MutationObserver(() => {
+          document
+            .querySelectorAll(
+              "nextjs-portal,[data-nextjs-toast],[data-nextjs-dialog-overlay],[data-nextjs-toast-wrapper],[data-nextjs-build-error-toast],[data-nextjs-dev-tools-panel],[data-nextjs-dev-tools],[data-nextjs-dev-tools-button]",
+            )
+            .forEach((el) => el.remove());
+        });
+        mo.observe(document.documentElement, {
+          childList: true,
+          subtree: true,
+        });
       }, isDark);
 
       // Cleanup helper: dev portal can render after mount — nuke it again
@@ -67,9 +82,23 @@ async function main() {
         await page.evaluate(() => {
           document
             .querySelectorAll(
-              "nextjs-portal,[data-nextjs-toast],[data-nextjs-dialog-overlay],[data-nextjs-toast-wrapper],[data-nextjs-build-error-toast]",
+              "nextjs-portal,[data-nextjs-toast],[data-nextjs-dialog-overlay],[data-nextjs-toast-wrapper],[data-nextjs-build-error-toast],[data-nextjs-dev-tools-panel],[data-nextjs-dev-tools],[data-nextjs-dev-tools-button]",
             )
             .forEach((el) => (el as HTMLElement).remove());
+          // Some Next dev buttons render inside shadow DOM — strip iteratively.
+          const stack: (Document | ShadowRoot)[] = [document];
+          while (stack.length) {
+            const root = stack.pop()!;
+            root.querySelectorAll("*").forEach((el) => {
+              const sr = (el as HTMLElement).shadowRoot;
+              if (sr) {
+                sr.querySelectorAll(
+                  "[data-nextjs-dev-tools-button],[data-nextjs-toast],button",
+                ).forEach((n) => (n as HTMLElement).remove());
+                stack.push(sr);
+              }
+            });
+          }
         });
       };
 
@@ -85,7 +114,7 @@ async function main() {
               timeout: 10000,
             });
             await page.waitForTimeout(500);
-          } catch (e) {
+          } catch {
             console.warn(
               `Map tiles not loaded for ${route.path}, continuing...`,
             );

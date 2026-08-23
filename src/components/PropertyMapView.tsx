@@ -3,10 +3,13 @@
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import { MapContainer, Marker, Popup, TileLayer, useMap } from "react-leaflet";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 
+import { useTheme } from "@/components/ThemeProvider";
+import { useMounted } from "@/hooks/useMounted";
+import type { Property } from "@/types/property";
 import { PROPERTIES } from "@/data/properties";
 
 const markerIcon = L.divIcon({
@@ -23,32 +26,30 @@ const markerIcon = L.divIcon({
 
 const CAPE_TOWN_CENTER: [number, number] = [-33.918, 18.41];
 
-function FitBoundsToMarkers() {
+function FitBoundsToMarkers({ properties }: { properties: Property[] }) {
   const map = useMap();
   useEffect(() => {
+    if (properties.length === 0) return;
     const bounds = L.latLngBounds(
-      PROPERTIES.map((p) => [p.lat, p.lng] as [number, number]),
+      properties.map((p) => [p.lat, p.lng] as [number, number]),
     );
     map.fitBounds(bounds, {
       paddingTopLeft: [40, 40],
       paddingBottomRight: [80, 80],
       maxZoom: 14,
     });
-  }, [map]);
+  }, [map, properties]);
   return null;
 }
 
-export default function PropertyMapView() {
-  const [selectedId, setSelectedId] = useState<string | null>(null);
-  const [isDarkMode, setIsDarkMode] = useState(false);
-
-  useEffect(() => {
-    const media = window.matchMedia("(prefers-color-scheme: dark)");
-    setIsDarkMode(media.matches);
-    const handler = (e: MediaQueryListEvent) => setIsDarkMode(e.matches);
-    media.addEventListener("change", handler);
-    return () => media.removeEventListener("change", handler);
-  }, []);
+export default function PropertyMapView({
+  properties = PROPERTIES as Property[],
+}: {
+  properties?: Property[];
+}) {
+  const { theme } = useTheme();
+  const mounted = useMounted();
+  const isDarkMode = mounted && theme === "dark";
 
   return (
     <div className="relative h-full w-full">
@@ -92,31 +93,28 @@ export default function PropertyMapView() {
               border-radius: 4px !important;
               font-size: 10px !important;
             }
-            @media (prefers-color-scheme: dark) {
-              .leaflet-control-zoom a {
+            .dark .leaflet-control-zoom a {
                 background: #0e1a38 !important;
                 color: #F8FAFC !important;
                 border-color: rgba(255,255,255,0.15) !important;
               }
-              .leaflet-control-zoom a:hover {
+              .dark .leaflet-control-zoom a:hover {
                 background: #FCD34D !important;
                 color: #12285A !important;
               }
-              .leaflet-control-attribution {
+              .dark .leaflet-control-attribution {
                 background: rgba(9,18,41,0.85) !important;
                 color: #CBD5E1 !important;
               }
-              .leaflet-control-attribution a {
+              .dark .leaflet-control-attribution a {
                 color: #FCD34D !important;
               }
             }
             .leaflet-container {
               filter: brightness(1.05) contrast(0.95);
             }
-            @media (prefers-color-scheme: dark) {
-              .leaflet-tile-pane {
+            .dark .leaflet-tile-pane {
                 filter: brightness(1.4) contrast(1.15) saturate(1.1);
-              }
             }
           `,
         }}
@@ -129,7 +127,7 @@ export default function PropertyMapView() {
         zoomControl={true}
         style={{ height: "100%", width: "100%" }}
       >
-        <FitBoundsToMarkers />
+        <FitBoundsToMarkers properties={properties} />
         {isDarkMode ? (
           <TileLayer
             url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
@@ -141,14 +139,11 @@ export default function PropertyMapView() {
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           />
         )}
-        {PROPERTIES.map((property) => (
+        {properties.map((property) => (
           <Marker
             key={property.slug}
             position={[property.lat, property.lng]}
             icon={markerIcon}
-            eventHandlers={{
-              click: () => setSelectedId(property.slug),
-            }}
           >
             <Popup maxWidth={260} closeButton={false} autoPan={false}>
               <div className="min-w-[220px] rounded-xl bg-[var(--bg-surface)] p-4">

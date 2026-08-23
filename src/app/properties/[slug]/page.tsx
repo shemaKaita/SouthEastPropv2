@@ -20,7 +20,8 @@ import {
   type LucideIcon,
 } from "lucide-react";
 
-import { getPropertyBySlug, getAllPropertySlugs } from "@/data/properties";
+import { getPropertyBySlug, getAllPropertySlugs } from "@/lib/properties";
+import { notFound } from "next/navigation";
 import EnquireNowForm from "@/components/EnquireNowForm";
 import type { ReactElement } from "react";
 
@@ -65,35 +66,7 @@ export default async function PropertyDetailPage({
   const property = await getPropertyBySlug(slug);
 
   if (!property) {
-    return (
-      <section className="bg-[var(--color-background)] py-24 sm:py-32">
-        <div className="mx-auto w-full max-w-2xl px-6 text-center sm:px-8 lg:px-10">
-          <span className="inline-flex items-center gap-2 font-mono text-[10px] font-medium uppercase tracking-[0.25em] text-[var(--color-primary)]">
-            <span
-              aria-hidden="true"
-              className="inline-block h-px w-8 bg-[var(--color-primary)]"
-            />
-            404
-          </span>
-          <h1 className="mt-4 text-3xl font-bold tracking-tight text-[var(--color-foreground)] sm:text-4xl text-balance">
-            Property not found
-          </h1>
-          <p className="mt-4 text-sm leading-relaxed text-[var(--color-foreground)]/70 sm:text-base">
-            We couldn&apos;t find a property matching the link you followed. It
-            may have been removed or the URL might be incorrect.
-          </p>
-          <div className="mt-8">
-            <Link
-              href="/"
-              className="inline-flex h-14 items-center justify-center gap-2 rounded-full bg-[var(--color-primary-surface)] px-8 text-base font-semibold text-white transition-all hover:scale-105 hover:shadow-2xl dark:ring-1 dark:ring-white/10 dark:shadow-lg dark:shadow-black/40"
-            >
-              <ArrowLeft className="h-5 w-5" />
-              Back to Home
-            </Link>
-          </div>
-        </div>
-      </section>
-    );
+    notFound();
   }
 
   // Split description on \n\n to render paragraphs; fall back to the whole string.
@@ -114,7 +87,7 @@ export default async function PropertyDetailPage({
         </Link>
 
         {/* Bento Box image gallery */}
-        <div className="relative pb-20">
+        <div>
           <div className="grid grid-cols-1 gap-4 lg:grid-cols-2 lg:gap-5">
             {/* Featured image - left */}
             <div className="relative aspect-[4/3] overflow-hidden rounded-2xl lg:aspect-[4/3] lg:min-h-[480px]">
@@ -123,6 +96,7 @@ export default async function PropertyDetailPage({
                 fill
                 alt={property.title}
                 unoptimized
+                loading="eager"
                 className="object-cover"
                 sizes="(max-width: 1024px) 100vw, 50vw"
               />
@@ -147,17 +121,15 @@ export default async function PropertyDetailPage({
             </div>
           </div>
 
-          {/* Mobile/tablet Enquire Now pill — anchored to gallery bottom edge, lg:hidden */}
-          <div className="absolute -bottom-5 left-1/2 z-30 -translate-x-1/2 lg:hidden">
-            <div className="rounded-full bg-[var(--bg-base)]/90 px-5 py-2 shadow-md backdrop-blur-sm">
-              <a
-                href="#enquiry-form"
-                className="inline-flex h-12 items-center justify-center gap-2 rounded-full bg-[var(--accent-yellow)] px-8 text-base font-bold text-navy-900 shadow-lg transition-all hover:bg-[var(--accent-yellow-hover)]"
-              >
-                Enquire Now
-                <ArrowRight className="h-5 w-5" />
-              </a>
-            </div>
+          {/* Mobile/tablet Enquire Now pill — sits below gallery, lg:hidden */}
+          <div className="mt-8 flex justify-center lg:hidden">
+            <a
+              href="#enquiry-form"
+              className="inline-flex h-12 items-center justify-center gap-2 rounded-full bg-[var(--accent-yellow)] px-8 text-base font-bold text-navy-900 shadow-lg transition-all hover:-translate-y-0.5 hover:bg-[var(--accent-yellow-hover)] hover:shadow-xl active:translate-y-0 active:shadow-lg"
+            >
+              Enquire Now
+              <ArrowRight className="h-5 w-5" />
+            </a>
           </div>
         </div>
 
@@ -266,7 +238,10 @@ export default async function PropertyDetailPage({
               </p>
               {/* Form */}
               <div className="mt-5">
-                <EnquireNowForm />
+                <EnquireNowForm
+                  propertySlug={property.slug}
+                  propertyTitle={property.title}
+                />
               </div>
             </div>
           </div>

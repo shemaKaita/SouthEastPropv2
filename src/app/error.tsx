@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import Link from "next/link";
 import { AlertTriangle, ArrowLeft, RotateCcw } from "lucide-react";
 import type { ReactElement } from "react";
+import { logError } from "@/lib/logger";
 
 export default function GlobalError({
   error,
@@ -13,8 +14,7 @@ export default function GlobalError({
   reset: () => void;
 }): ReactElement {
   useEffect(() => {
-    // eslint-disable-next-line no-console
-    console.error("Application error:", error);
+    logError(error, { boundary: "global", digest: error.digest });
   }, [error]);
 
   return (

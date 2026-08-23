@@ -1,65 +1,22 @@
 import { Globe, AtSign, Send, Share2, MapPin, Phone, Mail } from "lucide-react";
 import Link from "next/link";
 import type { ComponentType, SVGProps } from "react";
+import { NAV_ITEMS, SOCIAL_LINKS, CONTACT_DETAILS } from "@/lib/constants";
 
 type IconComponent = ComponentType<SVGProps<SVGSVGElement>>;
 
-const quickLinks: ReadonlyArray<{ label: string; href: string }> = [
-  { label: "Home", href: "/" },
-  { label: "Locations", href: "/locations" },
-  { label: "Our Story", href: "/our-story" },
-  { label: "Landlords", href: "/landlords" },
-  { label: "Contact", href: "/contact" },
-];
+const SOCIAL_ICONS: Record<string, IconComponent> = {
+  Facebook: Globe as IconComponent,
+  Instagram: AtSign as IconComponent,
+  "X (Twitter)": Send as IconComponent,
+  LinkedIn: Share2 as IconComponent,
+};
 
-const socialLinks: ReadonlyArray<{
-  label: string;
-  href: string;
-  icon: IconComponent;
-}> = [
-  {
-    label: "Facebook",
-    href: "https://www.facebook.com/",
-    icon: Globe as IconComponent,
-  },
-  {
-    label: "Instagram",
-    href: "https://www.instagram.com/",
-    icon: AtSign as IconComponent,
-  },
-  {
-    label: "X (Twitter)",
-    href: "https://x.com/",
-    icon: Send as IconComponent,
-  },
-  {
-    label: "LinkedIn",
-    href: "https://www.linkedin.com/",
-    icon: Share2 as IconComponent,
-  },
-];
-
-const contactDetails: ReadonlyArray<{
-  icon: IconComponent;
-  text: string;
-  href: string;
-}> = [
-  {
-    icon: MapPin,
-    text: "42 Lower Main Road, Observatory, Cape Town",
-    href: "https://maps.google.com/?q=Observatory+Cape+Town",
-  },
-  {
-    icon: Phone,
-    text: "+27 (0) 21 000 0000",
-    href: "tel:+27210000000",
-  },
-  {
-    icon: Mail,
-    text: "info@southeastproperties.co.za",
-    href: "mailto:info@southeastproperties.co.za",
-  },
-];
+const CONTACT_ICONS: Record<string, IconComponent> = {
+  Address: MapPin,
+  Phone: Phone,
+  Email: Mail,
+};
 
 const currentYear: number = new Date().getFullYear();
 
@@ -90,20 +47,25 @@ export default function Footer(): React.ReactElement {
               properties across the region.
             </p>
             <ul className="space-y-2 pt-2 text-sm">
-              {contactDetails.map(({ icon: Icon, text, href }) => (
-                <li key={text}>
-                  <a
-                    href={href}
-                    className="group inline-flex items-center gap-2 text-zinc-400 transition-colors hover:text-[var(--color-primary)]"
-                  >
-                    <Icon
-                      className="h-4 w-4 shrink-0 text-[var(--color-primary)]/80 transition-colors group-hover:text-[var(--color-primary)]"
-                      aria-hidden="true"
-                    />
-                    <span>{text}</span>
-                  </a>
-                </li>
-              ))}
+              {CONTACT_DETAILS.map((detail) => {
+                const Icon = CONTACT_ICONS[detail.label];
+                return (
+                  <li key={detail.text}>
+                    <a
+                      href={detail.href}
+                      className="group inline-flex items-center gap-2 text-zinc-400 transition-colors hover:text-[var(--color-primary)]"
+                    >
+                      {Icon && (
+                        <Icon
+                          className="h-4 w-4 shrink-0 text-[var(--color-primary)]/80 transition-colors group-hover:text-[var(--color-primary)]"
+                          aria-hidden="true"
+                        />
+                      )}
+                      <span>{detail.text}</span>
+                    </a>
+                  </li>
+                );
+              })}
             </ul>
           </div>
 
@@ -113,13 +75,13 @@ export default function Footer(): React.ReactElement {
               Quick Links
             </h3>
             <ul className="mt-5 space-y-3 text-sm">
-              {quickLinks.map((link) => (
-                <li key={link.href}>
+              {NAV_ITEMS.map((item) => (
+                <li key={item.href}>
                   <Link
-                    href={link.href}
+                    href={item.href}
                     className="inline-flex items-center text-zinc-400 transition-colors hover:text-[var(--color-primary)]"
                   >
-                    {link.label}
+                    {item.label}
                   </Link>
                 </li>
               ))}
@@ -184,19 +146,22 @@ export default function Footer(): React.ReactElement {
               property opportunities.
             </p>
             <ul className="mt-5 flex items-center gap-3">
-              {socialLinks.map(({ label, href, icon: Icon }) => (
-                <li key={label}>
-                  <a
-                    href={href}
-                    aria-label={label}
-                    rel="noopener noreferrer"
-                    target="_blank"
-                    className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-[var(--color-secondary)]/30 text-zinc-300 transition-all hover:border-[var(--color-primary)] hover:bg-[var(--color-primary)]/10 hover:text-[var(--color-primary)]"
-                  >
-                    <Icon className="h-4 w-4" aria-hidden="true" />
-                  </a>
-                </li>
-              ))}
+              {SOCIAL_LINKS.map((social) => {
+                const Icon = SOCIAL_ICONS[social.label];
+                return (
+                  <li key={social.label}>
+                    <a
+                      href={social.href}
+                      aria-label={social.label}
+                      rel="noopener noreferrer"
+                      target="_blank"
+                      className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-[var(--color-secondary)]/30 text-zinc-300 transition-all hover:border-[var(--color-primary)] hover:bg-[var(--color-primary)]/10 hover:text-[var(--color-primary)]"
+                    >
+                      {Icon && <Icon className="h-4 w-4" aria-hidden="true" />}
+                    </a>
+                  </li>
+                );
+              })}
             </ul>
           </div>
         </div>

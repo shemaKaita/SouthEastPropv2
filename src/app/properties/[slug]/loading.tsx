@@ -1,5 +1,4 @@
-import Link from "next/link";
-import { ArrowLeft, BedDouble, Bath, Maximize, MapPin } from "lucide-react";
+import { BedDouble, Bath, Maximize, MapPin } from "lucide-react";
 import type { ReactElement } from "react";
 
 /**
