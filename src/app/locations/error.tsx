@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import Link from "next/link";
 import { MapPinOff, RotateCcw } from "lucide-react";
 import type { ReactElement } from "react";
+import { logError } from "@/lib/logger";
 
 export default function LocationsError({
   error,
@@ -13,7 +14,7 @@ export default function LocationsError({
   reset: () => void;
 }): ReactElement {
   useEffect(() => {
-    console.error("Map error:", error);
+    logError(error, { boundary: "locations", digest: error.digest });
   }, [error]);
 
   return (

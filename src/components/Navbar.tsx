@@ -2,91 +2,28 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useState, useSyncExternalStore } from "react";
+import { useState } from "react";
 import { createPortal } from "react-dom";
 import { Menu, X, Phone, Mail, MapPin, Sun, Moon } from "lucide-react";
 import Logo from "@/components/Logo";
-
-type NavItem = {
-  number: string;
-  label: string;
-  href: string;
-};
-
-const NAV_ITEMS: NavItem[] = [
-  { number: "01", label: "Home", href: "/" },
-  { number: "02", label: "Locations", href: "/locations" },
-  { number: "03", label: "Our Story", href: "/our-story" },
-  { number: "04", label: "Landlords", href: "/landlords" },
-  { number: "05", label: "Contact", href: "/contact" },
-];
+import { useTheme } from "@/components/ThemeProvider";
+import { useMounted } from "@/hooks/useMounted";
+import { useScrollPosition } from "@/hooks/useScrollPosition";
+import { useBodyScrollLock } from "@/hooks/useBodyScrollLock";
+import { NAV_ITEMS, CONTACT_DETAILS } from "@/lib/constants";
 
 export default function Navbar() {
   const pathname = usePathname();
-  const [scrolled, setScrolled] = useState<boolean>(false);
   const [mobileOpen, setMobileOpen] = useState<boolean>(false);
-  // useSyncExternalStore returns false during SSR, true on client — no hydration mismatch.
-  const mounted = useSyncExternalStore(
-    () => () => undefined,
-    () => true,
-    () => false,
-  );
-  // Read theme from the DOM class list — no useState/useEffect needed.
-  // toggleTheme updates the class + cookie; this re-reads on the next render.
-  const theme = useSyncExternalStore(
-    (callback: () => void) => {
-      const observer = new MutationObserver(callback);
-      observer.observe(document.documentElement, {
-        attributes: true,
-        attributeFilter: ["class"],
-      });
-      return () => observer.disconnect();
-    },
-    () =>
-      document.documentElement.classList.contains("dark") ? "dark" : "light",
-    () => "light" as const,
-  );
-
-  const toggleTheme = (): void => {
-    const next = theme === "dark" ? "light" : "dark";
-    document.documentElement.classList.toggle("dark", next === "dark");
-    try {
-      localStorage.setItem("theme", next);
-      document.cookie = `theme=${next};path=/;max-age=31536000;samesite=lax`;
-    } catch {
-      /* ignore */
-    }
-  };
-
+  const mounted = useMounted();
+  const { theme, toggleTheme } = useTheme();
+  const scrolled = useScrollPosition(8);
   const isActive = (href: string): boolean =>
     href === "/"
       ? pathname === "/"
       : pathname === href || pathname.startsWith(href + "/");
 
-  useEffect(() => {
-    const handleScroll = (): void => {
-      setScrolled(window.scrollY > 8);
-    };
-
-    handleScroll();
-    window.addEventListener("scroll", handleScroll, { passive: true });
-
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, []);
-
-  useEffect(() => {
-    if (mobileOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "";
-    }
-
-    return () => {
-      document.body.style.overflow = "";
-    };
-  }, [mobileOpen]);
+  useBodyScrollLock(mobileOpen);
 
   const closeMobile = (): void => {
     setMobileOpen(false);
@@ -269,7 +206,7 @@ export default function Navbar() {
                 {/* Address + theme toggle — secondary mid-block */}
                 <div className="flex items-start justify-between gap-4 pb-2">
                   <a
-                    href="https://maps.google.com/?q=Observatory+Cape+Town"
+                    href={CONTACT_DETAILS[0].href}
                     className="flex items-start gap-2 text-xs leading-snug text-[var(--color-foreground)]/70 transition-colors hover:text-[var(--accent-yellow)]"
                   >
                     <MapPin className="mt-0.5 h-3.5 w-3.5 shrink-0" />
@@ -302,14 +239,14 @@ export default function Navbar() {
                 </Link>
                 <div className="flex items-center justify-center gap-3 pt-1">
                   <a
-                    href="tel:+27210000000"
+                    href={CONTACT_DETAILS[1].href}
                     aria-label="Call us"
                     className="flex h-9 w-9 items-center justify-center rounded-full border border-[var(--color-foreground)]/15 text-[var(--color-foreground)]/70 transition-colors hover:border-[var(--accent-yellow)] hover:text-[var(--accent-yellow)]"
                   >
                     <Phone className="h-4 w-4" />
                   </a>
                   <a
-                    href="mailto:info@southeastproperties.co.za"
+                    href={CONTACT_DETAILS[2].href}
                     aria-label="Email us"
                     className="flex h-9 w-9 items-center justify-center rounded-full border border-[var(--color-foreground)]/15 text-[var(--color-foreground)]/70 transition-colors hover:border-[var(--accent-yellow)] hover:text-[var(--accent-yellow)]"
                   >
