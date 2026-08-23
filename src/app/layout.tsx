@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import { headers } from "next/headers";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { ThemeProvider } from "@/components/ThemeProvider";
@@ -22,17 +21,11 @@ export const metadata: Metadata = {
     "Premium property solutions across South Africa — co-living spaces, landlord services, and expert real estate guidance.",
 };
 
-export default async function RootLayout({ children }: LayoutProps<"/">) {
-  // Read theme from cookie so SSR and client agree on the `dark` class.
-  // Falls back to prefers-color-scheme via the inline script (first visit, no cookie yet).
-  const headerList = await headers();
-  const cookieTheme = headerList.get("cookie") || "";
-  const isDark = cookieTheme.includes("theme=dark");
-
+export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased${isDark ? " dark" : ""}`}
+      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
       suppressHydrationWarning
     >
       <head>
