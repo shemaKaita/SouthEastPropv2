@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import PropertyMap from "@/components/PropertyMap";
-import { PROPERTIES } from "@/data/properties";
+import { getAllProperties } from "@/lib/properties";
 import { MapPin, BedDouble, Bath, ArrowRight } from "lucide-react";
 
 export const metadata: Metadata = {
@@ -10,7 +10,8 @@ export const metadata: Metadata = {
     "Explore our property listings across Observatory and Woodstock in Cape Town. Find your next home on our interactive map.",
 };
 
-export default function LocationsPage() {
+export default async function LocationsPage() {
+  const properties = await getAllProperties();
   return (
     <section className="bg-[var(--color-background)]">
       <div className="mx-auto w-full max-w-7xl px-6 py-16 sm:px-8 sm:py-20 lg:px-10 lg:py-24">
@@ -44,10 +45,10 @@ export default function LocationsPage() {
           {/* Property list sidebar */}
           <aside aria-label="Property list" className="flex flex-col gap-4">
             <h2 className="text-sm font-semibold uppercase tracking-[0.15em] text-[var(--color-secondary)]">
-              All Listings ({PROPERTIES.length})
+              All Listings ({properties.length})
             </h2>
             <ul role="list" className="flex flex-col gap-4">
-              {PROPERTIES.map((property) => (
+              {properties.map((property) => (
                 <li key={property.slug}>
                   <Link
                     href={`/properties/${property.slug}`}
