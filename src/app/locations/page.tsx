@@ -39,7 +39,7 @@ export default async function LocationsPage() {
         <div className="mt-10 grid grid-cols-1 gap-8 lg:grid-cols-[1fr_360px] sm:mt-12">
           {/* Map */}
           <div className="h-[400px] overflow-hidden rounded-2xl border border-[var(--color-secondary)]/20 shadow-lg sm:h-[460px] md:h-[480px] lg:h-[560px] xl:h-[640px]">
-            <PropertyMap properties={properties} />
+            <PropertyMap />
           </div>
 
           {/* Property list sidebar */}
