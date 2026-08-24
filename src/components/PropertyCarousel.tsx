@@ -12,7 +12,7 @@ import {
   ChevronRight,
 } from "lucide-react";
 
-import { PROPERTIES, type Property } from "@/data/properties";
+import type { Property } from "@/types/property";
 
 function formatBedCount(count: number): string {
   return `${count} ${count === 1 ? "Bed" : "Beds"}`;
@@ -22,7 +22,11 @@ function formatBathCount(count: number): string {
   return `${count} ${count === 1 ? "Bath" : "Baths"}`;
 }
 
-export default function PropertyCarousel(): React.ReactElement {
+export default function PropertyCarousel({
+  properties,
+}: {
+  properties: Property[];
+}): React.ReactElement {
   const scrollRef = useRef<HTMLUListElement>(null);
 
   const scroll = (dir: "left" | "right"): void => {
@@ -92,7 +96,7 @@ export default function PropertyCarousel(): React.ReactElement {
             className="flex gap-4 overflow-x-auto snap-x snap-mandatory scroll-px-4 px-4 pb-8 sm:gap-6 scroll-smooth"
             style={{ scrollbarWidth: "none" }}
           >
-            {PROPERTIES.map((property: Property) => (
+            {properties.map((property) => (
               <li
                 key={property.slug}
                 className="basis-[85%] sm:basis-[45%] lg:basis-[31%] shrink-0 snap-start"

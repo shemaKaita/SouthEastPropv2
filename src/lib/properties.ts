@@ -13,10 +13,19 @@ import type { Property } from "@/types/property";
 import { PROPERTIES } from "@/data/properties";
 
 /**
- * Get all properties.
- * Returns full Property objects.
+ * Get all properties (async — for server components and server actions).
+ * Returns a defensive copy.
  */
 export async function getAllProperties(): Promise<Property[]> {
+  return [...PROPERTIES];
+}
+
+/**
+ * Get all properties (sync — for client components that receive data
+ * from a server component parent but need a static fallback).
+ * Returns a defensive copy.
+ */
+export function getAllPropertiesSync(): Property[] {
   return [...PROPERTIES];
 }
 
@@ -35,11 +44,4 @@ export async function getPropertyBySlug(
  */
 export async function getAllPropertySlugs(): Promise<{ slug: string }[]> {
   return PROPERTIES.map((p) => ({ slug: p.slug }));
-}
-
-/**
- * Get featured properties (those with a badge).
- */
-export async function getFeaturedProperties(): Promise<Property[]> {
-  return PROPERTIES.filter((p) => p.badge && p.badge.length > 0);
 }
