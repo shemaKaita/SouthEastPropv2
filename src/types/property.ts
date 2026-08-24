@@ -39,20 +39,3 @@ export type Property = {
   description: string;
   amenities: Amenity[];
 };
-
-export type PropertySummary = Pick<
-  Property,
-  | "slug"
-  | "title"
-  | "location"
-  | "price"
-  | "priceLabel"
-  | "beds"
-  | "baths"
-  | "area"
-  | "availability"
-  | "badge"
-  | "featuredImage"
-  | "lat"
-  | "lng"
->;

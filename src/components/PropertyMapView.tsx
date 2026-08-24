@@ -10,7 +10,6 @@ import { ArrowRight } from "lucide-react";
 import { useTheme } from "@/components/ThemeProvider";
 import { useMounted } from "@/hooks/useMounted";
 import type { Property } from "@/types/property";
-import { PROPERTIES } from "@/data/properties";
 
 const markerIcon = L.divIcon({
   className: "custom-property-marker",
@@ -43,9 +42,9 @@ function FitBoundsToMarkers({ properties }: { properties: Property[] }) {
 }
 
 export default function PropertyMapView({
-  properties = PROPERTIES as Property[],
+  properties,
 }: {
-  properties?: Property[];
+  properties: Property[];
 }) {
   const { theme } = useTheme();
   const mounted = useMounted();
