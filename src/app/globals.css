@@ -20,6 +20,20 @@ html.dark .leaflet-bar a:hover {
   box-shadow: 0 1px 5px rgba(0, 0, 0, 0.65) !important;
 }
 
+/* ── Leaflet z-index containment (fix: map floating above navbar) ──
+   Leaflet's default CSS sets z-index: 400–1000 on panes, popups, and
+   controls, which exceeds the navbar's z-50 (z-index: 50).  This rule
+   forces every Leaflet layer inside a map container to stay ≤ z-index 5,
+   well below the navbar and mobile menu overlay (z-[100]).
+   ────────────────────────────────────────────── */
+.leaflet-container,
+.leaflet-container .leaflet-pane,
+.leaflet-container .leaflet-control,
+.leaflet-container .leaflet-popup,
+.leaflet-container .leaflet-tooltip {
+  z-index: 5 !important;
+}
+
 /* ──────────────────────────────────────────────
    SouthEast Properties — Brand Identity Token System
    Tailwind v4 CSS-based config (no tailwind.config.ts)
