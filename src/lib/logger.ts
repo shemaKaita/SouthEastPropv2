@@ -27,25 +27,6 @@ export function logError(
   }
 }
 
-export function logWarn(
-  message: string,
-  context?: Record<string, unknown>,
-): void {
-  if (isProduction) {
-    console.warn(
-      "[WARN]",
-      JSON.stringify({
-        level: "warn" as const,
-        message,
-        timestamp: new Date().toISOString(),
-        ...context,
-      }),
-    );
-  } else {
-    console.warn("[WARN]", message, context);
-  }
-}
-
 export function logInfo(
   message: string,
   context?: Record<string, unknown>,

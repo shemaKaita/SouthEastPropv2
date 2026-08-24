@@ -17,6 +17,8 @@ const PropertyMapView = dynamic(() => import("./PropertyMapView"), {
   ),
 });
 
-export default function PropertyMap() {
-  return <PropertyMapView />;
+import type { Property } from "@/types/property";
+
+export default function PropertyMap({ properties }: { properties: Property[] }) {
+  return <PropertyMapView properties={properties} />;
 }
