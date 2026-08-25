@@ -5,6 +5,7 @@ import Link from "next/link";
 import { MapPinOff, RotateCcw } from "lucide-react";
 import type { ReactElement } from "react";
 import { logError } from "@/lib/logger";
+import SectionLabel from "@/components/ui/SectionLabel";
 
 export default function LocationsError({
   error,
@@ -24,15 +25,9 @@ export default function LocationsError({
           <MapPinOff className="h-8 w-8" strokeWidth={1.75} />
         </div>
 
-        <span className="mt-8 inline-flex items-center gap-2 font-mono text-[10px] font-medium uppercase tracking-[0.25em] text-[var(--color-primary)]">
-          <span
-            aria-hidden="true"
-            className="inline-block h-px w-8 bg-[var(--color-primary)]"
-          />
-          Map Unavailable
-        </span>
+        <SectionLabel className="mt-8">Map Unavailable</SectionLabel>
 
-        <h1 className="mt-4 text-3xl font-bold tracking-tight text-[var(--color-foreground)] sm:text-4xl text-balance">
+        <h1 className="mt-4 text-3xl font-bold tracking-tight text-balance text-[var(--color-foreground)] sm:text-4xl">
           We couldn&apos;t load the map
         </h1>
 
@@ -46,7 +41,7 @@ export default function LocationsError({
           <button
             type="button"
             onClick={reset}
-            className="inline-flex h-14 items-center justify-center gap-2 rounded-full bg-[var(--color-primary-surface)] px-8 text-base font-semibold text-white transition-all hover:scale-105 hover:shadow-2xl dark:ring-1 dark:ring-white/10 dark:shadow-lg dark:shadow-black/40"
+            className="inline-flex h-14 items-center justify-center gap-2 rounded-full bg-[var(--color-primary-surface)] px-8 text-base font-semibold text-white transition-all hover:scale-105 hover:shadow-2xl dark:shadow-lg dark:ring-1 dark:shadow-black/40 dark:ring-white/10"
           >
             <RotateCcw className="h-5 w-5" />
             Reload map

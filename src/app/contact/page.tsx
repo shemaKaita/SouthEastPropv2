@@ -1,16 +1,11 @@
 import type { Metadata } from "next";
 import type { ReactElement } from "react";
-import {
-  Mail,
-  Phone,
-  MapPin,
-  Globe,
-  AtSign,
-  Send,
-  Share2,
-  type LucideIcon,
-} from "lucide-react";
 import ContactForm from "@/components/ContactForm";
+import SectionLabel from "@/components/ui/SectionLabel";
+import {
+  CONTACT_DETAILS_WITH_ICONS,
+  SOCIAL_LINKS_WITH_ICONS,
+} from "@/lib/social";
 
 export const metadata: Metadata = {
   title: "Contact",
@@ -21,61 +16,14 @@ export const metadata: Metadata = {
   },
 };
 
-type ContactItem = {
-  icon: LucideIcon;
-  label: string;
-  value: string;
-  href: string;
-};
-
-const CONTACT_ITEMS: ReadonlyArray<ContactItem> = [
-  {
-    icon: Mail,
-    label: "Email",
-    value: "info@southeastproperties.co.za",
-    href: "mailto:info@southeastproperties.co.za",
-  },
-  {
-    icon: Phone,
-    label: "Phone",
-    value: "+27 (0) 21 000 0000",
-    href: "tel:+27210000000",
-  },
-  {
-    icon: MapPin,
-    label: "Office",
-    value: "42 Lower Main Road, Observatory, Cape Town, 7925",
-    href: "https://maps.google.com/?q=Observatory+Cape+Town",
-  },
-];
-
-type SocialLink = {
-  label: string;
-  href: string;
-  icon: LucideIcon;
-};
-
-const SOCIAL_LINKS: ReadonlyArray<SocialLink> = [
-  { label: "Facebook", href: "https://www.facebook.com/", icon: Globe },
-  { label: "Instagram", href: "https://www.instagram.com/", icon: AtSign },
-  { label: "X (Twitter)", href: "https://x.com/", icon: Send },
-  { label: "LinkedIn", href: "https://www.linkedin.com/", icon: Share2 },
-];
-
 export default function ContactPage(): ReactElement {
   return (
     <div className="bg-[var(--color-background)]">
       <div className="mx-auto w-full max-w-7xl px-6 py-16 sm:px-8 sm:py-20 lg:px-10 lg:py-24">
         {/* Page header */}
         <div className="max-w-2xl">
-          <span className="inline-flex items-center gap-2 font-mono text-[10px] font-medium uppercase tracking-[0.25em] text-[var(--color-primary)]">
-            <span
-              aria-hidden="true"
-              className="inline-block h-px w-8 bg-[var(--color-primary)]"
-            />
-            Get in Touch
-          </span>
-          <h1 className="mt-3 text-3xl font-semibold tracking-tight text-[var(--color-foreground)] sm:text-4xl lg:text-5xl text-balance">
+          <SectionLabel>Get in Touch</SectionLabel>
+          <h1 className="mt-3 text-3xl font-semibold tracking-tight text-balance text-[var(--color-foreground)] sm:text-4xl lg:text-5xl">
             Contact{" "}
             <span className="text-[var(--color-primary)]">SouthEast</span>
           </h1>
@@ -92,17 +40,17 @@ export default function ContactPage(): ReactElement {
           <div className="space-y-8">
             {/* Contact items */}
             <div>
-              <h2 className="text-xl font-semibold tracking-tight text-[var(--color-foreground)] text-balance">
+              <h2 className="text-xl font-semibold tracking-tight text-balance text-[var(--color-foreground)]">
                 Contact Details
               </h2>
               <ul className="mt-6 space-y-5">
-                {CONTACT_ITEMS.map((item) => {
+                {CONTACT_DETAILS_WITH_ICONS.map((item) => {
                   const Icon = item.icon;
                   return (
                     <li key={item.label}>
                       <a
                         href={item.href}
-                        className="group flex items-center gap-4 rounded-xl border border-[var(--border-subtle)] dark:border-white/10 bg-[var(--bg-base)] dark:bg-[var(--bg-surface)] p-5 transition-all hover:border-[var(--brand-navy)]/40 dark:hover:border-amber-400/30 hover:shadow-md"
+                        className="group flex items-center gap-4 rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-base)] p-5 transition-all hover:border-[var(--brand-navy)]/40 hover:shadow-md dark:border-white/10 dark:bg-[var(--bg-surface)] dark:hover:border-amber-400/30"
                       >
                         <div
                           className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-amber-400/10 text-[var(--brand-navy)] dark:text-amber-400"
@@ -111,11 +59,11 @@ export default function ContactPage(): ReactElement {
                           <Icon className="h-5 w-5" />
                         </div>
                         <div className="min-w-0 flex-1">
-                          <p className="text-xs font-medium uppercase tracking-[0.15em] text-[var(--color-secondary)]">
+                          <p className="text-xs font-medium tracking-[0.15em] text-[var(--color-secondary)] uppercase">
                             {item.label}
                           </p>
-                          <p className="mt-1 text-sm font-medium leading-snug text-[var(--color-foreground)] group-hover:text-[var(--color-primary)]">
-                            {item.value}
+                          <p className="mt-1 text-sm leading-snug font-medium text-[var(--color-foreground)] group-hover:text-[var(--color-primary)]">
+                            {item.text}
                           </p>
                         </div>
                       </a>
@@ -127,7 +75,7 @@ export default function ContactPage(): ReactElement {
 
             {/* Social links */}
             <div>
-              <h2 className="text-xl font-semibold tracking-tight text-[var(--color-foreground)] text-balance">
+              <h2 className="text-xl font-semibold tracking-tight text-balance text-[var(--color-foreground)]">
                 Follow Us
               </h2>
               <p className="mt-2 text-sm text-[var(--color-secondary)]">
@@ -135,7 +83,7 @@ export default function ContactPage(): ReactElement {
                 property opportunities.
               </p>
               <ul className="mt-5 flex items-center gap-3">
-                {SOCIAL_LINKS.map((social) => {
+                {SOCIAL_LINKS_WITH_ICONS.map((social) => {
                   const Icon = social.icon;
                   return (
                     <li key={social.label}>
@@ -144,7 +92,7 @@ export default function ContactPage(): ReactElement {
                         aria-label={social.label}
                         rel="noopener noreferrer"
                         target="_blank"
-                        className="inline-flex h-12 w-12 items-center justify-center rounded-full border border-[var(--border-subtle)] dark:border-white/10 text-[var(--text-primary)] transition-all hover:border-[var(--brand-navy)] hover:bg-[var(--brand-navy)] hover:text-white dark:hover:border-amber-400 dark:hover:bg-amber-400/10 dark:hover:text-amber-400"
+                        className="inline-flex h-12 w-12 items-center justify-center rounded-full border border-[var(--border-subtle)] text-[var(--text-primary)] transition-all hover:border-[var(--brand-navy)] hover:bg-[var(--brand-navy)] hover:text-white dark:border-white/10 dark:hover:border-amber-400 dark:hover:bg-amber-400/10 dark:hover:text-amber-400"
                       >
                         <Icon className="h-5 w-5" aria-hidden="true" />
                       </a>
@@ -155,8 +103,8 @@ export default function ContactPage(): ReactElement {
             </div>
 
             {/* Operating Hours & Response SLA */}
-            <div className="rounded-2xl border border-[var(--border-subtle)] bg-[var(--bg-base)] dark:bg-[var(--bg-surface)] dark:border-white/10 p-6 shadow-sm">
-              <h2 className="text-xl font-semibold tracking-tight text-[var(--color-foreground)] text-balance">
+            <div className="rounded-2xl border border-[var(--border-subtle)] bg-[var(--bg-base)] p-6 shadow-sm dark:border-white/10 dark:bg-[var(--bg-surface)]">
+              <h2 className="text-xl font-semibold tracking-tight text-balance text-[var(--color-foreground)]">
                 Operating Hours &amp; Response SLA
               </h2>
               <p className="mt-2 text-sm text-[var(--color-secondary)]">
@@ -165,7 +113,7 @@ export default function ContactPage(): ReactElement {
               </p>
               <dl className="mt-5 space-y-3">
                 <div className="flex items-center justify-between gap-4 border-b border-[var(--border-subtle)] pb-3">
-                  <dt className="text-xs font-semibold uppercase tracking-[0.15em] text-[var(--color-secondary)]">
+                  <dt className="text-xs font-semibold tracking-[0.15em] text-[var(--color-secondary)] uppercase">
                     Mon — Fri
                   </dt>
                   <dd className="text-sm font-medium text-[var(--color-foreground)]">
@@ -173,7 +121,7 @@ export default function ContactPage(): ReactElement {
                   </dd>
                 </div>
                 <div className="flex items-center justify-between gap-4 border-b border-[var(--border-subtle)] pb-3">
-                  <dt className="text-xs font-semibold uppercase tracking-[0.15em] text-[var(--color-secondary)]">
+                  <dt className="text-xs font-semibold tracking-[0.15em] text-[var(--color-secondary)] uppercase">
                     Saturday
                   </dt>
                   <dd className="text-sm font-medium text-[var(--color-foreground)]">
@@ -181,7 +129,7 @@ export default function ContactPage(): ReactElement {
                   </dd>
                 </div>
                 <div className="flex items-center justify-between gap-4">
-                  <dt className="text-xs font-semibold uppercase tracking-[0.15em] text-[var(--color-secondary)]">
+                  <dt className="text-xs font-semibold tracking-[0.15em] text-[var(--color-secondary)] uppercase">
                     Emergency
                   </dt>
                   <dd className="text-sm font-medium text-[var(--color-foreground)]">
@@ -193,8 +141,8 @@ export default function ContactPage(): ReactElement {
           </div>
 
           {/* Right: General inquiry form */}
-          <div className="flex flex-col rounded-2xl border border-[var(--border-subtle)] bg-[var(--bg-base)] dark:bg-[var(--bg-surface)] dark:border-white/10 p-6 shadow-sm sm:p-8 lg:p-10">
-            <h2 className="text-xl font-semibold tracking-tight text-[var(--color-foreground)] text-balance">
+          <div className="flex flex-col rounded-2xl border border-[var(--border-subtle)] bg-[var(--bg-base)] p-6 shadow-sm sm:p-8 lg:p-10 dark:border-white/10 dark:bg-[var(--bg-surface)]">
+            <h2 className="text-xl font-semibold tracking-tight text-balance text-[var(--color-foreground)]">
               Send Us a Message
             </h2>
             <p className="mt-2 text-sm text-[var(--color-secondary)]">

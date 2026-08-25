@@ -2,6 +2,7 @@
 
 import type { ActionResult, EnquiryFormData } from "@/types/forms";
 import { logInfo, logError } from "@/lib/logger";
+import { isValidEmail } from "@/lib/validation";
 
 /**
  * Server action for property enquiry submissions.
@@ -30,8 +31,7 @@ export async function submitEnquiryForm(
       };
     }
 
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(data.email)) {
+    if (!isValidEmail(data.email)) {
       return {
         success: false,
         message: "Please provide a valid email address.",

@@ -12,6 +12,8 @@ import { useScrollPosition } from "@/hooks/useScrollPosition";
 import { useBodyScrollLock } from "@/hooks/useBodyScrollLock";
 import { NAV_ITEMS, CONTACT_DETAILS } from "@/lib/constants";
 
+const [addressDetail, phoneDetail, emailDetail] = CONTACT_DETAILS;
+
 export default function Navbar() {
   const pathname = usePathname();
   const router = useRouter();
@@ -43,37 +45,34 @@ export default function Navbar() {
   const toggleButtonRef = useRef<HTMLButtonElement>(null);
 
   // Focus trap + Escape handler for mobile menu
-  const handleMenuKeyDown = useCallback(
-    (e: KeyboardEvent): void => {
-      if (e.key === "Escape") {
+  const handleMenuKeyDown = useCallback((e: KeyboardEvent): void => {
+    if (e.key === "Escape") {
+      e.preventDefault();
+      setMobileOpen(false);
+      return;
+    }
+    if (e.key !== "Tab" || !menuRef.current) return;
+
+    const focusable = menuRef.current.querySelectorAll<HTMLElement>(
+      'a[href], button:not([disabled]), input, select, textarea, [tabindex]:not([tabindex="-1"])',
+    );
+    if (focusable.length === 0) return;
+
+    const first = focusable[0];
+    const last = focusable[focusable.length - 1];
+
+    if (e.shiftKey) {
+      if (document.activeElement === first) {
         e.preventDefault();
-        setMobileOpen(false);
-        return;
+        last.focus();
       }
-      if (e.key !== "Tab" || !menuRef.current) return;
-
-      const focusable = menuRef.current.querySelectorAll<HTMLElement>(
-        'a[href], button:not([disabled]), input, select, textarea, [tabindex]:not([tabindex="-1"])',
-      );
-      if (focusable.length === 0) return;
-
-      const first = focusable[0];
-      const last = focusable[focusable.length - 1];
-
-      if (e.shiftKey) {
-        if (document.activeElement === first) {
-          e.preventDefault();
-          last.focus();
-        }
-      } else {
-        if (document.activeElement === last) {
-          e.preventDefault();
-          first.focus();
-        }
+    } else {
+      if (document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
       }
-    },
-    [],
-  );
+    }
+  }, []);
 
   useEffect(() => {
     if (mobileOpen) {
@@ -81,7 +80,7 @@ export default function Navbar() {
       // Move focus into the menu on open
       requestAnimationFrame(() => {
         const first = menuRef.current?.querySelector<HTMLElement>(
-          'a[href], button:not([disabled])',
+          "a[href], button:not([disabled])",
         );
         first?.focus();
       });
@@ -98,10 +97,10 @@ export default function Navbar() {
   return (
     <header
       className={[
-        "fixed top-0 left-0 right-0 z-50 transition-all duration-300 ease-out",
+        "fixed top-0 right-0 left-0 z-50 transition-all duration-300 ease-out",
         scrolled
-          ? "backdrop-blur-md bg-[var(--color-background)]/70 border-b border-[var(--color-foreground)]/10 shadow-[0_1px_20px_-12px_rgba(0,0,0,0.25)]"
-          : "bg-transparent border-b border-transparent",
+          ? "border-b border-[var(--color-foreground)]/10 bg-[var(--color-background)]/70 shadow-[0_1px_20px_-12px_rgba(0,0,0,0.25)] backdrop-blur-md"
+          : "border-b border-transparent bg-transparent",
       ].join(" ")}
     >
       <nav
@@ -114,7 +113,7 @@ export default function Navbar() {
           className="group flex items-center gap-2 text-[var(--color-foreground)]"
           onClick={closeMobile}
         >
-          <span className="flex h-9 w-9 items-center justify-center rounded-sm text-[var(--color-primary)] dark:text-[var(--accent-yellow)] transition-colors">
+          <span className="flex h-9 w-9 items-center justify-center rounded-sm text-[var(--color-primary)] transition-colors dark:text-[var(--accent-yellow)]">
             <Logo className="h-9 w-9" />
           </span>
         </Link>
@@ -137,7 +136,7 @@ export default function Navbar() {
                 >
                   <span
                     className={[
-                      "font-mono text-[10px] uppercase tracking-[0.2em] transition-colors",
+                      "font-mono text-[10px] tracking-[0.2em] uppercase transition-colors",
                       active
                         ? "text-[var(--accent-yellow)]"
                         : "text-[var(--color-primary)]/70 group-hover:text-[var(--color-primary)]",
@@ -147,7 +146,7 @@ export default function Navbar() {
                   </span>
                   <span
                     className={[
-                      "text-[11px] font-medium uppercase tracking-[0.22em]",
+                      "text-[11px] font-medium tracking-[0.22em] uppercase",
                       active ? "font-bold" : "",
                     ].join(" ")}
                   >
@@ -173,7 +172,7 @@ export default function Navbar() {
           type="button"
           onClick={toggleTheme}
           aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} mode`}
-          className="hidden h-9 w-9 shrink-0 items-center justify-center rounded-full border border-[var(--color-foreground)]/15 text-[var(--color-foreground)]/70 transition-all duration-200 hover:border-[var(--accent-yellow)] hover:text-[var(--accent-yellow)] hover:bg-[var(--accent-yellow)]/10 active:scale-95 lg:flex dark:border-white/20 dark:text-white/70 dark:hover:bg-[var(--accent-yellow)]/15"
+          className="hidden h-9 w-9 shrink-0 items-center justify-center rounded-full border border-[var(--color-foreground)]/15 text-[var(--color-foreground)]/70 transition-all duration-200 hover:border-[var(--accent-yellow)] hover:bg-[var(--accent-yellow)]/10 hover:text-[var(--accent-yellow)] active:scale-95 lg:flex dark:border-white/20 dark:text-white/70 dark:hover:bg-[var(--accent-yellow)]/15"
         >
           {mounted &&
             (theme === "dark" ? (
@@ -191,7 +190,7 @@ export default function Navbar() {
           aria-expanded={mobileOpen}
           aria-controls="mobile-menu"
           onClick={() => setMobileOpen((prev) => !prev)}
-          className="flex h-10 w-10 items-center justify-center rounded-sm border border-[var(--color-foreground)]/15 bg-slate-100 dark:bg-slate-800 dark:text-slate-200 text-[var(--color-foreground)] transition-colors hover:border-[var(--color-primary)]/60 hover:text-[var(--color-primary)] lg:hidden"
+          className="flex h-10 w-10 items-center justify-center rounded-sm border border-[var(--color-foreground)]/15 bg-slate-100 text-[var(--color-foreground)] transition-colors hover:border-[var(--color-primary)]/60 hover:text-[var(--color-primary)] lg:hidden dark:bg-slate-800 dark:text-slate-200"
         >
           {mobileOpen ? (
             <X className="h-5 w-5" aria-hidden="true" />
@@ -218,7 +217,7 @@ export default function Navbar() {
             >
               {/* Close button row — fixed height */}
               <div className="flex h-16 shrink-0 items-center justify-between px-6">
-                <span className="font-sans text-sm font-semibold uppercase tracking-[0.18em] text-[var(--text-primary)]">
+                <span className="font-sans text-sm font-semibold tracking-[0.18em] text-[var(--text-primary)] uppercase">
                   Menu
                 </span>
                 <button
@@ -251,7 +250,7 @@ export default function Navbar() {
                         >
                           <span
                             className={[
-                              "font-mono text-sm uppercase tracking-[0.25em]",
+                              "font-mono text-sm tracking-[0.25em] uppercase",
                               active
                                 ? "text-[var(--accent-yellow)]"
                                 : "text-slate-500",
@@ -259,7 +258,7 @@ export default function Navbar() {
                           >
                             {item.number}
                           </span>
-                          <span className="text-lg font-semibold uppercase tracking-[0.18em]">
+                          <span className="text-lg font-semibold tracking-[0.18em] uppercase">
                             {item.label}
                           </span>
                         </Link>
@@ -270,11 +269,11 @@ export default function Navbar() {
               </div>
 
               {/* Footer block — fills remaining space */}
-              <div className="shrink-0 border-t border-[var(--color-foreground)]/10 px-6 py-6 space-y-4">
+              <div className="shrink-0 space-y-4 border-t border-[var(--color-foreground)]/10 px-6 py-6">
                 {/* Address + theme toggle — secondary mid-block */}
                 <div className="flex items-start justify-between gap-4 pb-2">
                   <a
-                    href={CONTACT_DETAILS[0].href}
+                    href={addressDetail.href}
                     className="flex items-start gap-2 text-xs leading-snug text-[var(--color-foreground)]/70 transition-colors hover:text-[var(--accent-yellow)]"
                   >
                     <MapPin className="mt-0.5 h-3.5 w-3.5 shrink-0" />
@@ -301,26 +300,26 @@ export default function Navbar() {
                 <Link
                   href="/contact"
                   onClick={closeMobile}
-                  className="inline-flex h-12 w-full items-center justify-center rounded-full bg-[var(--accent-yellow)] px-8 text-sm font-bold text-navy-900 transition-all hover:bg-[var(--accent-yellow-hover)]"
+                  className="text-navy-900 inline-flex h-12 w-full items-center justify-center rounded-full bg-[var(--accent-yellow)] px-8 text-sm font-bold transition-all hover:bg-[var(--accent-yellow-hover)]"
                 >
                   Enquire Now
                 </Link>
                 <div className="flex items-center justify-center gap-3 pt-1">
                   <a
-                    href={CONTACT_DETAILS[1].href}
+                    href={phoneDetail.href}
                     aria-label="Call us"
                     className="flex h-9 w-9 items-center justify-center rounded-full border border-[var(--color-foreground)]/15 text-[var(--color-foreground)]/70 transition-colors hover:border-[var(--accent-yellow)] hover:text-[var(--accent-yellow)]"
                   >
                     <Phone className="h-4 w-4" />
                   </a>
                   <a
-                    href={CONTACT_DETAILS[2].href}
+                    href={emailDetail.href}
                     aria-label="Email us"
                     className="flex h-9 w-9 items-center justify-center rounded-full border border-[var(--color-foreground)]/15 text-[var(--color-foreground)]/70 transition-colors hover:border-[var(--accent-yellow)] hover:text-[var(--accent-yellow)]"
                   >
                     <Mail className="h-4 w-4" />
                   </a>
-                  <p className="ml-2 text-[10px] font-medium uppercase tracking-[0.18em] text-[var(--color-foreground)]/60">
+                  <p className="ml-2 text-[10px] font-medium tracking-[0.18em] text-[var(--color-foreground)]/60 uppercase">
                     PPRA Registered
                   </p>
                 </div>

@@ -10,6 +10,7 @@ import {
 import Image from "next/image";
 import Link from "next/link";
 import type { ReactElement } from "react";
+import SectionLabel from "@/components/ui/SectionLabel";
 
 export const metadata: Metadata = {
   title: "Our Story",
@@ -57,17 +58,13 @@ export default function OurStoryPage(): ReactElement {
       >
         <div className="mx-auto w-full max-w-7xl px-6 sm:px-8 lg:px-10">
           <div className="max-w-4xl">
-            <span className="inline-flex items-center gap-2 font-mono text-[10px] font-medium uppercase tracking-[0.25em] text-[var(--color-primary)]">
-              <span
-                aria-hidden="true"
-                className="inline-block h-px w-8 bg-[var(--color-primary)]"
-              />
+            <SectionLabel>
               <Sparkles className="h-3.5 w-3.5" />
               The SouthEast Story
-            </span>
+            </SectionLabel>
             <h1
               id="our-story-hero-heading"
-              className="mt-6 text-5xl font-bold tracking-tight text-[var(--color-primary)] sm:text-6xl lg:text-7xl text-balance"
+              className="mt-6 text-5xl font-bold tracking-tight text-balance text-[var(--color-primary)] sm:text-6xl lg:text-7xl"
             >
               Built on Heritage.
               <br />
@@ -92,7 +89,7 @@ export default function OurStoryPage(): ReactElement {
           <div className="grid grid-cols-1 items-stretch gap-12 md:grid-cols-[minmax(0,380px)_1fr] md:gap-12 lg:gap-16">
             {/* Left: Founder portrait (anchors the left side for visual balance) */}
             <div className="order-first w-full">
-              <div className="relative aspect-[4/5] w-full overflow-hidden rounded-2xl border border-[var(--border-subtle)] dark:border-white/10 bg-[var(--brand-navy)] shadow-2xl h-full flex flex-col justify-between">
+              <div className="relative flex aspect-[4/5] h-full w-full flex-col justify-between overflow-hidden rounded-2xl border border-[var(--border-subtle)] bg-[var(--brand-navy)] shadow-2xl dark:border-white/10">
                 <Image
                   src="/team/mutoni.svg"
                   alt="Mutoni Kaitakirwa, founder of SouthEast Properties"
@@ -104,9 +101,9 @@ export default function OurStoryPage(): ReactElement {
                 {/* Subtle corner accent */}
                 <div
                   aria-hidden="true"
-                  className="absolute bottom-6 left-6 right-6 border-t border-white/20 pt-4"
+                  className="absolute right-6 bottom-6 left-6 border-t border-white/20 pt-4"
                 >
-                  <p className="font-mono text-[10px] uppercase tracking-[0.25em] text-[var(--text-secondary)] sm:text-xs">
+                  <p className="font-mono text-[10px] tracking-[0.25em] text-[var(--text-secondary)] uppercase sm:text-xs">
                     Founder &middot; SouthEast Properties
                   </p>
                 </div>
@@ -115,16 +112,10 @@ export default function OurStoryPage(): ReactElement {
 
             {/* Right: Founder copy */}
             <div className="flex flex-col justify-center">
-              <span className="inline-flex items-center gap-2 font-mono text-[10px] font-medium uppercase tracking-[0.25em] text-[var(--color-primary)]">
-                <span
-                  aria-hidden="true"
-                  className="inline-block h-px w-8 bg-[var(--color-primary)]"
-                />
-                The Founder
-              </span>
+              <SectionLabel>The Founder</SectionLabel>
               <h2
                 id="founder-heading"
-                className="mt-3 text-2xl font-semibold tracking-tight text-[var(--color-foreground)] sm:text-3xl lg:text-4xl text-balance"
+                className="mt-3 text-2xl font-semibold tracking-tight text-balance text-[var(--color-foreground)] sm:text-3xl lg:text-4xl"
               >
                 Meet{" "}
                 <span className="text-[var(--color-primary)]">
@@ -174,16 +165,10 @@ export default function OurStoryPage(): ReactElement {
         <div className="mx-auto w-full max-w-7xl px-6 sm:px-8 lg:px-10">
           {/* Section header */}
           <header className="mx-auto max-w-2xl text-center">
-            <span className="inline-flex items-center gap-2 font-mono text-[10px] font-medium uppercase tracking-[0.25em] text-[var(--color-primary)]">
-              <span
-                aria-hidden="true"
-                className="inline-block h-px w-8 bg-[var(--color-primary)]"
-              />
-              Community Impact
-            </span>
+            <SectionLabel>Community Impact</SectionLabel>
             <h2
               id="community-impact-heading"
-              className="mt-3 text-2xl font-semibold tracking-tight text-[var(--color-foreground)] sm:text-3xl lg:text-4xl text-balance"
+              className="mt-3 text-2xl font-semibold tracking-tight text-balance text-[var(--color-foreground)] sm:text-3xl lg:text-4xl"
             >
               <span className="text-[var(--color-primary)]">More Than</span>{" "}
               Property &mdash; A Commitment to Community
@@ -203,10 +188,10 @@ export default function OurStoryPage(): ReactElement {
             {IMPACTS.map(({ icon: Icon, title, description }) => (
               <li
                 key={title}
-                className="group flex h-full flex-col rounded-2xl border border-[var(--border-subtle)] bg-[var(--bg-base)] dark:bg-[var(--bg-surface)] dark:border-white/10 p-8 transition-all duration-300 ease-out hover:-translate-y-1 hover:border-[var(--brand-navy)]/40 dark:hover:border-amber-400/30 hover:shadow-[0_20px_40px_-24px_rgba(18,40,90,0.35)]"
+                className="group flex h-full flex-col rounded-2xl border border-[var(--border-subtle)] bg-[var(--bg-base)] p-8 transition-all duration-300 ease-out hover:-translate-y-1 hover:border-[var(--brand-navy)]/40 hover:shadow-[0_20px_40px_-24px_rgba(18,40,90,0.35)] dark:border-white/10 dark:bg-[var(--bg-surface)] dark:hover:border-amber-400/30"
               >
                 <div
-                  className="flex h-14 w-14 items-center justify-center rounded-full bg-amber-400/10 text-[var(--brand-navy)] dark:text-amber-400 transition-transform duration-300 ease-out group-hover:scale-105"
+                  className="flex h-14 w-14 items-center justify-center rounded-full bg-amber-400/10 text-[var(--brand-navy)] transition-transform duration-300 ease-out group-hover:scale-105 dark:text-amber-400"
                   aria-hidden="true"
                 >
                   <Icon className="h-7 w-7" strokeWidth={1.75} />
@@ -225,7 +210,7 @@ export default function OurStoryPage(): ReactElement {
           <div className="mt-16 flex justify-center sm:mt-20">
             <Link
               href="/locations"
-              className="inline-flex h-14 items-center justify-center gap-2 rounded-full bg-[var(--accent-yellow)] px-8 text-base font-bold text-navy-900 shadow-lg transition-all hover:scale-105 hover:bg-[var(--accent-yellow-hover)] hover:shadow-2xl"
+              className="text-navy-900 inline-flex h-14 items-center justify-center gap-2 rounded-full bg-[var(--accent-yellow)] px-8 text-base font-bold shadow-lg transition-all hover:scale-105 hover:bg-[var(--accent-yellow-hover)] hover:shadow-2xl"
             >
               Explore Our Properties
               <ArrowRight className="h-5 w-5" />
