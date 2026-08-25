@@ -95,8 +95,7 @@ export default async function PropertyDetailPage({
                 src={property.featuredImage}
                 fill
                 alt={property.title}
-                unoptimized
-                loading="eager"
+                priority
                 className="object-cover"
                 sizes="(max-width: 1024px) 100vw, 50vw"
               />
@@ -112,7 +111,7 @@ export default async function PropertyDetailPage({
                     src={image}
                     fill
                     alt={`${property.title} — image ${index + 2}`}
-                    unoptimized
+                    loading="lazy"
                     className="object-cover"
                     sizes="(max-width: 1024px) 50vw, 25vw"
                   />
