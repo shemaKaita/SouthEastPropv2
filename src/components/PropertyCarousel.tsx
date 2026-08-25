@@ -40,6 +40,16 @@ export default function PropertyCarousel({
       behavior: "smooth",
     });
   };
+
+  const handleKeyDown = (e: React.KeyboardEvent): void => {
+    if (e.key === "ArrowLeft") {
+      e.preventDefault();
+      scroll("left");
+    } else if (e.key === "ArrowRight") {
+      e.preventDefault();
+      scroll("right");
+    }
+  };
   return (
     <section
       aria-labelledby="featured-properties-heading"
@@ -82,9 +92,11 @@ export default function PropertyCarousel({
 
         {/* Carousel */}
         <div
-          className="relative w-full overflow-hidden -mx-6 sm:-mx-8 lg:-mx-10"
+          className="relative w-full overflow-hidden -mx-6 sm:-mx-8 lg:-mx-10 focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent-yellow)] focus-visible:ring-offset-2"
           role="region"
           aria-label="Featured property listings"
+          tabIndex={0}
+          onKeyDown={handleKeyDown}
         >
           {/* Right-edge fade mask — scroll affordance */}
           <div

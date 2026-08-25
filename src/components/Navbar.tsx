@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { Menu, X, Phone, Mail, MapPin, Sun, Moon } from "lucide-react";
 import Logo from "@/components/Logo";
@@ -38,6 +38,58 @@ export default function Navbar() {
   }, [router, pathname]);
 
   useBodyScrollLock(mobileOpen);
+
+  const menuRef = useRef<HTMLDivElement>(null);
+  const toggleButtonRef = useRef<HTMLButtonElement>(null);
+
+  // Focus trap + Escape handler for mobile menu
+  const handleMenuKeyDown = useCallback(
+    (e: KeyboardEvent): void => {
+      if (e.key === "Escape") {
+        e.preventDefault();
+        setMobileOpen(false);
+        return;
+      }
+      if (e.key !== "Tab" || !menuRef.current) return;
+
+      const focusable = menuRef.current.querySelectorAll<HTMLElement>(
+        'a[href], button:not([disabled]), input, select, textarea, [tabindex]:not([tabindex="-1"])',
+      );
+      if (focusable.length === 0) return;
+
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+
+      if (e.shiftKey) {
+        if (document.activeElement === first) {
+          e.preventDefault();
+          last.focus();
+        }
+      } else {
+        if (document.activeElement === last) {
+          e.preventDefault();
+          first.focus();
+        }
+      }
+    },
+    [],
+  );
+
+  useEffect(() => {
+    if (mobileOpen) {
+      document.addEventListener("keydown", handleMenuKeyDown);
+      // Move focus into the menu on open
+      requestAnimationFrame(() => {
+        const first = menuRef.current?.querySelector<HTMLElement>(
+          'a[href], button:not([disabled])',
+        );
+        first?.focus();
+      });
+    } else {
+      document.removeEventListener("keydown", handleMenuKeyDown);
+    }
+    return () => document.removeEventListener("keydown", handleMenuKeyDown);
+  }, [mobileOpen, handleMenuKeyDown]);
 
   const closeMobile = (): void => {
     setMobileOpen(false);
@@ -133,6 +185,7 @@ export default function Navbar() {
 
         {/* Mobile Toggle */}
         <button
+          ref={toggleButtonRef}
           type="button"
           aria-label={mobileOpen ? "Close menu" : "Open menu"}
           aria-expanded={mobileOpen}
@@ -152,6 +205,7 @@ export default function Navbar() {
       {mounted && mobileOpen
         ? createPortal(
             <div
+              ref={menuRef}
               id="mobile-menu"
               role="dialog"
               aria-modal="true"
