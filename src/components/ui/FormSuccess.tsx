@@ -22,7 +22,7 @@ export default function FormSuccess({
       className="flex flex-col items-center justify-center rounded-2xl border border-[var(--color-secondary)]/30 bg-[var(--color-background)] p-8 text-center shadow-sm sm:p-10"
     >
       <div
-        className="flex h-14 w-14 items-center justify-center rounded-full bg-[var(--color-primary)] text-white shadow-[0_8px_20px_-10px_rgba(18,40,90,0.6)]"
+        className="flex h-14 w-14 items-center justify-center rounded-full bg-[var(--text-primary)] text-white shadow-[0_8px_20px_-10px_rgba(18,40,90,0.6)]"
         aria-hidden="true"
       >
         <CheckCircle2 className="h-7 w-7" strokeWidth={1.75} />
@@ -36,7 +36,7 @@ export default function FormSuccess({
       <button
         type="button"
         onClick={onReset}
-        className="mt-8 inline-flex h-12 items-center justify-center rounded-full border border-[var(--color-secondary)]/40 px-6 text-sm font-semibold text-[var(--color-foreground)] transition-all hover:border-[var(--color-primary)] hover:text-[var(--color-primary)]"
+        className="mt-8 inline-flex h-12 items-center justify-center rounded-full border border-[var(--color-secondary)]/40 px-6 text-sm font-semibold text-[var(--color-foreground)] transition-all hover:border-[var(--text-primary)] hover:text-[var(--text-primary)]"
       >
         {buttonText}
       </button>

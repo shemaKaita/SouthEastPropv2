@@ -64,7 +64,7 @@ export default function OurStoryPage(): ReactElement {
             </SectionLabel>
             <h1
               id="our-story-hero-heading"
-              className="mt-6 text-5xl font-bold tracking-tight text-balance text-[var(--color-primary)] sm:text-6xl lg:text-7xl"
+              className="mt-6 text-5xl font-bold tracking-tight text-balance text-[var(--text-primary)] sm:text-6xl lg:text-7xl"
             >
               Built on Heritage.
               <br />
@@ -118,7 +118,7 @@ export default function OurStoryPage(): ReactElement {
                 className="mt-3 text-2xl font-semibold tracking-tight text-balance text-[var(--color-foreground)] sm:text-3xl lg:text-4xl"
               >
                 Meet{" "}
-                <span className="text-[var(--color-primary)]">
+                <span className="text-[var(--text-primary)]">
                   Mutoni Kaitakirwa
                 </span>
               </h2>
@@ -170,7 +170,7 @@ export default function OurStoryPage(): ReactElement {
               id="community-impact-heading"
               className="mt-3 text-2xl font-semibold tracking-tight text-balance text-[var(--color-foreground)] sm:text-3xl lg:text-4xl"
             >
-              <span className="text-[var(--color-primary)]">More Than</span>{" "}
+              <span className="text-[var(--text-primary)]">More Than</span>{" "}
               Property &mdash; A Commitment to Community
             </h2>
             <p className="mt-4 text-base leading-relaxed text-[var(--color-foreground)]/70 sm:text-lg">

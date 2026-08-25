@@ -21,7 +21,7 @@ export default function LocationsError({
   return (
     <section className="flex min-h-[70vh] items-center justify-center bg-[var(--color-background)] py-24 sm:py-32">
       <div className="mx-auto w-full max-w-xl px-6 text-center sm:px-8 lg:px-10">
-        <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-[var(--color-secondary)]/20 text-[var(--color-primary)]">
+        <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-[var(--color-secondary)]/20 text-[var(--text-primary)]">
           <MapPinOff className="h-8 w-8" strokeWidth={1.75} />
         </div>
 
@@ -48,7 +48,7 @@ export default function LocationsError({
           </button>
           <Link
             href="/"
-            className="inline-flex h-14 items-center justify-center gap-2 rounded-full border border-[var(--color-secondary)]/40 px-8 text-base font-semibold text-[var(--color-foreground)] transition-all hover:border-[var(--color-primary)] hover:text-[var(--color-primary)]"
+            className="inline-flex h-14 items-center justify-center gap-2 rounded-full border border-[var(--color-secondary)]/40 px-8 text-base font-semibold text-[var(--color-foreground)] transition-all hover:border-[var(--text-primary)] hover:text-[var(--text-primary)]"
           >
             Browse properties
           </Link>

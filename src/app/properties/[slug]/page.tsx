@@ -183,19 +183,19 @@ export default async function PropertyDetailPage({
             {/* Stats row */}
             <div className="flex flex-wrap items-center gap-6 border-y border-[var(--color-secondary)]/20 py-5">
               <div className="flex items-center gap-2">
-                <BedDouble className="h-5 w-5 text-[var(--color-primary)]" />
+                <BedDouble className="h-5 w-5 text-[var(--text-primary)]" />
                 <span className="text-sm font-medium">
                   {property.beds} Beds
                 </span>
               </div>
               <div className="flex items-center gap-2">
-                <Bath className="h-5 w-5 text-[var(--color-primary)]" />
+                <Bath className="h-5 w-5 text-[var(--text-primary)]" />
                 <span className="text-sm font-medium">
                   {property.baths} Baths
                 </span>
               </div>
               <div className="flex items-center gap-2">
-                <Maximize className="h-5 w-5 text-[var(--color-primary)]" />
+                <Maximize className="h-5 w-5 text-[var(--text-primary)]" />
                 <span className="text-sm font-medium">{property.area} m²</span>
               </div>
             </div>
@@ -226,7 +226,7 @@ export default async function PropertyDetailPage({
                       className="flex items-center gap-3 rounded-xl border border-[var(--border-subtle)] p-3 dark:border-white/10"
                     >
                       {Icon ? (
-                        <Icon className="h-5 w-5 text-[var(--color-primary)]" />
+                        <Icon className="h-5 w-5 text-[var(--text-primary)]" />
                       ) : null}
                       <span className="text-sm font-medium text-[var(--color-foreground)]/80">
                         {amenity.label}
@@ -243,7 +243,7 @@ export default async function PropertyDetailPage({
             <div className="flex scroll-mt-24 flex-col rounded-2xl border border-[var(--border-subtle)] bg-[var(--bg-base)] p-6 shadow-lg sm:p-8 dark:border-white/10 dark:bg-[var(--bg-surface)]">
               {/* Price */}
               <div className="dark:bg-navy-900/60 inline-flex w-fit items-baseline gap-2 rounded-full border border-[var(--border-subtle)] bg-[var(--bg-surface)] px-4 py-2 dark:border-white/10">
-                <span className="text-2xl font-bold text-[var(--color-primary)]">
+                <span className="text-2xl font-bold text-[var(--text-primary)]">
                   {property.price}
                 </span>
                 <span className="text-sm text-[var(--color-secondary)]">

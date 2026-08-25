@@ -7,7 +7,7 @@ const currentYear: number = new Date().getFullYear();
 export default function Footer(): React.ReactElement {
   return (
     <footer
-      className="border-t border-[var(--color-secondary)]/20 bg-zinc-950 text-zinc-300"
+      className="bg-navy-900 border-t border-[var(--color-secondary)]/20 text-[var(--text-secondary)]"
       aria-labelledby="footer-heading"
     >
       <h2 id="footer-heading" className="sr-only text-balance">
@@ -22,7 +22,7 @@ export default function Footer(): React.ReactElement {
               href="/"
               className="inline-flex items-center gap-2 text-2xl font-semibold tracking-tight text-white"
             >
-              <span className="text-[var(--color-primary)]">SouthEast</span>
+              <span className="text-[var(--text-primary)]">SouthEast</span>
               <span>Properties</span>
             </Link>
             <p className="max-w-xs text-sm leading-relaxed text-zinc-400">
@@ -37,11 +37,11 @@ export default function Footer(): React.ReactElement {
                   <li key={detail.text}>
                     <a
                       href={detail.href}
-                      className="group inline-flex items-center gap-2 text-zinc-400 transition-colors hover:text-[var(--color-primary)]"
+                      className="group inline-flex items-center gap-2 text-zinc-400 transition-colors hover:text-[var(--text-primary)]"
                     >
                       {Icon && (
                         <Icon
-                          className="h-4 w-4 shrink-0 text-[var(--color-primary)]/80 transition-colors group-hover:text-[var(--color-primary)]"
+                          className="h-4 w-4 shrink-0 text-[var(--text-primary)]/80 transition-colors group-hover:text-[var(--text-primary)]"
                           aria-hidden="true"
                         />
                       )}
@@ -63,7 +63,7 @@ export default function Footer(): React.ReactElement {
                 <li key={item.href}>
                   <Link
                     href={item.href}
-                    className="inline-flex items-center text-zinc-400 transition-colors hover:text-[var(--color-primary)]"
+                    className="inline-flex items-center text-zinc-400 transition-colors hover:text-[var(--text-primary)]"
                   >
                     {item.label}
                   </Link>
@@ -80,7 +80,7 @@ export default function Footer(): React.ReactElement {
             <ul className="mt-5 space-y-3 text-sm text-zinc-400">
               <li className="flex items-start gap-2">
                 <span
-                  className="mt-1 inline-block h-1.5 w-1.5 shrink-0 rounded-full bg-[var(--color-primary)]"
+                  className="mt-1 inline-block h-1.5 w-1.5 shrink-0 rounded-full bg-[var(--text-primary)]"
                   aria-hidden="true"
                 />
                 <span>
@@ -93,7 +93,7 @@ export default function Footer(): React.ReactElement {
               </li>
               <li className="flex items-start gap-2">
                 <span
-                  className="mt-1 inline-block h-1.5 w-1.5 shrink-0 rounded-full bg-[var(--color-primary)]"
+                  className="mt-1 inline-block h-1.5 w-1.5 shrink-0 rounded-full bg-[var(--text-primary)]"
                   aria-hidden="true"
                 />
                 <span>
@@ -105,7 +105,7 @@ export default function Footer(): React.ReactElement {
               </li>
               <li className="flex items-start gap-2">
                 <span
-                  className="mt-1 inline-block h-1.5 w-1.5 shrink-0 rounded-full bg-[var(--color-primary)]"
+                  className="mt-1 inline-block h-1.5 w-1.5 shrink-0 rounded-full bg-[var(--text-primary)]"
                   aria-hidden="true"
                 />
                 <span>
@@ -139,7 +139,7 @@ export default function Footer(): React.ReactElement {
                       aria-label={social.label}
                       rel="noopener noreferrer"
                       target="_blank"
-                      className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-[var(--color-secondary)]/30 text-zinc-300 transition-all hover:border-[var(--color-primary)] hover:bg-[var(--color-primary)]/10 hover:text-[var(--color-primary)]"
+                      className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-[var(--color-secondary)]/30 text-zinc-300 transition-all hover:border-[var(--text-primary)] hover:bg-[var(--text-primary)]/10 hover:text-[var(--text-primary)]"
                     >
                       {Icon && <Icon className="h-4 w-4" aria-hidden="true" />}
                     </a>

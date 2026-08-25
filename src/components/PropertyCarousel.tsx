@@ -75,7 +75,7 @@ export default function PropertyCarousel({
 
           <Link
             href="/locations"
-            className="group inline-flex items-center gap-2 self-start border-b-2 border-[var(--color-primary)] pb-1 text-xs font-semibold tracking-[0.2em] whitespace-nowrap text-[var(--color-primary)] uppercase transition-all duration-200 hover:gap-3 hover:border-[var(--accent-yellow)] hover:text-[var(--accent-yellow)] active:gap-2 sm:self-auto dark:border-[var(--accent-yellow)] dark:text-[var(--accent-yellow)] dark:hover:border-white dark:hover:text-white"
+            className="group inline-flex items-center gap-2 self-start border-b-2 border-[var(--text-primary)] pb-1 text-xs font-semibold tracking-[0.2em] whitespace-nowrap text-[var(--text-primary)] uppercase transition-all duration-200 hover:gap-3 hover:border-[var(--accent-yellow)] hover:text-[var(--accent-yellow)] active:gap-2 sm:self-auto dark:border-[var(--accent-yellow)] dark:text-[var(--accent-yellow)] dark:hover:border-white dark:hover:text-white"
           >
             <span className="transition-colors">View All</span>
             <ArrowRight
@@ -164,7 +164,7 @@ export default function PropertyCarousel({
                         aria-label={formatBedCount(property.beds)}
                       >
                         <BedDouble
-                          className="h-4 w-4 text-[var(--color-primary)]"
+                          className="h-4 w-4 text-[var(--text-primary)]"
                           aria-hidden="true"
                         />
                         <span>{property.beds}</span>
@@ -174,7 +174,7 @@ export default function PropertyCarousel({
                         aria-label={formatBathCount(property.baths)}
                       >
                         <Bath
-                          className="h-4 w-4 text-[var(--color-primary)]"
+                          className="h-4 w-4 text-[var(--text-primary)]"
                           aria-hidden="true"
                         />
                         <span>{property.baths}</span>

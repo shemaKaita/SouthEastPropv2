@@ -18,11 +18,11 @@ export default function SectionLabel({
 }: SectionLabelProps) {
   return (
     <span
-      className={`inline-flex items-center gap-2 font-mono text-[10px] font-medium tracking-[0.25em] text-[var(--color-primary)] uppercase ${className}`}
+      className={`inline-flex items-center gap-2 font-mono text-[10px] font-medium tracking-[0.25em] text-[var(--text-primary)] uppercase ${className}`}
     >
       <span
         aria-hidden="true"
-        className="inline-block h-px w-8 bg-[var(--color-primary)]"
+        className="inline-block h-px w-8 bg-[var(--text-primary)]"
       />
       {children}
     </span>
