@@ -59,6 +59,7 @@ export default function PropertyMapView({
         attributionControl={true}
         zoomControl={true}
         style={{ height: "100%", width: "100%" }}
+        aria-label="Interactive property map of Cape Town"
       >
         <FitBoundsToMarkers properties={properties} />
         {isDarkMode ? (
