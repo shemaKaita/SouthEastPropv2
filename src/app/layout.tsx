@@ -45,12 +45,17 @@ export const metadata: Metadata = {
 export default async function RootLayout({ children }: LayoutProps<"/">) {
   const themeCookie = (await headers()).get("cookie") ?? "";
   const isDark = themeCookie.includes("theme=dark");
+  const htmlClassName = [
+    geistSans.variable,
+    geistMono.variable,
+    "h-full",
+    "antialiased",
+    isDark ? "dark" : "",
+  ]
+    .filter(Boolean)
+    .join(" ");
   return (
-    <html
-      lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased${isDark ? "dark" : ""}`}
-      suppressHydrationWarning
-    >
+    <html lang="en" className={htmlClassName} suppressHydrationWarning>
       <head>
         <script
           dangerouslySetInnerHTML={{
