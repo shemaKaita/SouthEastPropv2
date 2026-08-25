@@ -37,11 +37,12 @@ function subscribeToTheme(callback: () => void): () => void {
 
 function applyTheme(next: Theme): void {
   document.documentElement.classList.toggle("dark", next === "dark");
+  // Cookie must always be set — localStorage may throw in iOS Safari private mode / ITP
+  document.cookie = `theme=${next};path=/;max-age=${THEME_COOKIE_MAX_AGE};samesite=lax`;
   try {
     localStorage.setItem(THEME_STORAGE_KEY, next);
-    document.cookie = `theme=${next};path=/;max-age=${THEME_COOKIE_MAX_AGE};samesite=lax`;
   } catch {
-    /* localStorage may be unavailable in restricted contexts */
+    /* localStorage may be unavailable in restricted contexts (iOS Safari) */
   }
 }
 
