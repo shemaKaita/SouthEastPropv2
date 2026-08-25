@@ -94,7 +94,7 @@ export default function PropertyMapView({
                 </p>
                 <Link
                   href={`/properties/${property.slug}`}
-                  className="mt-3 inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-[0.18em] text-[var(--brand-navy)] underline-offset-4 hover:underline dark:text-[var(--accent-yellow)]"
+                  className="mt-3 inline-flex items-center gap-1.5 text-xs font-semibold tracking-[0.18em] text-[var(--brand-navy)] uppercase underline-offset-4 hover:underline dark:text-[var(--accent-yellow)]"
                 >
                   View Details
                   <ArrowRight className="h-3.5 w-3.5" />
