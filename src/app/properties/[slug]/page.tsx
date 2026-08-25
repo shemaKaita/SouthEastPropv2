@@ -21,6 +21,7 @@ import {
 } from "lucide-react";
 
 import { getPropertyBySlug, getAllPropertySlugs } from "@/lib/properties";
+import { SITE_URL } from "@/lib/site";
 import { notFound } from "next/navigation";
 import EnquireNowForm from "@/components/EnquireNowForm";
 import type { ReactElement } from "react";
@@ -96,7 +97,7 @@ export default async function PropertyDetailPage({
       value: property.area,
       unitText: "sqm",
     },
-    url: `https://southeastprop.co.za/properties/${property.slug}`,
+    url: `${SITE_URL}/properties/${property.slug}`,
   };
 
   return (

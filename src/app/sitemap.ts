@@ -1,8 +1,9 @@
 import type { MetadataRoute } from "next";
 import { getAllPropertySlugs } from "@/lib/properties";
+import { SITE_URL } from "@/lib/site";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = "https://southeastprop.co.za";
+  const baseUrl = SITE_URL;
 
   const staticRoutes: MetadataRoute.Sitemap = [
     {
