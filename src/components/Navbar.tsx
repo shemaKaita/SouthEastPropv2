@@ -113,7 +113,7 @@ export default function Navbar() {
           className="group flex items-center gap-2 text-[var(--color-foreground)]"
           onClick={closeMobile}
         >
-          <span className="flex h-9 w-9 items-center justify-center rounded-sm text-[var(--color-primary)] transition-colors dark:text-[var(--accent-yellow)]">
+          <span className="flex h-9 w-9 items-center justify-center rounded-sm text-[var(--text-primary)] transition-colors dark:text-[var(--accent-yellow)]">
             <Logo className="h-9 w-9" />
           </span>
         </Link>
@@ -131,7 +131,7 @@ export default function Navbar() {
                     "group relative flex items-baseline gap-2 whitespace-nowrap transition-colors duration-200",
                     active
                       ? "text-[var(--accent-yellow)] dark:text-[var(--accent-yellow)]"
-                      : "text-[var(--color-foreground)]/80 hover:text-[var(--color-primary)] dark:text-white/70 dark:hover:text-white",
+                      : "text-[var(--color-foreground)]/80 hover:text-[var(--text-primary)] dark:text-white/70 dark:hover:text-white",
                   ].join(" ")}
                 >
                   <span
@@ -139,7 +139,7 @@ export default function Navbar() {
                       "font-mono text-[10px] tracking-[0.2em] uppercase transition-colors",
                       active
                         ? "text-[var(--accent-yellow)]"
-                        : "text-[var(--color-primary)]/70 group-hover:text-[var(--color-primary)]",
+                        : "text-[var(--text-primary)]/70 group-hover:text-[var(--text-primary)]",
                     ].join(" ")}
                   >
                     {item.number}
@@ -158,7 +158,7 @@ export default function Navbar() {
                       "absolute -bottom-1 left-0 h-0.5 rounded-full bg-[var(--accent-yellow)] transition-all duration-200 ease-out",
                       active
                         ? "w-full"
-                        : "w-0 group-hover:w-full group-hover:bg-[var(--color-primary)]",
+                        : "w-0 group-hover:w-full group-hover:bg-[var(--text-primary)]",
                     ].join(" ")}
                   />
                 </Link>
@@ -190,7 +190,7 @@ export default function Navbar() {
           aria-expanded={mobileOpen}
           aria-controls="mobile-menu"
           onClick={() => setMobileOpen((prev) => !prev)}
-          className="flex h-10 w-10 items-center justify-center rounded-sm border border-[var(--color-foreground)]/15 bg-slate-100 text-[var(--color-foreground)] transition-colors hover:border-[var(--color-primary)]/60 hover:text-[var(--color-primary)] lg:hidden dark:bg-slate-800 dark:text-slate-200"
+          className="flex h-10 w-10 items-center justify-center rounded-sm border border-[var(--color-foreground)]/15 bg-slate-100 text-[var(--color-foreground)] transition-colors hover:border-[var(--text-primary)]/60 hover:text-[var(--text-primary)] lg:hidden dark:bg-slate-800 dark:text-slate-200"
         >
           {mobileOpen ? (
             <X className="h-5 w-5" aria-hidden="true" />

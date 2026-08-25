@@ -25,7 +25,7 @@ export default function ContactPage(): ReactElement {
           <SectionLabel>Get in Touch</SectionLabel>
           <h1 className="mt-3 text-3xl font-semibold tracking-tight text-balance text-[var(--color-foreground)] sm:text-4xl lg:text-5xl">
             Contact{" "}
-            <span className="text-[var(--color-primary)]">SouthEast</span>
+            <span className="text-[var(--text-primary)]">SouthEast</span>
           </h1>
           <p className="mt-3 text-sm leading-relaxed text-[var(--color-secondary)] sm:text-base">
             Whether you&apos;re looking for a new home, exploring management
@@ -62,7 +62,7 @@ export default function ContactPage(): ReactElement {
                           <p className="text-xs font-medium tracking-[0.15em] text-[var(--color-secondary)] uppercase">
                             {item.label}
                           </p>
-                          <p className="mt-1 text-sm leading-snug font-medium text-[var(--color-foreground)] group-hover:text-[var(--color-primary)]">
+                          <p className="mt-1 text-sm leading-snug font-medium text-[var(--color-foreground)] group-hover:text-[var(--text-primary)]">
                             {item.text}
                           </p>
                         </div>

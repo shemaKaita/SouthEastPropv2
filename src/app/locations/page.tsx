@@ -68,7 +68,7 @@ export default async function LocationsPage() {
                       {property.location}
                     </span>
                     <span className="mt-3 flex items-center justify-between">
-                      <span className="text-base font-bold text-[var(--color-primary)]">
+                      <span className="text-base font-bold text-[var(--text-primary)]">
                         {property.price}
                         <span className="ml-1 text-[10px] font-medium text-[var(--color-secondary)]">
                           {property.priceLabel}
@@ -77,21 +77,21 @@ export default async function LocationsPage() {
                       <span className="flex items-center gap-3 text-xs text-[var(--color-foreground)]/70">
                         <span className="flex items-center gap-1">
                           <BedDouble
-                            className="h-3.5 w-3.5 text-[var(--color-primary)]"
+                            className="h-3.5 w-3.5 text-[var(--text-primary)]"
                             aria-hidden="true"
                           />
                           {property.beds}
                         </span>
                         <span className="flex items-center gap-1">
                           <Bath
-                            className="h-3.5 w-3.5 text-[var(--color-primary)]"
+                            className="h-3.5 w-3.5 text-[var(--text-primary)]"
                             aria-hidden="true"
                           />
                           {property.baths}
                         </span>
                       </span>
                     </span>
-                    <span className="mt-3 inline-flex items-center gap-1 text-xs font-semibold tracking-[0.15em] text-[var(--color-primary)] uppercase transition-all group-hover:gap-2">
+                    <span className="mt-3 inline-flex items-center gap-1 text-xs font-semibold tracking-[0.15em] text-[var(--text-primary)] uppercase transition-all group-hover:gap-2">
                       View Details
                       <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
                     </span>

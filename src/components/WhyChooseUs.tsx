@@ -49,7 +49,7 @@ export default function WhyChooseUs(): ReactElement {
             id="why-choose-us-heading"
             className="mt-3 text-2xl font-semibold tracking-tight text-balance text-[var(--color-foreground)] sm:text-3xl lg:text-4xl"
           >
-            <span className="text-[var(--color-primary)]">Why Choose</span> Us
+            <span className="text-[var(--text-primary)]">Why Choose</span> Us
           </h2>
           <p className="mt-4 text-base leading-relaxed text-[var(--color-foreground)]/70 sm:text-lg">
             Three pillars of our premium real estate service &mdash; designed to

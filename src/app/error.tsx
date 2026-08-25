@@ -21,7 +21,7 @@ export default function GlobalError({
   return (
     <section className="flex min-h-[80vh] items-center justify-center bg-[var(--color-background)] py-24 sm:py-32">
       <div className="mx-auto w-full max-w-2xl px-6 text-center sm:px-8 lg:px-10">
-        <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-[var(--color-primary)] text-white shadow-[0_8px_20px_-10px_rgba(18,40,90,0.6)]">
+        <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-[var(--text-primary)] text-white shadow-[0_8px_20px_-10px_rgba(18,40,90,0.6)]">
           <AlertTriangle className="h-8 w-8" strokeWidth={1.75} />
         </div>
 
@@ -54,7 +54,7 @@ export default function GlobalError({
           </button>
           <Link
             href="/"
-            className="inline-flex h-14 items-center justify-center gap-2 rounded-full border border-[var(--color-secondary)]/40 px-8 text-base font-semibold text-[var(--color-foreground)] transition-all hover:border-[var(--color-primary)] hover:text-[var(--color-primary)]"
+            className="inline-flex h-14 items-center justify-center gap-2 rounded-full border border-[var(--color-secondary)]/40 px-8 text-base font-semibold text-[var(--color-foreground)] transition-all hover:border-[var(--text-primary)] hover:text-[var(--text-primary)]"
           >
             <ArrowLeft className="h-5 w-5" />
             Back to Home

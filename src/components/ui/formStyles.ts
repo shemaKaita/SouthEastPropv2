@@ -5,12 +5,12 @@
  */
 
 export const inputClassName =
-  "w-full rounded-xl bg-slate-50 dark:bg-navy-900/60 border border-slate-300 dark:border-white/20 px-4 py-3 h-12 text-sm text-[var(--text-primary)] placeholder:text-slate-500 dark:placeholder:text-slate-400 focus:border-[var(--accent-yellow)] focus:ring-1 focus:ring-[var(--accent-yellow)] outline-none transition-all";
+  "w-full rounded-xl bg-[var(--bg-surface)] dark:bg-navy-900/60 border border-[var(--border-subtle)] dark:border-white/20 px-4 py-3 h-12 text-sm text-[var(--text-primary)] placeholder:text-[var(--text-secondary)] focus:border-[var(--accent-yellow)] focus:ring-1 focus:ring-[var(--accent-yellow)] outline-none transition-all";
 
 export const selectClassName = `${inputClassName} appearance-none bg-[length:20px] bg-[right_0.75rem_center] bg-no-repeat pr-10`;
 
 export const labelClassName =
-  "block text-xs font-semibold uppercase tracking-[0.15em] text-slate-700 dark:text-slate-300 mb-2";
+  "block text-xs font-semibold uppercase tracking-[0.15em] text-[var(--text-primary)] dark:text-[var(--text-secondary)] mb-2";
 
 export const errorClassName =
   "mt-1.5 text-xs font-medium text-red-500 dark:text-red-400";

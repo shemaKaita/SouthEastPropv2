@@ -9,7 +9,7 @@ export default function NotFound(): ReactElement {
       <div className="mx-auto w-full max-w-2xl px-6 text-center sm:px-8 lg:px-10">
         <SectionLabel>404</SectionLabel>
 
-        <h1 className="mt-6 text-6xl font-bold tracking-tight text-balance text-[var(--color-primary)] sm:text-7xl lg:text-8xl">
+        <h1 className="mt-6 text-6xl font-bold tracking-tight text-balance text-[var(--text-primary)] sm:text-7xl lg:text-8xl">
           404
         </h1>
 
@@ -32,7 +32,7 @@ export default function NotFound(): ReactElement {
           </Link>
           <Link
             href="/locations"
-            className="inline-flex h-14 items-center justify-center gap-2 rounded-full border border-[var(--color-secondary)]/40 px-8 text-base font-semibold text-[var(--color-foreground)] transition-all hover:border-[var(--color-primary)] hover:text-[var(--color-primary)]"
+            className="inline-flex h-14 items-center justify-center gap-2 rounded-full border border-[var(--color-secondary)]/40 px-8 text-base font-semibold text-[var(--color-foreground)] transition-all hover:border-[var(--text-primary)] hover:text-[var(--text-primary)]"
           >
             <Search className="h-5 w-5" />
             Browse Properties

@@ -64,7 +64,7 @@ export default function LandlordsPage(): ReactElement {
               className="mt-6 text-4xl font-bold tracking-tight text-balance text-[var(--color-foreground)] sm:text-5xl lg:text-6xl"
             >
               Expert Asset Management in the{" "}
-              <span className="text-[var(--color-primary)]">
+              <span className="text-[var(--text-primary)]">
                 City Bowl &amp; Southern Suburbs
               </span>
             </h1>
@@ -84,7 +84,7 @@ export default function LandlordsPage(): ReactElement {
               </a>
               <Link
                 href="/contact"
-                className="inline-flex h-14 items-center justify-center gap-2 rounded-full border border-[var(--color-secondary)]/40 px-8 text-base font-semibold text-[var(--color-foreground)] transition-all hover:border-[var(--color-primary)] hover:text-[var(--color-primary)]"
+                className="inline-flex h-14 items-center justify-center gap-2 rounded-full border border-[var(--color-secondary)]/40 px-8 text-base font-semibold text-[var(--color-foreground)] transition-all hover:border-[var(--text-primary)] hover:text-[var(--text-primary)]"
               >
                 Speak to Us
               </Link>
@@ -107,7 +107,7 @@ export default function LandlordsPage(): ReactElement {
               className="mt-3 text-2xl font-semibold tracking-tight text-balance text-[var(--color-foreground)] sm:text-3xl lg:text-4xl"
             >
               Three Reasons{" "}
-              <span className="text-[var(--color-primary)]">
+              <span className="text-[var(--text-primary)]">
                 Landlords Trust Us
               </span>
             </h2>
@@ -161,7 +161,7 @@ export default function LandlordsPage(): ReactElement {
                 className="mt-3 text-2xl font-semibold tracking-tight text-balance text-[var(--color-foreground)] sm:text-3xl lg:text-4xl"
               >
                 Request Your{" "}
-                <span className="text-[var(--color-primary)]">
+                <span className="text-[var(--text-primary)]">
                   Management Proposal
                 </span>
               </h2>
