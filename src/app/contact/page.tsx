@@ -13,9 +13,12 @@ import {
 import ContactForm from "@/components/ContactForm";
 
 export const metadata: Metadata = {
-  title: "Contact | SouthEast Properties",
+  title: "Contact",
   description:
     "Get in touch with SouthEast Properties. Visit our Observatory office, call, email, or send us a message online.",
+  alternates: {
+    canonical: "/contact",
+  },
 };
 
 type ContactItem = {

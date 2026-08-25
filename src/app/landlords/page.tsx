@@ -12,9 +12,12 @@ import type { ReactElement } from "react";
 import LandlordEnquiryForm from "@/components/LandlordEnquiryForm";
 
 export const metadata: Metadata = {
-  title: "Landlord Services | SouthEast Properties",
+  title: "Landlord Services",
   description:
     "Expert asset management for landlords across Cape Town's City Bowl and Southern Suburbs. Minimal vacancy, proactive maintenance, curated tenant matching.",
+  alternates: {
+    canonical: "/landlords",
+  },
 };
 
 type Pillar = {
