@@ -9,7 +9,7 @@ const PropertyMapView = dynamic(() => import("./PropertyMapView"), {
     <div className="flex h-full w-full items-center justify-center bg-zinc-100">
       <div className="flex flex-col items-center gap-3 text-[var(--color-secondary)]">
         <MapPin className="h-8 w-8 animate-pulse" />
-        <p className="text-sm font-medium uppercase tracking-[0.2em]">
+        <p className="text-sm font-medium tracking-[0.2em] uppercase">
           Loading map…
         </p>
       </div>
@@ -19,6 +19,10 @@ const PropertyMapView = dynamic(() => import("./PropertyMapView"), {
 
 import type { Property } from "@/types/property";
 
-export default function PropertyMap({ properties }: { properties: Property[] }) {
+export default function PropertyMap({
+  properties,
+}: {
+  properties: Property[];
+}) {
   return <PropertyMapView properties={properties} />;
 }

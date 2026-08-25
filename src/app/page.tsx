@@ -16,7 +16,7 @@ export const metadata: Metadata = {
 export default function Home() {
   const properties = getAllPropertiesSync();
   return (
-    <div className="flex flex-col flex-1">
+    <div className="flex flex-1 flex-col">
       <Hero />
       <PropertyCarousel properties={properties} />
       <WhyChooseUs />
