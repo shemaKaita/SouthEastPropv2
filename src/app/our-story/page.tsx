@@ -12,9 +12,12 @@ import Link from "next/link";
 import type { ReactElement } from "react";
 
 export const metadata: Metadata = {
-  title: "Our Story | SouthEast Properties",
+  title: "Our Story",
   description:
     "The story of Mutoni Kaitakirwa, SouthEast Properties, and a heritage-rooted approach to property management in Cape Town.",
+  alternates: {
+    canonical: "/our-story",
+  },
 };
 
 type Impact = {

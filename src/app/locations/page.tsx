@@ -5,9 +5,12 @@ import { getAllProperties } from "@/lib/properties";
 import { MapPin, BedDouble, Bath, ArrowRight } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "Locations | SouthEast Properties",
+  title: "Locations",
   description:
     "Explore our property listings across Observatory and Woodstock in Cape Town. Find your next home on our interactive map.",
+  alternates: {
+    canonical: "/locations",
+  },
 };
 
 export default async function LocationsPage() {
