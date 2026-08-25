@@ -1,18 +1,13 @@
 import Link from "next/link";
 import { Home, Search } from "lucide-react";
 import type { ReactElement } from "react";
+import SectionLabel from "@/components/ui/SectionLabel";
 
 export default function NotFound(): ReactElement {
   return (
     <section className="flex min-h-[80vh] items-center justify-center bg-[var(--color-background)] py-24 sm:py-32">
       <div className="mx-auto w-full max-w-2xl px-6 text-center sm:px-8 lg:px-10">
-        <span className="inline-flex items-center gap-2 font-mono text-[10px] font-medium uppercase tracking-[0.25em] text-[var(--color-primary)]">
-          <span
-            aria-hidden="true"
-            className="inline-block h-px w-8 bg-[var(--color-primary)]"
-          />
-          404
-        </span>
+        <SectionLabel>404</SectionLabel>
 
         <h1 className="mt-6 text-6xl font-bold tracking-tight text-[var(--color-primary)] sm:text-7xl lg:text-8xl text-balance">
           404

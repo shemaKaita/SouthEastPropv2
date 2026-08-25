@@ -8,7 +8,13 @@ import type { LandlordFormData, FormErrors } from "@/types/forms";
 import FormField from "@/components/ui/FormField";
 import FormSelect from "@/components/ui/FormSelect";
 import FormSuccess from "@/components/ui/FormSuccess";
-import { inputClassName, labelClassName } from "@/components/ui/formStyles";
+import {
+  inputClassName,
+  labelClassName,
+  serverErrorClassName,
+  submitButtonClassName,
+} from "@/components/ui/formStyles";
+import { isValidEmail } from "@/lib/validation";
 
 const PROPERTY_TYPE_OPTIONS = [
   { value: "co-living", label: "Co-living" },
@@ -31,7 +37,7 @@ function validate(
   const errors: FormErrors<LandlordFormData> = {};
   if (!values.name.trim()) errors.name = "Name is required";
   if (!values.email.trim()) errors.email = "Email is required";
-  else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(values.email))
+  else if (!isValidEmail(values.email))
     errors.email = "Invalid email format";
   if (!values.phone.trim()) errors.phone = "Phone number is required";
   if (!values.location.trim()) errors.location = "Location is required";
@@ -167,10 +173,7 @@ export default function LandlordEnquiryForm() {
       </div>
 
       {serverError && (
-        <p
-          className="text-sm font-medium text-red-500 dark:text-red-400"
-          role="alert"
-        >
+        <p className={serverErrorClassName} role="alert">
           {serverError}
         </p>
       )}
@@ -180,7 +183,7 @@ export default function LandlordEnquiryForm() {
         <button
           type="submit"
           disabled={isSubmitting}
-          className="inline-flex h-12 w-full items-center justify-center gap-2 rounded-full bg-[var(--accent-yellow)] px-6 text-sm font-bold text-navy-900 transition-all hover:bg-[var(--accent-yellow-hover)] hover:scale-[1.02] hover:shadow-2xl disabled:opacity-60 disabled:cursor-not-allowed sm:h-14 sm:px-8 sm:text-base sm:w-auto"
+          className={submitButtonClassName}
         >
           {isSubmitting ? "Submitting…" : "Submit Enquiry"}
           {!isSubmitting && <ArrowRight className="h-4 w-4 sm:h-5 sm:w-5" />}

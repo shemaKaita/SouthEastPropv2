@@ -6,7 +6,14 @@ import { submitContactForm } from "@/actions/contact";
 import type { ContactFormData, FormErrors } from "@/types/forms";
 import FormField from "@/components/ui/FormField";
 import FormSuccess from "@/components/ui/FormSuccess";
-import { inputClassName, labelClassName } from "@/components/ui/formStyles";
+import {
+  errorClassName,
+  inputClassName,
+  labelClassName,
+  serverErrorClassName,
+  submitButtonClassName,
+} from "@/components/ui/formStyles";
+import { isValidEmail } from "@/lib/validation";
 
 const INITIAL_VALUES: ContactFormData = {
   name: "",
@@ -21,7 +28,7 @@ function validate(
   const errors: FormErrors<ContactFormData> = {};
   if (!values.name.trim()) errors.name = "Name is required";
   if (!values.email.trim()) errors.email = "Email is required";
-  else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(values.email))
+  else if (!isValidEmail(values.email))
     errors.email = "Invalid email format";
   if (!values.message.trim()) errors.message = "Message is required";
   return Object.keys(errors).length > 0 ? errors : undefined;
@@ -114,20 +121,14 @@ export default function ContactForm() {
           aria-invalid={errors.message ? true : undefined}
         />
         {errors.message && (
-          <p
-            className="mt-1.5 text-xs font-medium text-red-500 dark:text-red-400"
-            role="alert"
-          >
+          <p className={errorClassName} role="alert">
             {errors.message}
           </p>
         )}
       </div>
 
       {serverError && (
-        <p
-          className="text-sm font-medium text-red-500 dark:text-red-400"
-          role="alert"
-        >
+        <p className={serverErrorClassName} role="alert">
           {serverError}
         </p>
       )}
@@ -135,7 +136,7 @@ export default function ContactForm() {
       <button
         type="submit"
         disabled={isSubmitting}
-        className="mt-2 inline-flex h-12 w-full items-center justify-center gap-2 rounded-full bg-[var(--accent-yellow)] px-6 text-sm font-bold text-navy-900 transition-all hover:bg-[var(--accent-yellow-hover)] hover:scale-[1.02] hover:shadow-2xl disabled:opacity-60 disabled:cursor-not-allowed sm:h-14 sm:px-8 sm:text-base sm:w-auto sm:self-start"
+        className={`${submitButtonClassName} mt-2 sm:self-start`}
       >
         {isSubmitting ? "Sending…" : "Send Message"}
         {!isSubmitting && <ArrowRight className="h-4 w-4 sm:h-5 sm:w-5" />}

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import PropertyMap from "@/components/PropertyMap";
+import SectionLabel from "@/components/ui/SectionLabel";
 import { getAllProperties } from "@/lib/properties";
 import { MapPin, BedDouble, Bath, ArrowRight } from "lucide-react";
 
@@ -20,14 +21,10 @@ export default async function LocationsPage() {
       <div className="mx-auto w-full max-w-7xl px-6 py-16 sm:px-8 sm:py-20 lg:px-10 lg:py-24">
         {/* Section header */}
         <div className="max-w-2xl">
-          <span className="inline-flex items-center gap-2 font-mono text-[10px] font-medium uppercase tracking-[0.25em] text-[var(--color-primary)]">
-            <span
-              aria-hidden="true"
-              className="inline-block h-px w-8 bg-[var(--color-primary)]"
-            />
+          <SectionLabel>
             <MapPin className="h-3.5 w-3.5" />
             Explore Cape Town
-          </span>
+          </SectionLabel>
           <h1 className="mt-3 text-3xl font-semibold tracking-tight text-[var(--color-foreground)] sm:text-4xl lg:text-5xl text-balance">
             Property Locations
           </h1>

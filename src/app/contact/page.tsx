@@ -1,16 +1,8 @@
 import type { Metadata } from "next";
 import type { ReactElement } from "react";
-import {
-  Mail,
-  Phone,
-  MapPin,
-  Globe,
-  AtSign,
-  Send,
-  Share2,
-  type LucideIcon,
-} from "lucide-react";
 import ContactForm from "@/components/ContactForm";
+import SectionLabel from "@/components/ui/SectionLabel";
+import { CONTACT_DETAILS_WITH_ICONS, SOCIAL_LINKS_WITH_ICONS } from "@/lib/social";
 
 export const metadata: Metadata = {
   title: "Contact",
@@ -21,60 +13,13 @@ export const metadata: Metadata = {
   },
 };
 
-type ContactItem = {
-  icon: LucideIcon;
-  label: string;
-  value: string;
-  href: string;
-};
-
-const CONTACT_ITEMS: ReadonlyArray<ContactItem> = [
-  {
-    icon: Mail,
-    label: "Email",
-    value: "info@southeastproperties.co.za",
-    href: "mailto:info@southeastproperties.co.za",
-  },
-  {
-    icon: Phone,
-    label: "Phone",
-    value: "+27 (0) 21 000 0000",
-    href: "tel:+27210000000",
-  },
-  {
-    icon: MapPin,
-    label: "Office",
-    value: "42 Lower Main Road, Observatory, Cape Town, 7925",
-    href: "https://maps.google.com/?q=Observatory+Cape+Town",
-  },
-];
-
-type SocialLink = {
-  label: string;
-  href: string;
-  icon: LucideIcon;
-};
-
-const SOCIAL_LINKS: ReadonlyArray<SocialLink> = [
-  { label: "Facebook", href: "https://www.facebook.com/", icon: Globe },
-  { label: "Instagram", href: "https://www.instagram.com/", icon: AtSign },
-  { label: "X (Twitter)", href: "https://x.com/", icon: Send },
-  { label: "LinkedIn", href: "https://www.linkedin.com/", icon: Share2 },
-];
-
 export default function ContactPage(): ReactElement {
   return (
     <div className="bg-[var(--color-background)]">
       <div className="mx-auto w-full max-w-7xl px-6 py-16 sm:px-8 sm:py-20 lg:px-10 lg:py-24">
         {/* Page header */}
         <div className="max-w-2xl">
-          <span className="inline-flex items-center gap-2 font-mono text-[10px] font-medium uppercase tracking-[0.25em] text-[var(--color-primary)]">
-            <span
-              aria-hidden="true"
-              className="inline-block h-px w-8 bg-[var(--color-primary)]"
-            />
-            Get in Touch
-          </span>
+          <SectionLabel>Get in Touch</SectionLabel>
           <h1 className="mt-3 text-3xl font-semibold tracking-tight text-[var(--color-foreground)] sm:text-4xl lg:text-5xl text-balance">
             Contact{" "}
             <span className="text-[var(--color-primary)]">SouthEast</span>
@@ -96,7 +41,7 @@ export default function ContactPage(): ReactElement {
                 Contact Details
               </h2>
               <ul className="mt-6 space-y-5">
-                {CONTACT_ITEMS.map((item) => {
+                {CONTACT_DETAILS_WITH_ICONS.map((item) => {
                   const Icon = item.icon;
                   return (
                     <li key={item.label}>
@@ -115,7 +60,7 @@ export default function ContactPage(): ReactElement {
                             {item.label}
                           </p>
                           <p className="mt-1 text-sm font-medium leading-snug text-[var(--color-foreground)] group-hover:text-[var(--color-primary)]">
-                            {item.value}
+                            {item.text}
                           </p>
                         </div>
                       </a>
@@ -135,7 +80,7 @@ export default function ContactPage(): ReactElement {
                 property opportunities.
               </p>
               <ul className="mt-5 flex items-center gap-3">
-                {SOCIAL_LINKS.map((social) => {
+                {SOCIAL_LINKS_WITH_ICONS.map((social) => {
                   const Icon = social.icon;
                   return (
                     <li key={social.label}>

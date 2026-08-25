@@ -10,6 +10,7 @@ import {
 import type { ReactElement } from "react";
 
 import LandlordEnquiryForm from "@/components/LandlordEnquiryForm";
+import SectionLabel from "@/components/ui/SectionLabel";
 
 export const metadata: Metadata = {
   title: "Landlord Services",
@@ -57,13 +58,7 @@ export default function LandlordsPage(): ReactElement {
       >
         <div className="mx-auto w-full max-w-7xl px-6 sm:px-8 lg:px-10">
           <div className="max-w-4xl">
-            <span className="inline-flex items-center gap-2 font-mono text-[10px] font-medium uppercase tracking-[0.25em] text-[var(--color-primary)]">
-              <span
-                aria-hidden="true"
-                className="inline-block h-px w-8 bg-[var(--color-primary)]"
-              />
-              Landlord Services
-            </span>
+            <SectionLabel>Landlord Services</SectionLabel>
             <h1
               id="landlords-hero-heading"
               className="mt-6 text-4xl font-bold tracking-tight text-[var(--color-foreground)] sm:text-5xl lg:text-6xl text-balance"
@@ -106,13 +101,7 @@ export default function LandlordsPage(): ReactElement {
         <div className="mx-auto w-full max-w-7xl px-6 sm:px-8 lg:px-10">
           {/* Section header */}
           <header className="mx-auto max-w-2xl text-center">
-            <span className="inline-flex items-center gap-2 font-mono text-[10px] font-medium uppercase tracking-[0.25em] text-[var(--color-primary)]">
-              <span
-                aria-hidden="true"
-                className="inline-block h-px w-8 bg-[var(--color-primary)]"
-              />
-              Why Partner With Us
-            </span>
+            <SectionLabel>Why Partner With Us</SectionLabel>
             <h2
               id="why-partner-heading"
               className="mt-3 text-2xl font-semibold tracking-tight text-[var(--color-foreground)] sm:text-3xl lg:text-4xl text-balance"
@@ -166,13 +155,7 @@ export default function LandlordsPage(): ReactElement {
           <div className="mx-auto max-w-3xl">
             {/* Section header */}
             <header className="text-center">
-              <span className="inline-flex items-center gap-2 font-mono text-[10px] font-medium uppercase tracking-[0.25em] text-[var(--color-primary)]">
-                <span
-                  aria-hidden="true"
-                  className="inline-block h-px w-8 bg-[var(--color-primary)]"
-                />
-                Landlord Enquiry
-              </span>
+              <SectionLabel>Landlord Enquiry</SectionLabel>
               <h2
                 id="landlord-enquiry-heading"
                 className="mt-3 text-2xl font-semibold tracking-tight text-[var(--color-foreground)] sm:text-3xl lg:text-4xl text-balance"

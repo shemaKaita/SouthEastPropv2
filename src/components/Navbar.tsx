@@ -12,6 +12,8 @@ import { useScrollPosition } from "@/hooks/useScrollPosition";
 import { useBodyScrollLock } from "@/hooks/useBodyScrollLock";
 import { NAV_ITEMS, CONTACT_DETAILS } from "@/lib/constants";
 
+const [addressDetail, phoneDetail, emailDetail] = CONTACT_DETAILS;
+
 export default function Navbar() {
   const pathname = usePathname();
   const router = useRouter();
@@ -274,7 +276,7 @@ export default function Navbar() {
                 {/* Address + theme toggle — secondary mid-block */}
                 <div className="flex items-start justify-between gap-4 pb-2">
                   <a
-                    href={CONTACT_DETAILS[0].href}
+                    href={addressDetail.href}
                     className="flex items-start gap-2 text-xs leading-snug text-[var(--color-foreground)]/70 transition-colors hover:text-[var(--accent-yellow)]"
                   >
                     <MapPin className="mt-0.5 h-3.5 w-3.5 shrink-0" />
@@ -307,14 +309,14 @@ export default function Navbar() {
                 </Link>
                 <div className="flex items-center justify-center gap-3 pt-1">
                   <a
-                    href={CONTACT_DETAILS[1].href}
+                    href={phoneDetail.href}
                     aria-label="Call us"
                     className="flex h-9 w-9 items-center justify-center rounded-full border border-[var(--color-foreground)]/15 text-[var(--color-foreground)]/70 transition-colors hover:border-[var(--accent-yellow)] hover:text-[var(--accent-yellow)]"
                   >
                     <Phone className="h-4 w-4" />
                   </a>
                   <a
-                    href={CONTACT_DETAILS[2].href}
+                    href={emailDetail.href}
                     aria-label="Email us"
                     className="flex h-9 w-9 items-center justify-center rounded-full border border-[var(--color-foreground)]/15 text-[var(--color-foreground)]/70 transition-colors hover:border-[var(--accent-yellow)] hover:text-[var(--accent-yellow)]"
                   >

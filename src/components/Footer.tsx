@@ -1,22 +1,6 @@
-import { Globe, AtSign, Send, Share2, MapPin, Phone, Mail } from "lucide-react";
 import Link from "next/link";
-import type { ComponentType, SVGProps } from "react";
 import { NAV_ITEMS, SOCIAL_LINKS, CONTACT_DETAILS } from "@/lib/constants";
-
-type IconComponent = ComponentType<SVGProps<SVGSVGElement>>;
-
-const SOCIAL_ICONS: Record<string, IconComponent> = {
-  Facebook: Globe as IconComponent,
-  Instagram: AtSign as IconComponent,
-  "X (Twitter)": Send as IconComponent,
-  LinkedIn: Share2 as IconComponent,
-};
-
-const CONTACT_ICONS: Record<string, IconComponent> = {
-  Address: MapPin,
-  Phone: Phone,
-  Email: Mail,
-};
+import { SOCIAL_ICONS, CONTACT_ICONS } from "@/lib/social";
 
 const currentYear: number = new Date().getFullYear();
 

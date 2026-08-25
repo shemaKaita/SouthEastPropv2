@@ -10,6 +10,7 @@ import {
 import Image from "next/image";
 import Link from "next/link";
 import type { ReactElement } from "react";
+import SectionLabel from "@/components/ui/SectionLabel";
 
 export const metadata: Metadata = {
   title: "Our Story",
@@ -57,14 +58,10 @@ export default function OurStoryPage(): ReactElement {
       >
         <div className="mx-auto w-full max-w-7xl px-6 sm:px-8 lg:px-10">
           <div className="max-w-4xl">
-            <span className="inline-flex items-center gap-2 font-mono text-[10px] font-medium uppercase tracking-[0.25em] text-[var(--color-primary)]">
-              <span
-                aria-hidden="true"
-                className="inline-block h-px w-8 bg-[var(--color-primary)]"
-              />
+            <SectionLabel>
               <Sparkles className="h-3.5 w-3.5" />
               The SouthEast Story
-            </span>
+            </SectionLabel>
             <h1
               id="our-story-hero-heading"
               className="mt-6 text-5xl font-bold tracking-tight text-[var(--color-primary)] sm:text-6xl lg:text-7xl text-balance"
@@ -115,13 +112,7 @@ export default function OurStoryPage(): ReactElement {
 
             {/* Right: Founder copy */}
             <div className="flex flex-col justify-center">
-              <span className="inline-flex items-center gap-2 font-mono text-[10px] font-medium uppercase tracking-[0.25em] text-[var(--color-primary)]">
-                <span
-                  aria-hidden="true"
-                  className="inline-block h-px w-8 bg-[var(--color-primary)]"
-                />
-                The Founder
-              </span>
+              <SectionLabel>The Founder</SectionLabel>
               <h2
                 id="founder-heading"
                 className="mt-3 text-2xl font-semibold tracking-tight text-[var(--color-foreground)] sm:text-3xl lg:text-4xl text-balance"
@@ -174,13 +165,7 @@ export default function OurStoryPage(): ReactElement {
         <div className="mx-auto w-full max-w-7xl px-6 sm:px-8 lg:px-10">
           {/* Section header */}
           <header className="mx-auto max-w-2xl text-center">
-            <span className="inline-flex items-center gap-2 font-mono text-[10px] font-medium uppercase tracking-[0.25em] text-[var(--color-primary)]">
-              <span
-                aria-hidden="true"
-                className="inline-block h-px w-8 bg-[var(--color-primary)]"
-              />
-              Community Impact
-            </span>
+            <SectionLabel>Community Impact</SectionLabel>
             <h2
               id="community-impact-heading"
               className="mt-3 text-2xl font-semibold tracking-tight text-[var(--color-foreground)] sm:text-3xl lg:text-4xl text-balance"

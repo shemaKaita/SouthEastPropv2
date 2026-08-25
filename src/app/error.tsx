@@ -5,6 +5,7 @@ import Link from "next/link";
 import { AlertTriangle, ArrowLeft, RotateCcw } from "lucide-react";
 import type { ReactElement } from "react";
 import { logError } from "@/lib/logger";
+import SectionLabel from "@/components/ui/SectionLabel";
 
 export default function GlobalError({
   error,
@@ -24,13 +25,7 @@ export default function GlobalError({
           <AlertTriangle className="h-8 w-8" strokeWidth={1.75} />
         </div>
 
-        <span className="mt-8 inline-flex items-center gap-2 font-mono text-[10px] font-medium uppercase tracking-[0.25em] text-[var(--color-primary)]">
-          <span
-            aria-hidden="true"
-            className="inline-block h-px w-8 bg-[var(--color-primary)]"
-          />
-          Something went wrong
-        </span>
+        <SectionLabel className="mt-8">Something went wrong</SectionLabel>
 
         <h1 className="mt-4 text-3xl font-bold tracking-tight text-[var(--color-foreground)] sm:text-4xl text-balance">
           An unexpected error occurred

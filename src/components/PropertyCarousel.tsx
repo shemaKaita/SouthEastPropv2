@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 
 import type { Property } from "@/types/property";
+import SectionLabel from "@/components/ui/SectionLabel";
 
 function formatBedCount(count: number): string {
   return `${count} ${count === 1 ? "Bed" : "Beds"}`;
@@ -59,13 +60,7 @@ export default function PropertyCarousel({
         {/* Section Header */}
         <div className="mb-10 flex flex-col gap-4 sm:mb-12 sm:flex-row sm:items-end sm:justify-between">
           <div className="max-w-2xl">
-            <span className="inline-flex items-center gap-2 font-mono text-[10px] font-medium uppercase tracking-[0.25em] text-[var(--color-primary)]">
-              <span
-                aria-hidden="true"
-                className="inline-block h-px w-8 bg-[var(--color-primary)]"
-              />
-              Curated Selection
-            </span>
+            <SectionLabel>Curated Selection</SectionLabel>
             <h2
               id="featured-properties-heading"
               className="mt-3 text-3xl font-semibold tracking-tight text-[var(--color-foreground)] sm:text-4xl lg:text-5xl text-balance"
