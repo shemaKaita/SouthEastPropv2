@@ -25,7 +25,7 @@ export default async function LocationsPage() {
             <MapPin className="h-3.5 w-3.5" />
             Explore Cape Town
           </SectionLabel>
-          <h1 className="mt-3 text-3xl font-semibold tracking-tight text-[var(--color-foreground)] sm:text-4xl lg:text-5xl text-balance">
+          <h1 className="mt-3 text-3xl font-semibold tracking-tight text-balance text-[var(--color-foreground)] sm:text-4xl lg:text-5xl">
             Property Locations
           </h1>
           <p className="mt-3 text-sm leading-relaxed text-[var(--color-secondary)] sm:text-base">
@@ -36,7 +36,7 @@ export default async function LocationsPage() {
         </div>
 
         {/* Map + property list sidebar */}
-        <div className="mt-10 grid grid-cols-1 gap-8 lg:grid-cols-[1fr_360px] sm:mt-12">
+        <div className="mt-10 grid grid-cols-1 gap-8 sm:mt-12 lg:grid-cols-[1fr_360px]">
           {/* Map */}
           <div className="h-[400px] overflow-hidden rounded-2xl border border-[var(--color-secondary)]/20 shadow-lg sm:h-[460px] md:h-[480px] lg:h-[560px] xl:h-[640px]">
             <PropertyMap properties={properties} />
@@ -44,7 +44,7 @@ export default async function LocationsPage() {
 
           {/* Property list sidebar */}
           <aside aria-label="Property list" className="flex flex-col gap-4">
-            <h2 className="text-sm font-semibold uppercase tracking-[0.15em] text-[var(--color-secondary)]">
+            <h2 className="text-sm font-semibold tracking-[0.15em] text-[var(--color-secondary)] uppercase">
               All Listings ({properties.length})
             </h2>
             <ul role="list" className="flex flex-col gap-4">
@@ -52,12 +52,12 @@ export default async function LocationsPage() {
                 <li key={property.slug}>
                   <Link
                     href={`/properties/${property.slug}`}
-                    className="group flex flex-col rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-base)] dark:bg-[var(--bg-surface)] dark:border-white/10 p-4 transition-all hover:-translate-y-0.5 hover:border-[var(--brand-navy)]/40 dark:hover:border-amber-400/30 hover:shadow-md"
+                    className="group flex flex-col rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-base)] p-4 transition-all hover:-translate-y-0.5 hover:border-[var(--brand-navy)]/40 hover:shadow-md dark:border-white/10 dark:bg-[var(--bg-surface)] dark:hover:border-amber-400/30"
                   >
-                    <span className="inline-flex w-fit items-center rounded-full bg-[var(--brand-navy)] px-2.5 py-0.5 text-[9px] font-semibold uppercase tracking-[0.15em] text-[var(--accent-yellow)] ring-1 ring-white/10">
+                    <span className="inline-flex w-fit items-center rounded-full bg-[var(--brand-navy)] px-2.5 py-0.5 text-[9px] font-semibold tracking-[0.15em] text-[var(--accent-yellow)] uppercase ring-1 ring-white/10">
                       {property.badge}
                     </span>
-                    <span className="mt-2 text-sm font-semibold leading-snug text-[var(--color-foreground)]">
+                    <span className="mt-2 text-sm leading-snug font-semibold text-[var(--color-foreground)]">
                       {property.title}
                     </span>
                     <span className="mt-1 flex items-center gap-1.5 text-xs text-[var(--color-secondary)]">
@@ -91,7 +91,7 @@ export default async function LocationsPage() {
                         </span>
                       </span>
                     </span>
-                    <span className="mt-3 inline-flex items-center gap-1 text-xs font-semibold uppercase tracking-[0.15em] text-[var(--color-primary)] transition-all group-hover:gap-2">
+                    <span className="mt-3 inline-flex items-center gap-1 text-xs font-semibold tracking-[0.15em] text-[var(--color-primary)] uppercase transition-all group-hover:gap-2">
                       View Details
                       <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
                     </span>

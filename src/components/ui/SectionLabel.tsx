@@ -18,7 +18,7 @@ export default function SectionLabel({
 }: SectionLabelProps) {
   return (
     <span
-      className={`inline-flex items-center gap-2 font-mono text-[10px] font-medium uppercase tracking-[0.25em] text-[var(--color-primary)] ${className}`}
+      className={`inline-flex items-center gap-2 font-mono text-[10px] font-medium tracking-[0.25em] text-[var(--color-primary)] uppercase ${className}`}
     >
       <span
         aria-hidden="true"

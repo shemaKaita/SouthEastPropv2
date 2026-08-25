@@ -7,7 +7,7 @@ const currentYear: number = new Date().getFullYear();
 export default function Footer(): React.ReactElement {
   return (
     <footer
-      className="bg-zinc-950 text-zinc-300 border-t border-[var(--color-secondary)]/20"
+      className="border-t border-[var(--color-secondary)]/20 bg-zinc-950 text-zinc-300"
       aria-labelledby="footer-heading"
     >
       <h2 id="footer-heading" className="sr-only text-balance">
@@ -55,7 +55,7 @@ export default function Footer(): React.ReactElement {
 
           {/* Column 2: Quick links */}
           <div>
-            <h3 className="text-sm font-semibold uppercase tracking-wider text-white">
+            <h3 className="text-sm font-semibold tracking-wider text-white uppercase">
               Quick Links
             </h3>
             <ul className="mt-5 space-y-3 text-sm">
@@ -74,7 +74,7 @@ export default function Footer(): React.ReactElement {
 
           {/* Column 3: Legal & compliance */}
           <div>
-            <h3 className="text-sm font-semibold uppercase tracking-wider text-white">
+            <h3 className="text-sm font-semibold tracking-wider text-white uppercase">
               Legal &amp; Compliance
             </h3>
             <ul className="mt-5 space-y-3 text-sm text-zinc-400">
@@ -122,7 +122,7 @@ export default function Footer(): React.ReactElement {
 
           {/* Column 4: Social */}
           <div>
-            <h3 className="text-sm font-semibold uppercase tracking-wider text-white">
+            <h3 className="text-sm font-semibold tracking-wider text-white uppercase">
               Follow Us
             </h3>
             <p className="mt-5 text-sm text-zinc-400">

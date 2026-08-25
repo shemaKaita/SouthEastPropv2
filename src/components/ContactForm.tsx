@@ -28,8 +28,7 @@ function validate(
   const errors: FormErrors<ContactFormData> = {};
   if (!values.name.trim()) errors.name = "Name is required";
   if (!values.email.trim()) errors.email = "Email is required";
-  else if (!isValidEmail(values.email))
-    errors.email = "Invalid email format";
+  else if (!isValidEmail(values.email)) errors.email = "Invalid email format";
   if (!values.message.trim()) errors.message = "Message is required";
   return Object.keys(errors).length > 0 ? errors : undefined;
 }

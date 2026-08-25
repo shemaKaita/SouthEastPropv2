@@ -9,11 +9,11 @@ export default function NotFound(): ReactElement {
       <div className="mx-auto w-full max-w-2xl px-6 text-center sm:px-8 lg:px-10">
         <SectionLabel>404</SectionLabel>
 
-        <h1 className="mt-6 text-6xl font-bold tracking-tight text-[var(--color-primary)] sm:text-7xl lg:text-8xl text-balance">
+        <h1 className="mt-6 text-6xl font-bold tracking-tight text-balance text-[var(--color-primary)] sm:text-7xl lg:text-8xl">
           404
         </h1>
 
-        <h2 className="mt-4 text-2xl font-semibold tracking-tight text-[var(--color-foreground)] sm:text-3xl text-balance">
+        <h2 className="mt-4 text-2xl font-semibold tracking-tight text-balance text-[var(--color-foreground)] sm:text-3xl">
           Page not found
         </h2>
 
@@ -25,7 +25,7 @@ export default function NotFound(): ReactElement {
         <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
           <Link
             href="/"
-            className="inline-flex h-14 items-center justify-center gap-2 rounded-full bg-[var(--color-primary-surface)] px-8 text-base font-semibold text-white transition-all hover:scale-105 hover:shadow-2xl dark:ring-1 dark:ring-white/10 dark:shadow-lg dark:shadow-black/40"
+            className="inline-flex h-14 items-center justify-center gap-2 rounded-full bg-[var(--color-primary-surface)] px-8 text-base font-semibold text-white transition-all hover:scale-105 hover:shadow-2xl dark:shadow-lg dark:ring-1 dark:shadow-black/40 dark:ring-white/10"
           >
             <Home className="h-5 w-5" />
             Back to Home

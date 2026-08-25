@@ -61,7 +61,7 @@ export default function LandlordsPage(): ReactElement {
             <SectionLabel>Landlord Services</SectionLabel>
             <h1
               id="landlords-hero-heading"
-              className="mt-6 text-4xl font-bold tracking-tight text-[var(--color-foreground)] sm:text-5xl lg:text-6xl text-balance"
+              className="mt-6 text-4xl font-bold tracking-tight text-balance text-[var(--color-foreground)] sm:text-5xl lg:text-6xl"
             >
               Expert Asset Management in the{" "}
               <span className="text-[var(--color-primary)]">
@@ -77,7 +77,7 @@ export default function LandlordsPage(): ReactElement {
             <div className="mt-8 flex flex-col items-stretch gap-4 sm:flex-row sm:items-center sm:gap-4">
               <a
                 href="#enquiry"
-                className="inline-flex h-14 items-center justify-center gap-2 rounded-full bg-[var(--accent-yellow)] px-8 text-base font-bold text-navy-900 shadow-lg transition-all hover:scale-105 hover:bg-[var(--accent-yellow-hover)] hover:shadow-2xl"
+                className="text-navy-900 inline-flex h-14 items-center justify-center gap-2 rounded-full bg-[var(--accent-yellow)] px-8 text-base font-bold shadow-lg transition-all hover:scale-105 hover:bg-[var(--accent-yellow-hover)] hover:shadow-2xl"
               >
                 Get a Management Proposal
                 <ArrowRight className="h-5 w-5" />
@@ -104,7 +104,7 @@ export default function LandlordsPage(): ReactElement {
             <SectionLabel>Why Partner With Us</SectionLabel>
             <h2
               id="why-partner-heading"
-              className="mt-3 text-2xl font-semibold tracking-tight text-[var(--color-foreground)] sm:text-3xl lg:text-4xl text-balance"
+              className="mt-3 text-2xl font-semibold tracking-tight text-balance text-[var(--color-foreground)] sm:text-3xl lg:text-4xl"
             >
               Three Reasons{" "}
               <span className="text-[var(--color-primary)]">
@@ -125,10 +125,10 @@ export default function LandlordsPage(): ReactElement {
             {PILLARS.map(({ icon: Icon, title, description }) => (
               <li
                 key={title}
-                className="group flex h-full flex-col rounded-2xl border border-[var(--border-subtle)] bg-[var(--bg-base)] dark:bg-[var(--bg-surface)] dark:border-white/10 p-8 transition-all duration-300 ease-out hover:-translate-y-1 hover:border-[var(--brand-navy)]/40 dark:hover:border-amber-400/30 hover:shadow-[0_20px_40px_-24px_rgba(18,40,90,0.35)]"
+                className="group flex h-full flex-col rounded-2xl border border-[var(--border-subtle)] bg-[var(--bg-base)] p-8 transition-all duration-300 ease-out hover:-translate-y-1 hover:border-[var(--brand-navy)]/40 hover:shadow-[0_20px_40px_-24px_rgba(18,40,90,0.35)] dark:border-white/10 dark:bg-[var(--bg-surface)] dark:hover:border-amber-400/30"
               >
                 <div
-                  className="flex h-14 w-14 items-center justify-center rounded-full bg-amber-400/10 text-[var(--brand-navy)] dark:text-amber-400 transition-transform duration-300 ease-out group-hover:scale-105"
+                  className="flex h-14 w-14 items-center justify-center rounded-full bg-amber-400/10 text-[var(--brand-navy)] transition-transform duration-300 ease-out group-hover:scale-105 dark:text-amber-400"
                   aria-hidden="true"
                 >
                   <Icon className="h-7 w-7" strokeWidth={1.75} />
@@ -149,7 +149,7 @@ export default function LandlordsPage(): ReactElement {
       <section
         aria-labelledby="landlord-enquiry-heading"
         id="enquiry"
-        className="bg-[var(--color-secondary)]/10 pb-24 pt-12 lg:pb-32 lg:pt-16 scroll-mt-24"
+        className="scroll-mt-24 bg-[var(--color-secondary)]/10 pt-12 pb-24 lg:pt-16 lg:pb-32"
       >
         <div className="mx-auto w-full max-w-7xl px-6 sm:px-8 lg:px-10">
           <div className="mx-auto max-w-3xl">
@@ -158,7 +158,7 @@ export default function LandlordsPage(): ReactElement {
               <SectionLabel>Landlord Enquiry</SectionLabel>
               <h2
                 id="landlord-enquiry-heading"
-                className="mt-3 text-2xl font-semibold tracking-tight text-[var(--color-foreground)] sm:text-3xl lg:text-4xl text-balance"
+                className="mt-3 text-2xl font-semibold tracking-tight text-balance text-[var(--color-foreground)] sm:text-3xl lg:text-4xl"
               >
                 Request Your{" "}
                 <span className="text-[var(--color-primary)]">
@@ -172,7 +172,7 @@ export default function LandlordsPage(): ReactElement {
             </header>
 
             {/* Form card */}
-            <div className="mt-10 rounded-2xl border border-[var(--border-subtle)] bg-[var(--bg-base)] dark:bg-[var(--bg-surface)] dark:border-white/10 p-6 shadow-sm sm:p-8 lg:p-10">
+            <div className="mt-10 rounded-2xl border border-[var(--border-subtle)] bg-[var(--bg-base)] p-6 shadow-sm sm:p-8 lg:p-10 dark:border-white/10 dark:bg-[var(--bg-surface)]">
               <LandlordEnquiryForm />
             </div>
           </div>

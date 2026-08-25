@@ -37,8 +37,7 @@ function validate(
   const errors: FormErrors<LandlordFormData> = {};
   if (!values.name.trim()) errors.name = "Name is required";
   if (!values.email.trim()) errors.email = "Email is required";
-  else if (!isValidEmail(values.email))
-    errors.email = "Invalid email format";
+  else if (!isValidEmail(values.email)) errors.email = "Invalid email format";
   if (!values.phone.trim()) errors.phone = "Phone number is required";
   if (!values.location.trim()) errors.location = "Location is required";
   if (!values.propertyType) errors.propertyType = "Property type is required";

@@ -63,7 +63,7 @@ export default function PropertyCarousel({
             <SectionLabel>Curated Selection</SectionLabel>
             <h2
               id="featured-properties-heading"
-              className="mt-3 text-3xl font-semibold tracking-tight text-[var(--color-foreground)] sm:text-4xl lg:text-5xl text-balance"
+              className="mt-3 text-3xl font-semibold tracking-tight text-balance text-[var(--color-foreground)] sm:text-4xl lg:text-5xl"
             >
               Featured Properties
             </h2>
@@ -75,7 +75,7 @@ export default function PropertyCarousel({
 
           <Link
             href="/locations"
-            className="group inline-flex items-center gap-2 self-start whitespace-nowrap border-b-2 border-[var(--color-primary)] pb-1 text-xs font-semibold uppercase tracking-[0.2em] text-[var(--color-primary)] transition-all duration-200 hover:gap-3 hover:border-[var(--accent-yellow)] hover:text-[var(--accent-yellow)] active:gap-2 sm:self-auto dark:text-[var(--accent-yellow)] dark:border-[var(--accent-yellow)] dark:hover:text-white dark:hover:border-white"
+            className="group inline-flex items-center gap-2 self-start border-b-2 border-[var(--color-primary)] pb-1 text-xs font-semibold tracking-[0.2em] whitespace-nowrap text-[var(--color-primary)] uppercase transition-all duration-200 hover:gap-3 hover:border-[var(--accent-yellow)] hover:text-[var(--accent-yellow)] active:gap-2 sm:self-auto dark:border-[var(--accent-yellow)] dark:text-[var(--accent-yellow)] dark:hover:border-white dark:hover:text-white"
           >
             <span className="transition-colors">View All</span>
             <ArrowRight
@@ -87,7 +87,7 @@ export default function PropertyCarousel({
 
         {/* Carousel */}
         <div
-          className="relative w-full overflow-hidden -mx-6 sm:-mx-8 lg:-mx-10 focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent-yellow)] focus-visible:ring-offset-2"
+          className="relative -mx-6 w-full overflow-hidden focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent-yellow)] focus-visible:ring-offset-2 sm:-mx-8 lg:-mx-10"
           role="region"
           aria-label="Featured property listings"
           tabIndex={0}
@@ -96,21 +96,21 @@ export default function PropertyCarousel({
           {/* Right-edge fade mask — scroll affordance */}
           <div
             aria-hidden="true"
-            className="pointer-events-none absolute bottom-0 right-0 top-0 z-10 w-12 bg-gradient-to-l from-[var(--bg-base)] to-transparent sm:w-24"
+            className="pointer-events-none absolute top-0 right-0 bottom-0 z-10 w-12 bg-gradient-to-l from-[var(--bg-base)] to-transparent sm:w-24"
           />
           <ul
             ref={scrollRef}
-            className="flex gap-4 overflow-x-auto snap-x snap-mandatory scroll-px-4 px-4 pb-8 sm:gap-6 scroll-smooth"
+            className="flex snap-x snap-mandatory scroll-px-4 gap-4 overflow-x-auto scroll-smooth px-4 pb-8 sm:gap-6"
             style={{ scrollbarWidth: "none" }}
           >
             {properties.map((property) => (
               <li
                 key={property.slug}
-                className="basis-[85%] sm:basis-[45%] lg:basis-[31%] shrink-0 snap-start"
+                className="shrink-0 basis-[85%] snap-start sm:basis-[45%] lg:basis-[31%]"
               >
                 <Link
                   href={`/properties/${property.slug}`}
-                  className="group flex h-full flex-col overflow-hidden rounded-2xl border border-slate-200 dark:border-white/10 bg-white dark:bg-[var(--bg-surface)] shadow-sm transition-all duration-300 ease-out hover:-translate-y-1 hover:border-[var(--accent-yellow)]/60 hover:shadow-xl active:translate-y-0 active:shadow-md"
+                  className="group flex h-full flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition-all duration-300 ease-out hover:-translate-y-1 hover:border-[var(--accent-yellow)]/60 hover:shadow-xl active:translate-y-0 active:shadow-md dark:border-white/10 dark:bg-[var(--bg-surface)]"
                 >
                   {/* Image */}
                   <div className="relative aspect-[3/2] w-full overflow-hidden bg-zinc-100">
@@ -123,11 +123,11 @@ export default function PropertyCarousel({
                       sizes="(max-width: 640px) 80vw, 340px"
                     />
                     {/* Badge */}
-                    <span className="absolute left-3 top-3 inline-flex items-center rounded-full bg-[var(--brand-navy)]/85 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.15em] text-[var(--accent-yellow)] shadow-md backdrop-blur-sm ring-1 ring-white/10">
+                    <span className="absolute top-3 left-3 inline-flex items-center rounded-full bg-[var(--brand-navy)]/85 px-3 py-1 text-[10px] font-semibold tracking-[0.15em] text-[var(--accent-yellow)] uppercase shadow-md ring-1 ring-white/10 backdrop-blur-sm">
                       {property.badge}
                     </span>
                     {/* Price Tag */}
-                    <div className="absolute bottom-3 right-3 inline-flex items-baseline gap-1 rounded-full bg-white/95 dark:bg-[var(--bg-surface)]/95 px-3 py-1.5 text-sm font-semibold text-[var(--text-primary)] shadow-md backdrop-blur-sm">
+                    <div className="absolute right-3 bottom-3 inline-flex items-baseline gap-1 rounded-full bg-white/95 px-3 py-1.5 text-sm font-semibold text-[var(--text-primary)] shadow-md backdrop-blur-sm dark:bg-[var(--bg-surface)]/95">
                       <span>{property.price}</span>
                       <span className="text-[10px] font-medium text-[var(--color-secondary)]">
                         {property.priceLabel}
@@ -147,7 +147,7 @@ export default function PropertyCarousel({
                     </div>
 
                     {/* Title */}
-                    <h3 className="mt-2 text-base font-semibold leading-snug text-[var(--color-foreground)] sm:text-lg">
+                    <h3 className="mt-2 text-base leading-snug font-semibold text-[var(--color-foreground)] sm:text-lg">
                       {property.title}
                     </h3>
 
@@ -191,7 +191,7 @@ export default function PropertyCarousel({
             type="button"
             onClick={() => scroll("left")}
             aria-label="Scroll left"
-            className="absolute left-2 top-1/2 z-20 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border border-slate-200 bg-white/90 text-slate-800 shadow-lg backdrop-blur transition-all hover:bg-white dark:border-white/10 dark:bg-[var(--bg-surface)]/90 dark:text-slate-100 dark:hover:bg-[var(--bg-surface)] sm:h-11 sm:w-11"
+            className="absolute top-1/2 left-2 z-20 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border border-slate-200 bg-white/90 text-slate-800 shadow-lg backdrop-blur transition-all hover:bg-white sm:h-11 sm:w-11 dark:border-white/10 dark:bg-[var(--bg-surface)]/90 dark:text-slate-100 dark:hover:bg-[var(--bg-surface)]"
           >
             <ChevronLeft className="h-5 w-5" />
           </button>
@@ -199,7 +199,7 @@ export default function PropertyCarousel({
             type="button"
             onClick={() => scroll("right")}
             aria-label="Scroll right"
-            className="absolute right-2 top-1/2 z-20 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border border-slate-200 bg-white/90 text-slate-800 shadow-lg backdrop-blur transition-all hover:bg-white dark:border-white/10 dark:bg-[var(--bg-surface)]/90 dark:text-slate-100 dark:hover:bg-[var(--bg-surface)] sm:h-11 sm:w-11"
+            className="absolute top-1/2 right-2 z-20 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border border-slate-200 bg-white/90 text-slate-800 shadow-lg backdrop-blur transition-all hover:bg-white sm:h-11 sm:w-11 dark:border-white/10 dark:bg-[var(--bg-surface)]/90 dark:text-slate-100 dark:hover:bg-[var(--bg-surface)]"
           >
             <ChevronRight className="h-5 w-5" />
           </button>
