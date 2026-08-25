@@ -9,7 +9,7 @@ import type { ReactElement } from "react";
 export default function PropertyDetailLoading(): ReactElement {
   return (
     <div className="bg-[var(--color-background)] py-8 pb-24 sm:py-12 sm:pb-24 lg:py-16 lg:pb-16">
-      <div className="mx-auto w-full max-w-7xl px-6 sm:px-8 lg:px-10 space-y-10">
+      <div className="mx-auto w-full max-w-7xl space-y-10 px-6 sm:px-8 lg:px-10">
         {/* Back link skeleton */}
         <div className="flex items-center gap-2">
           <div className="h-4 w-4 animate-pulse rounded bg-[var(--color-secondary)]/30" />

@@ -42,12 +42,12 @@ export default function WhyChooseUs(): ReactElement {
       <div className="mx-auto w-full max-w-7xl px-6 sm:px-8 lg:px-10">
         {/* Section Header */}
         <header className="mx-auto max-w-2xl text-center">
-          <p className="text-xs font-semibold uppercase tracking-[0.25em] text-[var(--color-secondary)]">
+          <p className="text-xs font-semibold tracking-[0.25em] text-[var(--color-secondary)] uppercase">
             Our Difference
           </p>
           <h2
             id="why-choose-us-heading"
-            className="mt-3 text-2xl font-semibold tracking-tight text-[var(--color-foreground)] sm:text-3xl lg:text-4xl text-balance"
+            className="mt-3 text-2xl font-semibold tracking-tight text-balance text-[var(--color-foreground)] sm:text-3xl lg:text-4xl"
           >
             <span className="text-[var(--color-primary)]">Why Choose</span> Us
           </h2>
@@ -65,10 +65,10 @@ export default function WhyChooseUs(): ReactElement {
           {PILLARS.map(({ icon: Icon, title, description }) => (
             <li
               key={title}
-              className="group flex h-full flex-col rounded-2xl border border-[var(--border-subtle)] bg-[var(--bg-base)] dark:bg-[var(--bg-surface)] dark:border-white/10 p-8 transition-all duration-300 ease-out hover:-translate-y-1 hover:border-[var(--brand-navy)]/40 dark:hover:border-amber-400/30 hover:shadow-[0_20px_40px_-24px_rgba(18,40,90,0.35)]"
+              className="group flex h-full flex-col rounded-2xl border border-[var(--border-subtle)] bg-[var(--bg-base)] p-8 transition-all duration-300 ease-out hover:-translate-y-1 hover:border-[var(--brand-navy)]/40 hover:shadow-[0_20px_40px_-24px_rgba(18,40,90,0.35)] dark:border-white/10 dark:bg-[var(--bg-surface)] dark:hover:border-amber-400/30"
             >
               <div
-                className="flex h-14 w-14 items-center justify-center rounded-full bg-amber-400/10 text-[var(--brand-navy)] dark:text-amber-400 transition-transform duration-300 ease-out group-hover:scale-105"
+                className="flex h-14 w-14 items-center justify-center rounded-full bg-amber-400/10 text-[var(--brand-navy)] transition-transform duration-300 ease-out group-hover:scale-105 dark:text-amber-400"
                 aria-hidden="true"
               >
                 <Icon className="h-7 w-7" strokeWidth={1.75} />

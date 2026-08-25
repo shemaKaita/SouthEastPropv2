@@ -3,7 +3,7 @@ import Button from "@/components/Button";
 
 export default function Hero() {
   return (
-    <section className="mx-auto max-w-7xl px-4 pb-16 pt-24 sm:px-6 lg:pt-32">
+    <section className="mx-auto max-w-7xl px-4 pt-24 pb-16 sm:px-6 lg:pt-32">
       <div
         aria-hidden="true"
         className="pointer-events-none absolute inset-0 z-0 bg-[linear-gradient(to_right,var(--stripe-color)_1px,transparent_1px)] bg-[size:4rem_100%] opacity-100"
@@ -13,14 +13,14 @@ export default function Hero() {
         <div className="flex flex-col gap-6 lg:col-span-7 lg:flex lg:flex-col lg:justify-between">
           {/* Main Narrative Box */}
           <div className="flex flex-col justify-center rounded-3xl border border-[var(--border-subtle)] bg-[var(--bg-surface)] p-8 shadow-sm lg:p-12">
-            <h1 className="text-balance text-4xl font-bold tracking-tight text-[var(--text-primary)] sm:text-5xl lg:text-6xl">
+            <h1 className="text-4xl font-bold tracking-tight text-balance text-[var(--text-primary)] sm:text-5xl lg:text-6xl">
               Harmonious Co&#x2011;Living &amp;{" "}
               <br className="hidden sm:block" />
               <span className="text-[var(--accent-yellow)]">
                 Expert Asset Management
               </span>
             </h1>
-            <p className="mt-6 max-w-lg text-balance text-lg text-[var(--text-secondary)]">
+            <p className="mt-6 max-w-lg text-lg text-balance text-[var(--text-secondary)]">
               Premium property solutions across South Africa — from curated
               co-living spaces to full-service asset management for discerning
               landlords.
@@ -49,7 +49,7 @@ export default function Hero() {
             <div className="flex flex-col justify-center rounded-3xl border border-[var(--border-subtle)] bg-[var(--bg-surface)] p-6 shadow-sm sm:col-span-6">
               <div className="flex items-center gap-2">
                 <span className="h-2 w-2 rounded-full bg-[var(--accent-yellow)]" />
-                <p className="text-xs font-bold uppercase tracking-wider text-[var(--text-primary)]">
+                <p className="text-xs font-bold tracking-wider text-[var(--text-primary)] uppercase">
                   For Residents
                 </p>
               </div>
@@ -66,7 +66,7 @@ export default function Hero() {
             <div className="flex flex-col justify-center rounded-3xl border border-[var(--border-subtle)] bg-[var(--bg-surface)] p-6 shadow-sm sm:col-span-6">
               <div className="flex items-center gap-2">
                 <span className="h-2 w-2 rounded-full bg-[var(--accent-yellow)]" />
-                <p className="text-xs font-bold uppercase tracking-wider text-[var(--text-primary)]">
+                <p className="text-xs font-bold tracking-wider text-[var(--text-primary)] uppercase">
                   For Landlords
                 </p>
               </div>
@@ -95,12 +95,12 @@ export default function Hero() {
 
           <div className="absolute bottom-6 left-6 flex items-center gap-2 rounded-full bg-black/40 px-4 py-2 backdrop-blur-md">
             <span className="h-2 w-2 rounded-full bg-[var(--accent-yellow)]"></span>
-            <span className="text-xs font-medium uppercase tracking-wide text-white">
+            <span className="text-xs font-medium tracking-wide text-white uppercase">
               Observatory, Cape Town
             </span>
           </div>
-          <div className="absolute right-6 top-6 rounded-full border border-white/25 bg-black/55 px-3 py-1.5 shadow-lg backdrop-blur-md">
-            <span className="text-xs font-semibold uppercase tracking-wide text-white drop-shadow-sm">
+          <div className="absolute top-6 right-6 rounded-full border border-white/25 bg-black/55 px-3 py-1.5 shadow-lg backdrop-blur-md">
+            <span className="text-xs font-semibold tracking-wide text-white uppercase drop-shadow-sm">
               Available Mid-Year
             </span>
           </div>
