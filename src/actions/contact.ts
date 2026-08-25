@@ -2,6 +2,10 @@
 
 import type { ActionResult, ContactFormData } from "@/types/forms";
 import { logInfo, logError } from "@/lib/logger";
+import { isValidEmail } from "@/lib/validation";
+import { rateLimit, FORM_RATE_LIMIT } from "@/lib/rateLimit";
+import { sanitizeObjectForLog } from "@/lib/sanitize";
+import { headers } from "next/headers";
 
 /**
  * Server action for contact form submissions.
@@ -15,6 +19,21 @@ export async function submitContactForm(
   data: ContactFormData,
 ): Promise<ActionResult> {
   try {
+    const headerList = await headers();
+    const ip =
+      headerList.get("x-forwarded-for")?.split(",")[0]?.trim() ?? "unknown";
+    const { limited } = rateLimit(
+      `contact:${ip}`,
+      FORM_RATE_LIMIT.maxRequests,
+      FORM_RATE_LIMIT.windowMs,
+    );
+    if (limited) {
+      return {
+        success: false,
+        message: "Too many submissions. Please try again later.",
+      };
+    }
+
     // Basic server-side validation
     if (!data.name?.trim() || !data.email?.trim() || !data.message?.trim()) {
       return {
@@ -29,8 +48,7 @@ export async function submitContactForm(
     }
 
     // Email format validation
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(data.email)) {
+    if (!isValidEmail(data.email)) {
       return {
         success: false,
         message: "Please provide a valid email address.",
@@ -39,11 +57,14 @@ export async function submitContactForm(
     }
 
     // Integration point: send email, save to DB, notify CRM
-    logInfo("Contact form submitted", {
-      name: data.name,
-      email: data.email,
-      subject: data.subject,
-    });
+    logInfo(
+      "Contact form submitted",
+      sanitizeObjectForLog({
+        name: data.name,
+        email: data.email,
+        subject: data.subject,
+      }),
+    );
 
     return {
       success: true,

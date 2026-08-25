@@ -21,6 +21,7 @@ import {
 } from "lucide-react";
 
 import { getPropertyBySlug, getAllPropertySlugs } from "@/lib/properties";
+import { SITE_URL } from "@/lib/site";
 import { notFound } from "next/navigation";
 import EnquireNowForm from "@/components/EnquireNowForm";
 import type { ReactElement } from "react";
@@ -49,11 +50,14 @@ export async function generateMetadata({
   const { slug } = await params;
   const property = await getPropertyBySlug(slug);
   if (!property) {
-    return { title: "Property Not Found | SouthEast Properties" };
+    return { title: "Property Not Found" };
   }
   return {
-    title: `${property.title} | SouthEast Properties`,
+    title: property.title,
     description: property.description.slice(0, 160),
+    alternates: {
+      canonical: `/properties/${property.slug}`,
+    },
   };
 }
 
@@ -74,13 +78,39 @@ export default async function PropertyDetailPage({
     ? property.description.split("\n\n")
     : [property.description];
 
+  // JSON-LD structured data for SEO
+  const propertyJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Residence",
+    name: property.title,
+    description: property.description.slice(0, 160),
+    image: property.featuredImage,
+    address: {
+      "@type": "PostalAddress",
+      addressLocality: property.location,
+      addressCountry: "ZA",
+    },
+    numberOfBedrooms: property.beds,
+    numberOfBathroomsTotal: property.baths,
+    floorSize: {
+      "@type": "QuantitativeValue",
+      value: property.area,
+      unitText: "sqm",
+    },
+    url: `${SITE_URL}/properties/${property.slug}`,
+  };
+
   return (
     <div className="bg-[var(--color-background)] pt-20 pb-24 sm:pt-24 sm:pb-32 lg:pt-28 lg:pb-16">
-      <div className="mx-auto w-full max-w-7xl px-6 sm:px-8 lg:px-10 space-y-10">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(propertyJsonLd) }}
+      />
+      <div className="mx-auto w-full max-w-7xl space-y-10 px-6 sm:px-8 lg:px-10">
         {/* Back link */}
         <Link
           href="/"
-          className="inline-flex items-center gap-2 text-sm font-semibold uppercase tracking-[0.2em] text-[var(--color-secondary)] transition-colors hover:text-[var(--accent-yellow)]"
+          className="inline-flex items-center gap-2 text-sm font-semibold tracking-[0.2em] text-[var(--color-secondary)] uppercase transition-colors hover:text-[var(--accent-yellow)]"
         >
           <ArrowLeft className="h-4 w-4" />
           <span>Back to Properties</span>
@@ -95,14 +125,13 @@ export default async function PropertyDetailPage({
                 src={property.featuredImage}
                 fill
                 alt={property.title}
-                unoptimized
-                loading="eager"
+                priority
                 className="object-cover"
                 sizes="(max-width: 1024px) 100vw, 50vw"
               />
             </div>
             {/* Gallery grid - right */}
-            <div className="grid grid-cols-2 gap-3 lg:gap-4 lg:grid-rows-2">
+            <div className="grid grid-cols-2 gap-3 lg:grid-rows-2 lg:gap-4">
               {property.galleryImages.map((image, index) => (
                 <div
                   key={index}
@@ -112,7 +141,7 @@ export default async function PropertyDetailPage({
                     src={image}
                     fill
                     alt={`${property.title} — image ${index + 2}`}
-                    unoptimized
+                    loading="lazy"
                     className="object-cover"
                     sizes="(max-width: 1024px) 50vw, 25vw"
                   />
@@ -125,7 +154,7 @@ export default async function PropertyDetailPage({
           <div className="mt-8 flex justify-center lg:hidden">
             <a
               href="#enquiry-form"
-              className="inline-flex h-12 items-center justify-center gap-2 rounded-full bg-[var(--accent-yellow)] px-8 text-base font-bold text-navy-900 shadow-lg transition-all hover:-translate-y-0.5 hover:bg-[var(--accent-yellow-hover)] hover:shadow-xl active:translate-y-0 active:shadow-lg"
+              className="text-navy-900 inline-flex h-12 items-center justify-center gap-2 rounded-full bg-[var(--accent-yellow)] px-8 text-base font-bold shadow-lg transition-all hover:-translate-y-0.5 hover:bg-[var(--accent-yellow-hover)] hover:shadow-xl active:translate-y-0 active:shadow-lg"
             >
               Enquire Now
               <ArrowRight className="h-5 w-5" />
@@ -139,10 +168,10 @@ export default async function PropertyDetailPage({
           <div className="space-y-8">
             {/* Header */}
             <div>
-              <span className="inline-flex items-center rounded-full bg-[var(--brand-navy)] px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.15em] text-white shadow-md dark:ring-1 dark:ring-white/10">
+              <span className="inline-flex items-center rounded-full bg-[var(--brand-navy)] px-3 py-1 text-[10px] font-semibold tracking-[0.15em] text-white uppercase shadow-md dark:ring-1 dark:ring-white/10">
                 {property.badge}
               </span>
-              <h1 className="mt-4 pt-2 text-3xl font-bold tracking-tight text-[var(--color-foreground)] sm:text-4xl text-balance">
+              <h1 className="mt-4 pt-2 text-3xl font-bold tracking-tight text-balance text-[var(--color-foreground)] sm:text-4xl">
                 {property.title}
               </h1>
               <div className="mt-3 flex items-center gap-2 text-sm text-[var(--color-secondary)]">
@@ -154,26 +183,26 @@ export default async function PropertyDetailPage({
             {/* Stats row */}
             <div className="flex flex-wrap items-center gap-6 border-y border-[var(--color-secondary)]/20 py-5">
               <div className="flex items-center gap-2">
-                <BedDouble className="h-5 w-5 text-[var(--color-primary)]" />
+                <BedDouble className="h-5 w-5 text-[var(--text-primary)]" />
                 <span className="text-sm font-medium">
                   {property.beds} Beds
                 </span>
               </div>
               <div className="flex items-center gap-2">
-                <Bath className="h-5 w-5 text-[var(--color-primary)]" />
+                <Bath className="h-5 w-5 text-[var(--text-primary)]" />
                 <span className="text-sm font-medium">
                   {property.baths} Baths
                 </span>
               </div>
               <div className="flex items-center gap-2">
-                <Maximize className="h-5 w-5 text-[var(--color-primary)]" />
+                <Maximize className="h-5 w-5 text-[var(--text-primary)]" />
                 <span className="text-sm font-medium">{property.area} m²</span>
               </div>
             </div>
 
             {/* Description */}
             <div>
-              <h2 className="text-xl font-semibold tracking-tight text-[var(--color-foreground)] text-balance">
+              <h2 className="text-xl font-semibold tracking-tight text-balance text-[var(--color-foreground)]">
                 About this property
               </h2>
               <div className="mt-4 space-y-4 text-sm leading-relaxed text-[var(--color-foreground)]/70 sm:text-base">
@@ -185,7 +214,7 @@ export default async function PropertyDetailPage({
 
             {/* Amenities */}
             <div>
-              <h2 className="text-xl font-semibold tracking-tight text-[var(--color-foreground)] text-balance">
+              <h2 className="text-xl font-semibold tracking-tight text-balance text-[var(--color-foreground)]">
                 Amenities
               </h2>
               <ul className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -194,10 +223,10 @@ export default async function PropertyDetailPage({
                   return (
                     <li
                       key={amenity.label}
-                      className="flex items-center gap-3 rounded-xl border border-[var(--border-subtle)] dark:border-white/10 p-3"
+                      className="flex items-center gap-3 rounded-xl border border-[var(--border-subtle)] p-3 dark:border-white/10"
                     >
                       {Icon ? (
-                        <Icon className="h-5 w-5 text-[var(--color-primary)]" />
+                        <Icon className="h-5 w-5 text-[var(--text-primary)]" />
                       ) : null}
                       <span className="text-sm font-medium text-[var(--color-foreground)]/80">
                         {amenity.label}
@@ -211,10 +240,10 @@ export default async function PropertyDetailPage({
 
           {/* Right: Sticky sidebar */}
           <div className="lg:sticky lg:top-24 lg:self-start" id="enquiry-form">
-            <div className="flex flex-col rounded-2xl border border-[var(--border-subtle)] bg-[var(--bg-base)] dark:bg-[var(--bg-surface)] dark:border-white/10 p-6 shadow-lg sm:p-8 scroll-mt-24">
+            <div className="flex scroll-mt-24 flex-col rounded-2xl border border-[var(--border-subtle)] bg-[var(--bg-base)] p-6 shadow-lg sm:p-8 dark:border-white/10 dark:bg-[var(--bg-surface)]">
               {/* Price */}
-              <div className="inline-flex w-fit items-baseline gap-2 rounded-full bg-[var(--bg-surface)] dark:bg-navy-900/60 px-4 py-2 border border-[var(--border-subtle)] dark:border-white/10">
-                <span className="text-2xl font-bold text-[var(--color-primary)]">
+              <div className="dark:bg-navy-900/60 inline-flex w-fit items-baseline gap-2 rounded-full border border-[var(--border-subtle)] bg-[var(--bg-surface)] px-4 py-2 dark:border-white/10">
+                <span className="text-2xl font-bold text-[var(--text-primary)]">
                   {property.price}
                 </span>
                 <span className="text-sm text-[var(--color-secondary)]">

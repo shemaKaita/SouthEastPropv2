@@ -2,6 +2,10 @@
 
 import type { ActionResult, LandlordFormData } from "@/types/forms";
 import { logInfo, logError } from "@/lib/logger";
+import { isValidEmail } from "@/lib/validation";
+import { rateLimit, FORM_RATE_LIMIT } from "@/lib/rateLimit";
+import { sanitizeObjectForLog } from "@/lib/sanitize";
+import { headers } from "next/headers";
 
 /**
  * Server action for landlord enquiry submissions.
@@ -10,6 +14,21 @@ export async function submitLandlordForm(
   data: LandlordFormData,
 ): Promise<ActionResult<LandlordFormData>> {
   try {
+    const headerList = await headers();
+    const ip =
+      headerList.get("x-forwarded-for")?.split(",")[0]?.trim() ?? "unknown";
+    const { limited } = rateLimit(
+      `landlord:${ip}`,
+      FORM_RATE_LIMIT.maxRequests,
+      FORM_RATE_LIMIT.windowMs,
+    );
+    if (limited) {
+      return {
+        success: false,
+        message: "Too many submissions. Please try again later.",
+      };
+    }
+
     if (!data.name?.trim() || !data.email?.trim()) {
       return {
         success: false,
@@ -21,8 +40,7 @@ export async function submitLandlordForm(
       };
     }
 
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(data.email)) {
+    if (!isValidEmail(data.email)) {
       return {
         success: false,
         message: "Please provide a valid email address.",
@@ -30,14 +48,17 @@ export async function submitLandlordForm(
       };
     }
 
-    logInfo("Landlord enquiry submitted", {
-      name: data.name,
-      email: data.email,
-      phone: data.phone,
-      location: data.location,
-      propertyType: data.propertyType,
-      units: data.units,
-    });
+    logInfo(
+      "Landlord enquiry submitted",
+      sanitizeObjectForLog({
+        name: data.name,
+        email: data.email,
+        phone: data.phone,
+        location: data.location,
+        propertyType: data.propertyType,
+        units: data.units,
+      }),
+    );
 
     return {
       success: true,

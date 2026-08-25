@@ -52,72 +52,6 @@ export default function PropertyMapView({
 
   return (
     <div className="relative h-full w-full">
-      <style
-        dangerouslySetInnerHTML={{
-          __html: `
-            .leaflet-popup-content-wrapper {
-              border-radius: 12px;
-              box-shadow: 0 10px 40px -10px rgba(0,0,0,0.3);
-              padding: 0;
-              background: var(--bg-surface) !important;
-              color: var(--text-primary) !important;
-            }
-            .leaflet-popup-tip {
-              background: var(--bg-surface) !important;
-            }
-            .leaflet-popup-content {
-              margin: 0;
-              width: auto !important;
-            }
-            .custom-property-marker {
-              background: transparent;
-              border: none;
-            }
-            .leaflet-control-zoom {
-              border-radius: 8px !important;
-              box-shadow: 0 4px 12px -2px rgba(0,0,0,0.15) !important;
-            }
-            .leaflet-control-zoom a {
-              background: var(--bg-surface, #f8fafc) !important;
-              color: var(--text-primary, #12285a) !important;
-              border-color: var(--border-subtle, #e2e8f0) !important;
-            }
-            .leaflet-control-zoom a:hover {
-              background: #FBBF24 !important;
-              color: #12285A !important;
-            }
-            .leaflet-control-attribution {
-              background: rgba(255,255,255,0.85) !important;
-              padding: 2px 8px !important;
-              border-radius: 4px !important;
-              font-size: 10px !important;
-            }
-            .dark .leaflet-control-zoom a {
-                background: #0e1a38 !important;
-                color: #F8FAFC !important;
-                border-color: rgba(255,255,255,0.15) !important;
-              }
-              .dark .leaflet-control-zoom a:hover {
-                background: #FCD34D !important;
-                color: #12285A !important;
-              }
-              .dark .leaflet-control-attribution {
-                background: rgba(9,18,41,0.85) !important;
-                color: #CBD5E1 !important;
-              }
-              .dark .leaflet-control-attribution a {
-                color: #FCD34D !important;
-              }
-            }
-            .leaflet-container {
-              filter: brightness(1.05) contrast(0.95);
-            }
-            .dark .leaflet-tile-pane {
-                filter: brightness(1.4) contrast(1.15) saturate(1.1);
-            }
-          `,
-        }}
-      />
       <MapContainer
         center={CAPE_TOWN_CENTER}
         zoom={12}
@@ -125,6 +59,7 @@ export default function PropertyMapView({
         attributionControl={true}
         zoomControl={true}
         style={{ height: "100%", width: "100%" }}
+        aria-label="Interactive property map of Cape Town"
       >
         <FitBoundsToMarkers properties={properties} />
         {isDarkMode ? (
@@ -159,7 +94,7 @@ export default function PropertyMapView({
                 </p>
                 <Link
                   href={`/properties/${property.slug}`}
-                  className="mt-3 inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-[0.18em] text-[var(--brand-navy)] underline-offset-4 hover:underline dark:text-[var(--accent-yellow)]"
+                  className="mt-3 inline-flex items-center gap-1.5 text-xs font-semibold tracking-[0.18em] text-[var(--brand-navy)] uppercase underline-offset-4 hover:underline dark:text-[var(--accent-yellow)]"
                 >
                   View Details
                   <ArrowRight className="h-3.5 w-3.5" />

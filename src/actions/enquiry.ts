@@ -2,6 +2,10 @@
 
 import type { ActionResult, EnquiryFormData } from "@/types/forms";
 import { logInfo, logError } from "@/lib/logger";
+import { isValidEmail } from "@/lib/validation";
+import { rateLimit, FORM_RATE_LIMIT } from "@/lib/rateLimit";
+import { sanitizeObjectForLog } from "@/lib/sanitize";
+import { headers } from "next/headers";
 
 /**
  * Server action for property enquiry submissions.
@@ -12,6 +16,21 @@ export async function submitEnquiryForm(
   data: EnquiryFormData,
 ): Promise<ActionResult> {
   try {
+    const headerList = await headers();
+    const ip =
+      headerList.get("x-forwarded-for")?.split(",")[0]?.trim() ?? "unknown";
+    const { limited } = rateLimit(
+      `enquiry:${ip}`,
+      FORM_RATE_LIMIT.maxRequests,
+      FORM_RATE_LIMIT.windowMs,
+    );
+    if (limited) {
+      return {
+        success: false,
+        message: "Too many submissions. Please try again later.",
+      };
+    }
+
     if (
       !data.name?.trim() ||
       !data.email?.trim() ||
@@ -30,8 +49,7 @@ export async function submitEnquiryForm(
       };
     }
 
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(data.email)) {
+    if (!isValidEmail(data.email)) {
       return {
         success: false,
         message: "Please provide a valid email address.",
@@ -39,12 +57,15 @@ export async function submitEnquiryForm(
       };
     }
 
-    logInfo("Property enquiry submitted", {
-      name: data.name,
-      email: data.email,
-      propertySlug: data.propertySlug,
-      moveInDate: data.moveInDate,
-    });
+    logInfo(
+      "Property enquiry submitted",
+      sanitizeObjectForLog({
+        name: data.name,
+        email: data.email,
+        propertySlug: data.propertySlug,
+        moveInDate: data.moveInDate,
+      }),
+    );
 
     return {
       success: true,
