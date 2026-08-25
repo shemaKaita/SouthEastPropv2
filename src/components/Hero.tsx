@@ -88,6 +88,7 @@ export default function Hero() {
             alt="Premium co-living interior"
             fill
             priority
+            sizes="(max-width: 1024px) 100vw, 40vw"
             className="object-cover"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-[#091229]/80 via-transparent to-transparent" />

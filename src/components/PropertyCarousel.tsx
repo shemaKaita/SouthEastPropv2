@@ -112,7 +112,6 @@ export default function PropertyCarousel({
                       alt={property.title}
                       width={600}
                       height={400}
-                      unoptimized
                       className="h-full w-full object-cover transition-transform duration-500 ease-out group-hover:scale-105"
                       sizes="(max-width: 640px) 80vw, 340px"
                     />
