@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { ThemeProvider } from "@/components/ThemeProvider";
+import { SITE_URL, SITE_NAME, SITE_DESCRIPTION } from "@/lib/site";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -16,27 +17,24 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://southeastprop.co.za"),
+  metadataBase: new URL(SITE_URL),
   title: {
-    default: "SouthEast Properties | Premium Real Estate in South Africa",
-    template: "%s | SouthEast Properties",
+    default: `${SITE_NAME} | Premium Real Estate in South Africa`,
+    template: `%s | ${SITE_NAME}`,
   },
-  description:
-    "Premium property solutions across South Africa — co-living spaces, landlord services, and expert real estate guidance.",
+  description: SITE_DESCRIPTION,
   openGraph: {
     type: "website",
     locale: "en_ZA",
-    siteName: "SouthEast Properties",
-    url: "https://southeastprop.co.za",
-    title: "SouthEast Properties | Premium Real Estate in South Africa",
-    description:
-      "Premium property solutions across South Africa — co-living spaces, landlord services, and expert real estate guidance.",
+    siteName: SITE_NAME,
+    url: SITE_URL,
+    title: `${SITE_NAME} | Premium Real Estate in South Africa`,
+    description: SITE_DESCRIPTION,
   },
   twitter: {
     card: "summary_large_image",
-    title: "SouthEast Properties | Premium Real Estate in South Africa",
-    description:
-      "Premium property solutions across South Africa — co-living spaces, landlord services, and expert real estate guidance.",
+    title: `${SITE_NAME} | Premium Real Estate in South Africa`,
+    description: SITE_DESCRIPTION,
   },
   alternates: {
     canonical: "/",
@@ -62,10 +60,9 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
             __html: JSON.stringify({
               "@context": "https://schema.org",
               "@type": "RealEstateAgent",
-              name: "SouthEast Properties",
-              description:
-                "Premium property solutions across South Africa — co-living spaces, landlord services, and expert real estate guidance.",
-              url: "https://southeastprop.co.za",
+              name: SITE_NAME,
+              description: SITE_DESCRIPTION,
+              url: SITE_URL,
               email: "info@southeastproperties.co.za",
               telephone: "+27210000000",
               address: {
