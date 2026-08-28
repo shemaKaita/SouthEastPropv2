@@ -2,7 +2,7 @@
 
 > **Living document.** Update this file whenever architecture, dependencies, conventions, or infrastructure change. Any agent or developer should be able to read this and understand the entire project.
 
-**Last updated:** 2026-08-27
+**Last updated:** 2026-08-28
 **Current branch:** `develop` → merges to `main`
 **Repository:** https://github.com/shemaKaita/SouthEastPropv2.git
 
@@ -10,9 +10,11 @@
 
 ## 1. What This Is
 
-A marketing website for **SouthEast Properties**, a Cape Town-based real estate company offering co-living spaces and landlord services. Static-ish content site with property listings, contact forms, and an interactive map.
+A marketing website for **SouthEast Properties**, a Cape Town-based real estate company offering co-living spaces and landlord services. Features property listings, contact forms, an interactive map, and a full CMS admin dashboard for managing content.
 
-**Not** a full booking/transaction platform. Forms log submissions server-side — no database, no email integration yet (integration points are documented below).
+The site now includes a **PostgreSQL database** (via Prisma ORM) powering property management, form submission persistence, and editable site content. An **admin dashboard** at `/admin` provides CRUD operations for all entities.
+
+**Integration points still not implemented:** Email service, CRM API, Sentry error tracking.
 
 ---
 
@@ -294,15 +296,107 @@ ActionResult<T>    { success, message, data?, errors? }
 
 ---
 
+## 5.5. CMS / Admin Dashboard
+
+The site includes a full CMS admin dashboard at `/admin` for managing property listings, viewing form submissions, and editing site content.
+
+### Database (PostgreSQL + Prisma 7)
+
+- **ORM:** Prisma 7.10 with `@prisma/adapter-pg` driver adapter
+- **Config:** `prisma.config.ts` (Prisma 7 moves datasource URL here from schema)
+- **Schema:** `prisma/schema.prisma` — 7 models:
+  - `Property` — listings with amenities (JSON), gallery images (String[]), geo coords
+  - `User` — admin users with bcrypt-hashed passwords, roles (ADMIN/EDITOR)
+  - `ContactSubmission`, `EnquirySubmission`, `LandlordSubmission` — form data with IP and timestamp
+  - `SiteContent` — key/value JSON store for editable nav, social, contact details
+- **Client singleton:** `src/lib/prisma.ts` — global instance in dev to prevent hot-reload connection exhaustion
+- **Seed script:** `prisma/seed.ts` — seeds properties from existing static data, creates admin user, populates site content
+
+### Authentication
+
+- **Session:** iron-session v8 — encrypted, stateless, httpOnly cookies
+- **Password hashing:** bcryptjs with cost factor 12
+- **Middleware:** `src/middleware.ts` protects `/admin/*` (cookie presence check)
+- **Server-side guard:** `requireAuth()` in all admin server actions
+- **Login:** `/admin/login` — rate-limited (5 attempts / 10 min), generic error messages to prevent enumeration
+- **Session cookie:** `sep_admin_session`, 7-day maxAge, `sameSite=strict`, `secure` in production
+
+### Admin Routes
+
+```
+src/app/admin/
+├── layout.tsx              # Admin shell (sidebar, auth guard)
+├── page.tsx                # Dashboard overview (real counts from DB)
+├── login/page.tsx          # Login form
+├── properties/
+│   ├── page.tsx            # Property list (table view)
+│   ├── new/page.tsx        # Create property
+│   └── [id]/edit/page.tsx  # Edit property
+├── submissions/
+│   └── [type]/page.tsx     # Contact/enquiry/landlord submissions
+└── settings/page.tsx       # Edit nav, social, contact (JSON editor)
+```
+
+### Admin Server Actions
+
+| Action                                                                 | File                           | Purpose                           |
+| ---------------------------------------------------------------------- | ------------------------------ | --------------------------------- |
+| `loginAction`, `logoutAction`                                          | `actions/admin/auth.ts`        | Authentication                    |
+| `createPropertyAction`, `updatePropertyAction`, `deletePropertyAction` | `actions/admin/properties.ts`  | Property CRUD with zod validation |
+| `getSubmissions`, `deleteSubmissionAction`                             | `actions/admin/submissions.ts` | Submission management             |
+| `getSiteContent`, `updateSiteContentAction`                            | `actions/admin/settings.ts`    | Content management                |
+
+### Site Content (DB-backed with cache)
+
+- `src/lib/site-content.ts` — reads nav, social, contact from `SiteContent` table
+- 1-minute TTL module-level cache
+- Falls back to hardcoded `constants.ts` defaults when DB unavailable
+- `Footer` component uses DB-backed content (async server component)
+- `clearContentCache()` called after admin settings update
+
+### Form Submission Persistence
+
+All three public forms now persist to PostgreSQL:
+
+- `submitContactForm` → `ContactSubmission` table
+- `submitEnquiryForm` → `EnquirySubmission` table
+- `submitLandlordForm` → `LandlordSubmission` table
+- All submissions store client IP for audit trail
+- Visible in admin panel at `/admin/submissions/{type}`
+
+### Testing
+
+- **Unit tests:** Vitest with jsdom — 106 tests covering lib, hooks, and all server actions
+- **Coverage:** 82% statements, 72% branches, 75% functions (threshold: 70%)
+- **E2E tests:** Playwright — auth flow, public page loads, contact form
+- **Run:** `npm run test` (unit), `npm run test:coverage` (with coverage), `npm run test:e2e` (E2E)
+
+### Cyclomatic Complexity Linting
+
+ESLint enforces complexity rules (error-level for new code):
+
+- `complexity`: max 10 decision points per function
+- `max-depth`: max 4 nesting levels
+- `max-params`: max 3 parameters
+- Pre-existing code with violations is exempted in `eslint.config.mjs`
+
+---
+
 ## 6. Environment Variables
 
 | Variable               | Required             | Default                 | Used In                                            |
 | ---------------------- | -------------------- | ----------------------- | -------------------------------------------------- |
 | `NEXT_PUBLIC_SITE_URL` | **Yes** (production) | `http://localhost:3000` | `lib/site.ts` → metadata, sitemap, robots, OG tags |
+| `DATABASE_URL`         | **Yes**              | —                       | Prisma ORM (Postgres connection string)            |
+| `SESSION_SECRET`       | **Yes**              | —                       | iron-session encryption (min 32 chars)             |
+| `ADMIN_EMAIL`          | Seed only            | `admin@southeast...`    | `prisma/seed.ts` — default admin user              |
+| `ADMIN_PASSWORD`       | Seed only            | —                       | `prisma/seed.ts` — default admin password          |
 | `NODE_ENV`             | Auto                 | —                       | CSP `unsafe-eval` conditional, logger              |
 | `ANALYZE`              | Optional             | —                       | `next.config.ts` bundle analyzer                   |
 
 Set `NEXT_PUBLIC_SITE_URL` to the production URL (e.g., `https://southeastproperties.co.za`) in Railway env vars. This affects SEO (canonical URLs, sitemap, OG metadata).
+
+Generate `SESSION_SECRET` with: `openssl rand -hex 32`
 
 ---
 
@@ -311,20 +405,28 @@ Set `NEXT_PUBLIC_SITE_URL` to the production URL (e.g., `https://southeastproper
 ### Local Development
 
 ```bash
-npm run dev          # Next.js dev server (Turbopack)
-npm run build        # Production build
-npm run start        # Start production server (needs build first)
-npm run lint         # ESLint
-npm run format       # Prettier write
-npm run format:check # Prettier check (CI)
-npm run analyze      # Bundle analyzer (ANALYZE=true)
+npm run dev            # Next.js dev server (Turbopack)
+npm run build          # Production build
+npm run start          # Start production server (needs build first)
+npm run lint           # ESLint
+npm run format         # Prettier write
+npm run format:check   # Prettier check (CI)
+npm run analyze        # Bundle analyzer (ANALYZE=true)
+npm run test           # Run unit tests (Vitest)
+npm run test:coverage  # Run tests with coverage report
+npm run test:e2e       # Run E2E tests (Playwright)
+npm run db:generate    # Generate Prisma client
+npm run db:migrate:dev # Create and apply migration (dev)
+npm run db:migrate:deploy # Apply pending migrations (prod)
+npm run db:seed        # Seed database from existing data
+npm run db:studio      # Open Prisma Studio GUI
 ```
 
 ### Docker Build (3 stages)
 
 1. **deps** — `npm ci` (full node_modules including devDeps)
-2. **builder** — `npm run build` (produces `.next/standalone`)
-3. **runner** — Minimal image: standalone server + static assets, non-root user (`nextjs:nodejs`), `PORT=3000`, `HOSTNAME=0.0.0.0`
+2. **builder** — `prisma generate` + `npm run build` (produces `.next/standalone`)
+3. **runner** — Minimal image: standalone server + static assets + Prisma client, non-root user (`nextjs:nodejs`), `PORT=3000`, `HOSTNAME=0.0.0.0`, includes `openssl` for Prisma engine, `HEALTHCHECK` directive, entrypoint runs `prisma migrate deploy` before `node server.js`
 
 ### Railway Deployment
 
@@ -335,10 +437,11 @@ npm run analyze      # Bundle analyzer (ANALYZE=true)
 
 ### Pre-Commit Checklist
 
-1. `npm run lint` — must pass (especially `no-console: error`)
-2. `npm run format` — Prettier formatting (run before committing to avoid formatting-only diffs)
-3. `npm run build` — must compile without errors
-4. Test theme toggle on iOS Safari (both navigation and refresh) — this has been a recurring bug source.
+1. `npm run lint` — must pass (0 errors, complexity rules enforced)
+2. `npm run test` — must pass all unit tests
+3. `npm run format` — Prettier formatting (run before committing to avoid formatting-only diffs)
+4. `npm run build` — must compile without errors
+5. Test theme toggle on iOS Safari (both navigation and refresh) — this has been a recurring bug source.
 
 ---
 
@@ -372,6 +475,20 @@ Post-audit fixes:
 - `bd7510e` — Theme persistence cookie fix (iOS Safari)
 - `fcf0c0c` — Server-side theme cookie read (hydration)
 - `510daea` — Space before `dark` class (className bug)
+
+### CMS Build Phases (2026-08-28)
+
+| Phase | PR  | Branch                        | Focus                                          | Status           |
+| ----- | --- | ----------------------------- | ---------------------------------------------- | ---------------- |
+| 1     | #21 | `feat/cms-phase1-database`    | PostgreSQL + Prisma 7 + complexity linting     | ⏳ Pending merge |
+| 2     | #22 | `feat/cms-phase2-auth`        | iron-session auth + login + middleware         | ⏳ Pending merge |
+| 3     | #23 | `feat/cms-phase3-dashboard`   | Property CRUD + submissions + settings UI      | ⏳ Pending merge |
+| 4     | #24 | `feat/cms-phase4-submissions` | Form submission persistence to DB              | ⏳ Pending merge |
+| 5     | #25 | `feat/cms-phase5-content`     | DB-backed site content with cache              | ⏳ Pending merge |
+| 6     | #26 | `feat/cms-phase6-testing`     | Vitest unit tests + Playwright E2E (106 tests) | ⏳ Pending merge |
+| 7     | #27 | `feat/cms-phase7-deploy`      | Docker hardening + Railway config              | ⏳ Pending merge |
+
+**Merge order:** #21 → #22 → #23 → #24 → #25 → #26 → #27 → `develop` → `main`
 
 ---
 
@@ -413,12 +530,12 @@ Post-audit fixes:
 
 ### Not Yet Implemented
 
-- **Email sending** — Forms log only. Integration point in each server action.
-- **Database** — Properties are static. Repository pattern in `lib/properties.ts` ready for swap.
+- **Email sending** — Forms persist to DB and log. Integration point in each server action for Resend/SendGrid.
 - **Sentry/error tracking** — `lib/logger.ts` has integration point in `logError()`.
 - **Rate limiter** — In-memory, single-instance only. For multi-instance, swap to Redis.
-- **Playwright tests** — Package installed, no test files yet.
 - **PWA icons** — Only `favicon.ico` in manifest. Need proper icon set.
+- **Image upload** — Admin uses URL fields for images. Future: S3/Cloudinary integration.
+- **Navbar DB-backed content** — Navbar is a client component and can't use async DB functions. Uses static constants. Footer is DB-backed.
 
 ### Recurring Bug: Theme Reversion on iOS Safari
 
