@@ -9,6 +9,7 @@ import {
   submitButtonClassName,
   serverErrorClassName,
 } from "@/components/ui/formStyles";
+import ImageUpload from "@/components/admin/ImageUpload";
 
 type PropertyData = {
   id?: string;
@@ -32,9 +33,7 @@ type PropertyData = {
 
 type PropertyFormProps = {
   initialData?: Partial<PropertyData>;
-  action: (
-    formData: FormData,
-  ) => Promise<{
+  action: (formData: FormData) => Promise<{
     success: boolean;
     message: string;
     errors?: Record<string, string>;
@@ -343,22 +342,20 @@ export default function PropertyForm({
       </div>
 
       <div>
-        <label htmlFor="featuredImage" className={labelClassName}>
-          Featured Image URL
-        </label>
-        <input
-          id="featuredImage"
-          name="featuredImage"
-          type="url"
+        <input type="hidden" name="featuredImage" value={data.featuredImage} />
+        <ImageUpload
           value={data.featuredImage}
-          onChange={(e) => setField("featuredImage", e.target.value)}
-          className={inputClassName}
-          placeholder="https://images.unsplash.com/..."
-          required
+          onChange={(url) => setField("featuredImage", url)}
+          label="Featured Image"
         />
       </div>
 
       <div>
+        <input
+          type="hidden"
+          name="galleryImages"
+          value={data.galleryImages.filter((v) => v.trim() !== "").join(",")}
+        />
         <div className="mb-2 flex items-center justify-between">
           <label className={labelClassName}>Gallery Images</label>
           <button
@@ -369,20 +366,20 @@ export default function PropertyForm({
             <Plus className="h-3 w-3" /> Add
           </button>
         </div>
-        <div className="space-y-2">
+        <div className="space-y-3">
           {data.galleryImages.map((url, index) => (
-            <div key={index} className="flex gap-2">
-              <input
-                type="url"
-                value={url}
-                onChange={(e) => setGalleryImage(index, e.target.value)}
-                className={inputClassName}
-                placeholder="https://images.unsplash.com/..."
-              />
+            <div key={index} className="flex items-start gap-2">
+              <div className="flex-1">
+                <ImageUpload
+                  value={url}
+                  onChange={(newUrl) => setGalleryImage(index, newUrl)}
+                  label={`Image ${index + 1}`}
+                />
+              </div>
               <button
                 type="button"
                 onClick={() => removeGalleryImage(index)}
-                className="rounded-lg p-2 text-red-500 hover:bg-red-500/10"
+                className="mt-7 rounded-lg p-2 text-red-500 hover:bg-red-500/10"
               >
                 <X className="h-4 w-4" />
               </button>
