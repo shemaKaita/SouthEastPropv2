@@ -14,6 +14,11 @@ import { NAV_ITEMS, CONTACT_DETAILS } from "@/lib/constants";
 
 const [addressDetail, phoneDetail, emailDetail] = CONTACT_DETAILS;
 
+function isLinkActive(href: string, pathname: string): boolean {
+  if (href === "/") return pathname === "/";
+  return pathname === href || pathname.startsWith(href + "/");
+}
+
 export default function Navbar() {
   const pathname = usePathname();
   const router = useRouter();
@@ -21,10 +26,7 @@ export default function Navbar() {
   const mounted = useMounted();
   const { theme, toggleTheme } = useTheme();
   const scrolled = useScrollPosition(8);
-  const isActive = (href: string): boolean =>
-    href === "/"
-      ? pathname === "/"
-      : pathname === href || pathname.startsWith(href + "/");
+  const isActive = (href: string): boolean => isLinkActive(href, pathname);
 
   // Eagerly prefetch all top-nav routes on mount so first click is instant.
   // Next's <Link> uses IntersectionObserver (200px rootMargin) to gate prefetching,
