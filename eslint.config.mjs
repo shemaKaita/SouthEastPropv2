@@ -53,6 +53,25 @@ const eslintConfig = defineConfig([
       "max-depth": "off",
     },
   },
+  // Test files: relax complexity rules (test setup functions are naturally long)
+  {
+    files: [
+      "src/**/*.test.{ts,tsx}",
+      "src/**/*.spec.{ts,tsx}",
+      "e2e/**/*.ts",
+      "vitest.setup.ts",
+      "vitest.config.ts",
+      "playwright.config.ts",
+    ],
+    rules: {
+      "max-lines-per-function": "off",
+      "max-statements": "off",
+      complexity: "off",
+      "max-depth": "off",
+      "@typescript-eslint/no-explicit-any": "off",
+      "@typescript-eslint/no-non-null-assertion": "off",
+    },
+  },
   // Override default ignores of eslint-config-next.
   globalIgnores([
     // Default ignores of eslint-config-next:
@@ -63,6 +82,12 @@ const eslintConfig = defineConfig([
     // Prisma generated client is not linted.
     "node_modules/.prisma/**",
     "prisma/migrations/**",
+    // Test coverage output
+    "coverage/**",
+    // Playwright output
+    "test-results/**",
+    "playwright-report/**",
+    "blob-report/**",
   ]),
 ]);
 
