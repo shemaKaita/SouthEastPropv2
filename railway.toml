@@ -23,3 +23,11 @@ max_retries = 3
 #
 # Optional:
 #   ANALYZE            — Set to "true" to enable bundle analyzer
+#   UPLOAD_DIR         — Defaults to /app/uploads (set by Dockerfile)
+
+# ── Railway Volume ─────────────────────────────────────────────
+# 1. In Railway dashboard, click your service → "Settings" → "Volumes"
+# 2. Click "Add Volume" and set the mount path to: /app/uploads
+# 3. The volume persists uploaded property images across deploys
+# 4. The Dockerfile creates /app/uploads and sets UPLOAD_DIR=/app/uploads
+# 5. Images are served at /uploads/* via a next.config.ts rewrite

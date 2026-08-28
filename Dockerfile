@@ -43,6 +43,7 @@ ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
 ENV PORT=3000
 ENV HOSTNAME="0.0.0.0"
+ENV UPLOAD_DIR=/app/uploads
 
 # Install openssl (required by Prisma engine in production)
 RUN apk add --no-cache openssl
@@ -50,6 +51,9 @@ RUN apk add --no-cache openssl
 # Create a non-root user for security.
 RUN addgroup --system --gid 1001 nodejs \
  && adduser  --system --uid 1001 nextjs
+
+# Create uploads directory (Railway Volume mounts here)
+RUN mkdir -p /app/uploads && chown nextjs:nodejs /app/uploads
 
 # Copy the standalone server output produced by `next build`.
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
