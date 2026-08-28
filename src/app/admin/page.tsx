@@ -1,5 +1,8 @@
 import Link from "next/link";
 import { Building2, Mail, Users, Settings, ArrowRight } from "lucide-react";
+import { prisma } from "@/lib/prisma";
+
+export const dynamic = "force-dynamic";
 
 type StatItem = {
   label: string;
@@ -8,34 +11,48 @@ type StatItem = {
   icon: React.ComponentType<{ className?: string }>;
 };
 
-const stats: StatItem[] = [
-  {
-    label: "Properties",
-    value: "—",
-    href: "/admin/properties",
-    icon: Building2,
-  },
-  {
-    label: "Contact",
-    value: "—",
-    href: "/admin/submissions/contact",
-    icon: Mail,
-  },
-  {
-    label: "Landlords",
-    value: "—",
-    href: "/admin/submissions/landlord",
-    icon: Users,
-  },
-  {
-    label: "Settings",
-    value: "Edit",
-    href: "/admin/settings",
-    icon: Settings,
-  },
-];
+export default async function AdminDashboardPage() {
+  const [propertyCount, contactCount, enquiryCount, landlordCount] =
+    await Promise.all([
+      prisma.property.count(),
+      prisma.contactSubmission.count(),
+      prisma.enquirySubmission.count(),
+      prisma.landlordSubmission.count(),
+    ]);
 
-export default function AdminDashboardPage() {
+  const stats: StatItem[] = [
+    {
+      label: "Properties",
+      value: String(propertyCount),
+      href: "/admin/properties",
+      icon: Building2,
+    },
+    {
+      label: "Contact",
+      value: String(contactCount),
+      href: "/admin/submissions/contact",
+      icon: Mail,
+    },
+    {
+      label: "Landlords",
+      value: String(landlordCount),
+      href: "/admin/submissions/landlord",
+      icon: Users,
+    },
+    {
+      label: "Enquiries",
+      value: String(enquiryCount),
+      href: "/admin/submissions/enquiry",
+      icon: Mail,
+    },
+    {
+      label: "Settings",
+      value: "Edit",
+      href: "/admin/settings",
+      icon: Settings,
+    },
+  ];
+
   return (
     <div>
       <h1 className="text-2xl font-bold text-[var(--text-primary)]">
