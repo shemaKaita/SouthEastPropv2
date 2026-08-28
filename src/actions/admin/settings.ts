@@ -11,6 +11,7 @@ import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { requireAuth } from "@/lib/auth";
+import { clearContentCache } from "@/lib/site-content";
 import { logError, logInfo } from "@/lib/logger";
 import type { ActionResult } from "@/types/forms";
 
@@ -60,6 +61,7 @@ export async function updateSiteContentAction(
       },
     });
     revalidatePath("/");
+    clearContentCache();
     logInfo("Site content updated", { key: parsed.data.key });
     return { success: true, message: "Content updated successfully." };
   } catch (error) {
