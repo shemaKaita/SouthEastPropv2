@@ -53,7 +53,7 @@ export default function DeletePropertyButton({
     <button
       type="button"
       onClick={handleDelete}
-      className="rounded p-1.5 text-red-500 hover:bg-red-500/10"
+      className="rounded p-1.5 text-red-600 hover:bg-red-500/10 dark:text-red-300 dark:hover:text-red-200"
       aria-label={`Delete ${title}`}
     >
       <Trash2 className="h-4 w-4" />

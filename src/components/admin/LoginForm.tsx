@@ -56,7 +56,7 @@ export default function LoginForm({ redirectTo }: LoginFormProps) {
             type="email"
             autoComplete="email"
             required
-            className={`${inputClassName} pl-11`}
+            className={`${inputClassName} pl-11 text-[13px] sm:text-sm`}
             placeholder="admin@southeastproperties.co.za"
           />
         </div>

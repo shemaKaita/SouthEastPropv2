@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Building2, Mail, Users, Settings, ArrowRight } from "lucide-react";
+import AdminPageHeader from "@/components/admin/AdminPageHeader";
 import { prisma } from "@/lib/prisma";
 
 export const dynamic = "force-dynamic";
@@ -55,14 +56,12 @@ export default async function AdminDashboardPage() {
 
   return (
     <div>
-      <h1 className="text-2xl font-bold text-[var(--text-primary)]">
-        Dashboard
-      </h1>
-      <p className="mt-2 text-sm text-[var(--text-secondary)]">
-        Welcome to the SouthEast Properties admin panel.
-      </p>
+      <AdminPageHeader
+        title="Dashboard"
+        subtitle="Welcome back. Here's what's happening across the platform."
+      />
 
-      <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="mt-2 grid gap-4 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-5">
         {stats.map((stat) => (
           <Link
             key={stat.label}
@@ -70,13 +69,20 @@ export default async function AdminDashboardPage() {
             className="group rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-surface)] p-5 transition-all hover:border-[var(--accent-yellow)] hover:shadow-lg"
           >
             <div className="flex items-center justify-between">
-              <stat.icon className="h-8 w-8 text-[var(--accent-yellow)]" />
-              <ArrowRight className="h-4 w-4 text-[var(--text-secondary)] transition-transform group-hover:translate-x-1" />
+              <stat.icon
+                className="h-7 w-7 text-[var(--accent-yellow)]"
+                aria-hidden
+              />
+              <ArrowRight
+                className="h-4 w-4 text-[var(--text-secondary)] transition-transform group-hover:translate-x-1 group-hover:text-[var(--accent-yellow)]"
+                aria-hidden
+              />
+              <span className="sr-only">Open {stat.label}</span>
             </div>
-            <p className="mt-4 text-2xl font-bold text-[var(--text-primary)]">
+            <p className="mt-4 text-4xl font-bold text-[var(--text-primary)] tabular-nums">
               {stat.value}
             </p>
-            <p className="text-xs tracking-wider text-[var(--text-secondary)] uppercase">
+            <p className="mt-1 text-xs font-semibold tracking-wider text-[var(--text-secondary)] uppercase">
               {stat.label}
             </p>
           </Link>

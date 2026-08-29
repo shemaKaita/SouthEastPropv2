@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { useState, useTransition } from "react";
+import { useState, useTransition, useEffect } from "react";
 import {
   LayoutDashboard,
   Building2,
@@ -47,6 +47,25 @@ export default function AdminSidebar({ email }: AdminSidebarProps) {
   const [isPending, startTransition] = useTransition();
   const [mobileOpen, setMobileOpen] = useState(false);
 
+  // Close mobile drawer when route changes (covers in-app navigation).
+  // The setState-in-effect rule doesn't apply here — we intentionally want
+  // to collapse the drawer after navigation completes. This is not a
+  // sync cascade; it's a route-change-driven state reset.
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setMobileOpen(false);
+  }, [pathname]);
+
+  // Close mobile drawer when Escape is pressed (a11y)
+  useEffect(() => {
+    if (!mobileOpen) return;
+    const onKey = (e: KeyboardEvent): void => {
+      if (e.key === "Escape") setMobileOpen(false);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [mobileOpen]);
+
   const isActive = (href: string): boolean =>
     href === "/admin" ? pathname === "/admin" : pathname.startsWith(href);
 
@@ -67,10 +86,11 @@ export default function AdminSidebar({ email }: AdminSidebarProps) {
             key={item.href}
             href={item.href}
             onClick={() => setMobileOpen(false)}
+            aria-current={active ? "page" : undefined}
             className={`flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors ${
               active
                 ? "text-navy-900 bg-[var(--accent-yellow)]"
-                : "text-[var(--text-secondary)] hover:bg-[var(--bg-surface)] hover:text-[var(--text-primary)]"
+                : "text-slate-600 hover:bg-[var(--bg-surface)] hover:text-[var(--text-primary)] dark:text-slate-100 dark:hover:bg-white/5 dark:hover:text-white"
             }`}
           >
             <item.icon className="h-4 w-4" />
@@ -83,49 +103,71 @@ export default function AdminSidebar({ email }: AdminSidebarProps) {
 
   return (
     <>
-      {/* Mobile toggle */}
+      {/* Mobile toggle (below lg) — sticky header button */}
       <button
         type="button"
         onClick={() => setMobileOpen(!mobileOpen)}
-        className="fixed top-4 left-4 z-50 rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-surface)] p-2 md:hidden"
-        aria-label="Toggle admin menu"
+        className="fixed top-3 left-3 z-50 inline-flex items-center gap-2 rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-surface)] p-2 shadow-sm sm:px-3 sm:py-2 lg:hidden"
+        aria-label={mobileOpen ? "Close admin menu" : "Open admin menu"}
+        aria-expanded={mobileOpen}
       >
-        {mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+        {mobileOpen ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
+        <span className="hidden text-sm font-medium sm:inline">Menu</span>
       </button>
 
-      {/* Mobile overlay */}
+      {/* Backdrop — only when drawer is open (below lg) */}
       {mobileOpen && (
-        <div
-          className="fixed inset-0 z-40 bg-black/40 md:hidden"
+        <button
+          type="button"
           onClick={() => setMobileOpen(false)}
-          aria-hidden
+          aria-label="Close menu"
+          className="fixed inset-0 z-40 cursor-default bg-black/60 backdrop-blur-sm lg:hidden"
         />
       )}
 
-      {/* Sidebar */}
+      {/* Sidebar — overlay drawer below lg, inline at lg+ */}
       <aside
-        className={`fixed inset-y-0 left-0 z-40 w-64 border-r border-[var(--border-subtle)] bg-[var(--bg-base)] p-4 transition-transform md:static md:translate-x-0 ${
+        className={`fixed inset-y-0 left-0 z-50 flex w-72 flex-col border-r border-[var(--border-subtle)] bg-[var(--bg-base)] p-4 transition-transform duration-200 ease-out lg:sticky lg:top-0 lg:h-screen lg:w-64 lg:translate-x-0 lg:bg-[var(--bg-surface)] ${
           mobileOpen ? "translate-x-0" : "-translate-x-full"
         }`}
+        aria-label="Admin sidebar"
       >
-        <div className="mb-6 px-2">
-          <h2 className="text-sm font-bold tracking-wider text-[var(--text-primary)] uppercase">
-            SouthEast
-          </h2>
-          <p className="text-xs text-[var(--text-secondary)]">Admin Panel</p>
+        <div className="mb-6 flex items-center justify-between px-2">
+          <div>
+            <h2 className="text-sm font-bold tracking-wider text-[var(--text-primary)] uppercase">
+              SouthEast
+            </h2>
+            <p className="text-xs text-[var(--text-secondary)]">Admin Panel</p>
+          </div>
+          {/* Close button — mobile only */}
+          <button
+            type="button"
+            onClick={() => setMobileOpen(false)}
+            aria-label="Close admin menu"
+            className="rounded-md p-1.5 text-[var(--text-secondary)] hover:bg-[var(--bg-surface)] hover:text-[var(--text-primary)] lg:hidden dark:hover:bg-white/5"
+          >
+            <X className="h-5 w-5" />
+          </button>
         </div>
 
         {navList}
 
-        <div className="mt-auto pt-6">
-          <p className="mb-2 truncate px-3 text-xs text-[var(--text-secondary)]">
-            {email}
+        <div className="mt-auto border-t border-[var(--border-subtle)] pt-4 dark:border-white/10">
+          <p
+            className="mb-2 truncate px-3 text-xs text-[var(--text-secondary)]"
+            title={email}
+          >
+            Signed in as
+            <br />
+            <span className="font-medium text-[var(--text-primary)]">
+              {email}
+            </span>
           </p>
           <button
             type="button"
             onClick={handleLogout}
             disabled={isPending}
-            className="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-red-500 transition-colors hover:bg-red-500/10"
+            className="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-red-600 transition-colors hover:bg-red-500/10 disabled:opacity-60 dark:text-red-300 dark:hover:bg-red-500/15 dark:hover:text-red-200"
           >
             <LogOut className="h-4 w-4" />
             {isPending ? "Logging out…" : "Logout"}

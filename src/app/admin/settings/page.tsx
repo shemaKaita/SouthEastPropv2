@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { getSiteContent } from "@/actions/admin/settings";
+import AdminPageHeader from "@/components/admin/AdminPageHeader";
 import SettingsForm from "@/components/admin/SettingsForm";
 
 export const metadata: Metadata = {
@@ -14,9 +15,12 @@ export default async function AdminSettingsPage() {
 
   return (
     <div>
-      <h1 className="mb-6 text-2xl font-bold text-[var(--text-primary)]">
-        Settings
-      </h1>
+      <AdminPageHeader
+        title="Settings"
+        subtitle="Edit the JSON content used across the public site. Each section is saved independently."
+        backHref="/admin"
+        backLabel="Back to dashboard"
+      />
       <SettingsForm
         navItems={JSON.stringify(content.nav_items ?? [], null, 2)}
         socialLinks={JSON.stringify(content.social_links ?? [], null, 2)}

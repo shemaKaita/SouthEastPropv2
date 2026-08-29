@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
+import AdminPageHeader from "@/components/admin/AdminPageHeader";
 import PropertyForm from "@/components/admin/PropertyForm";
 import { updatePropertyAction } from "@/actions/admin/properties";
 
@@ -41,9 +42,12 @@ export default async function EditPropertyPage({
 
   return (
     <div>
-      <h1 className="mb-6 text-2xl font-bold text-[var(--text-primary)]">
-        Edit: {property.title}
-      </h1>
+      <AdminPageHeader
+        title={`Edit: ${property.title}`}
+        subtitle={`Slug: ${property.slug}`}
+        backHref="/admin/properties"
+        backLabel="Back to properties"
+      />
       <PropertyForm
         initialData={initialData}
         action={boundAction}
