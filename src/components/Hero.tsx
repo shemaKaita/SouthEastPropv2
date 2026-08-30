@@ -1,5 +1,25 @@
-import Image from "next/image";
 import Button from "@/components/Button";
+
+/**
+ * Hero image: plain <img> with a single optimized URL.
+ *
+ * Why not <Image fill priority>? Next hoists eager/priority images into an
+ * imagesrcset preload link. Chromium's preload scanner evaluates the sizes
+ * media queries against its initial (mobile-width) assumption, so it can
+ * fetch a different srcset candidate than the post-layout <img> — a double
+ * fetch of the LCP resource (observed: w=2560 preload + w=640 img).
+ *
+ * A single fixed /_next/image URL (the public, documented optimizer
+ * endpoint) has no srcset to mis-select: the preload hint and the img
+ * request are byte-identical.
+ *
+ * 1200w covers the hero box (~600px logical at 2x DPR) and full-width
+ * mobile; AVIF/WebP negotiated by the optimizer via Accept header.
+ */
+const HERO_SRC = "/hero-interior.jpg";
+const HERO_WIDTH = 1200;
+const HERO_HEIGHT = 800; // 2560×1707 source at 1200w → 800h (no CLS)
+const HERO_OPTIMIZED = `/_next/image?url=${encodeURIComponent(HERO_SRC)}&w=${HERO_WIDTH}&q=75`;
 
 export default function Hero() {
   return (
@@ -83,13 +103,15 @@ export default function Hero() {
 
         {/* Right Column: Hero Image (Balanced height) */}
         <div className="relative min-h-[480px] w-full overflow-hidden rounded-3xl lg:col-span-5 lg:h-full">
-          <Image
-            src="/hero-interior.jpg"
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={HERO_OPTIMIZED}
             alt="Premium co-living interior"
-            fill
-            priority
-            sizes="(max-width: 1024px) 100vw, 40vw"
-            className="object-cover"
+            width={HERO_WIDTH}
+            height={HERO_HEIGHT}
+            fetchPriority="high"
+            decoding="async"
+            className="absolute inset-0 h-full w-full object-cover"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-[#091229]/80 via-transparent to-transparent" />
 

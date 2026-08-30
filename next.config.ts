@@ -48,6 +48,11 @@ const nextConfig: NextConfig = {
   output: "standalone",
   images: {
     formats: ["image/avif", "image/webp"],
+    // Cap generated image widths. The default deviceSizes includes 3840, which
+    // caused the hero to be requested at w=3840 (~82KB extra) plus a duplicate
+    // w=2048 fetch. Largest layout box on this site is ~2560px at 2x DPR.
+    deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2560],
+    imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
     remotePatterns: [
       {
         protocol: "https",
