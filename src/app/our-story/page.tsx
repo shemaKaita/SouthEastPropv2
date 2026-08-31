@@ -94,7 +94,7 @@ export default function OurStoryPage(): ReactElement {
                   src="/team/mutoni.svg"
                   alt="Mutoni Kaitakirwa, founder of SouthEast Properties"
                   fill
-                  sizes="(max-width: 1024px) 100vw, 420px"
+                  sizes="(max-width: 767px) 100vw, 380px"
                   loading="eager"
                   className="object-cover"
                 />

@@ -37,6 +37,16 @@ const AMENITY_ICONS: Record<string, LucideIcon> = {
   Tv,
 };
 
+/**
+ * Featured image served as a single optimized URL (no srcset), so the
+ * exact-match preload link and the <img> request the identical resource —
+ * Chromium's preload scanner cannot mis-select a candidate pre-layout.
+ */
+const FEATURED_IMG_WIDTH = 1200;
+const FEATURED_IMG_HEIGHT = 900; // aspect-[4/3] → no CLS
+const featuredImageUrl = (src: string): string =>
+  `/_next/image?url=${encodeURIComponent(src)}&w=${FEATURED_IMG_WIDTH}&q=75`;
+
 export async function generateStaticParams() {
   const slugs = await getAllPropertySlugs();
   return slugs;
@@ -121,13 +131,17 @@ export default async function PropertyDetailPage({
           <div className="grid grid-cols-1 gap-4 lg:grid-cols-2 lg:gap-5">
             {/* Featured image - left */}
             <div className="relative aspect-[4/3] overflow-hidden rounded-2xl lg:aspect-[4/3] lg:min-h-[480px]">
-              <Image
-                src={property.featuredImage}
-                fill
+              {/* Plain img with a single optimized URL: no srcset, so the
+                  preload link above and this request are byte-identical. */}
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={featuredImageUrl(property.featuredImage)}
                 alt={property.title}
-                priority
-                className="object-cover"
-                sizes="(max-width: 1024px) 100vw, 50vw"
+                width={FEATURED_IMG_WIDTH}
+                height={FEATURED_IMG_HEIGHT}
+                fetchPriority="high"
+                decoding="async"
+                className="absolute inset-0 h-full w-full object-cover"
               />
             </div>
             {/* Gallery grid - right */}
@@ -143,7 +157,9 @@ export default async function PropertyDetailPage({
                     alt={`${property.title} — image ${index + 2}`}
                     loading="lazy"
                     className="object-cover"
-                    sizes="(max-width: 1024px) 50vw, 25vw"
+                    // Gallery tiles are half the featured column on mobile
+                    // (2-col grid) and a quarter of the viewport on lg+.
+                    sizes="(max-width: 1023px) 50vw, 25vw"
                   />
                 </div>
               ))}
