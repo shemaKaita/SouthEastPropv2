@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { ThemeProvider } from "@/components/ThemeProvider";
+import Instrumentation from "@/components/Instrumentation";
 import { SITE_URL, SITE_NAME, SITE_DESCRIPTION } from "@/lib/site";
 import type { ReactElement } from "react";
 import "./globals.css";
@@ -93,6 +94,7 @@ export default function RootLayout({ children }: LayoutProps<"/">): ReactElement
           Skip to content
         </a>
         <ThemeProvider>
+          <Instrumentation />
           <Navbar />
           <main id="main-content" className="flex-1">
             {children}
