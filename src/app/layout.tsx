@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
-import { headers } from "next/headers";
 import { Geist, Geist_Mono } from "next/font/google";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { SITE_URL, SITE_NAME, SITE_DESCRIPTION } from "@/lib/site";
+import type { ReactElement } from "react";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -42,15 +42,16 @@ export const metadata: Metadata = {
   },
 };
 
-export default async function RootLayout({ children }: LayoutProps<"/">) {
-  const themeCookie = (await headers()).get("cookie") ?? "";
-  const isDark = themeCookie.includes("theme=dark");
+export default function RootLayout({ children }: LayoutProps<"/">): ReactElement {
+  // NOTE: No `headers()` access here. Reading the theme cookie at request time
+  // forces the root layout (and therefore every page) into dynamic rendering.
+  // Theme is applied FOUC-free by the inline script below (localStorage +
+  // prefers-color-scheme), so a server-side cookie read is redundant.
   const htmlClassName = [
     geistSans.variable,
     geistMono.variable,
     "h-full",
     "antialiased",
-    isDark ? "dark" : "",
   ]
     .filter(Boolean)
     .join(" ");

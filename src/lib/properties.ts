@@ -14,6 +14,13 @@
 import type { Property, Amenity } from "@/types/property";
 import { prisma } from "@/lib/prisma";
 import { PROPERTIES } from "@/data/properties";
+import { unstable_cache } from "next/cache";
+
+/**
+ * Tag shared by all property cache entries.
+ * Revalidate with `revalidateTag("properties")` after property mutations.
+ */
+export const PROPERTIES_CACHE_TAG = "properties";
 
 /**
  * Convert a Prisma property row to the domain `Property` type.
@@ -59,17 +66,23 @@ function toDomain(row: {
 /**
  * Get all properties (async — for server components and server actions).
  * Falls back to static data if the database is unavailable.
+ * Cached at the data layer with the "properties" tag so pages can be
+ * prerendered statically and revalidated on demand.
  */
-export async function getAllProperties(): Promise<Property[]> {
-  try {
-    const rows = await prisma.property.findMany({
-      orderBy: { createdAt: "asc" },
-    });
-    return rows.length > 0 ? rows.map(toDomain) : [...PROPERTIES];
-  } catch {
-    return [...PROPERTIES];
-  }
-}
+export const getAllProperties = unstable_cache(
+  async (): Promise<Property[]> => {
+    try {
+      const rows = await prisma.property.findMany({
+        orderBy: { createdAt: "asc" },
+      });
+      return rows.length > 0 ? rows.map(toDomain) : [...PROPERTIES];
+    } catch {
+      return [...PROPERTIES];
+    }
+  },
+  ["properties", "all"],
+  { tags: [PROPERTIES_CACHE_TAG] },
+);
 
 /**
  * Get all properties (sync — for client components that receive data
@@ -83,30 +96,36 @@ export function getAllPropertiesSync(): Property[] {
  * Get a single property by its slug.
  * Returns null if not found. Falls back to static data on DB error.
  */
-export async function getPropertyBySlug(
-  slug: string,
-): Promise<Property | null> {
-  try {
-    const row = await prisma.property.findUnique({ where: { slug } });
-    return row ? toDomain(row) : null;
-  } catch {
-    return PROPERTIES.find((p) => p.slug === slug) ?? null;
-  }
-}
+export const getPropertyBySlug = unstable_cache(
+  async (slug: string): Promise<Property | null> => {
+    try {
+      const row = await prisma.property.findUnique({ where: { slug } });
+      return row ? toDomain(row) : null;
+    } catch {
+      return PROPERTIES.find((p) => p.slug === slug) ?? null;
+    }
+  },
+  ["properties", "by-slug"],
+  { tags: [PROPERTIES_CACHE_TAG] },
+);
 
 /**
  * Get all property slugs — used by generateStaticParams.
  * Falls back to static data if the database is unavailable.
  */
-export async function getAllPropertySlugs(): Promise<{ slug: string }[]> {
-  try {
-    const rows = await prisma.property.findMany({
-      select: { slug: true },
-    });
-    return rows.length > 0
-      ? rows.map((r) => ({ slug: r.slug }))
-      : PROPERTIES.map((p) => ({ slug: p.slug }));
-  } catch {
-    return PROPERTIES.map((p) => ({ slug: p.slug }));
-  }
-}
+export const getAllPropertySlugs = unstable_cache(
+  async (): Promise<{ slug: string }[]> => {
+    try {
+      const rows = await prisma.property.findMany({
+        select: { slug: true },
+      });
+      return rows.length > 0
+        ? rows.map((r) => ({ slug: r.slug }))
+        : PROPERTIES.map((p) => ({ slug: p.slug }));
+    } catch {
+      return PROPERTIES.map((p) => ({ slug: p.slug }));
+    }
+  },
+  ["properties", "slugs"],
+  { tags: [PROPERTIES_CACHE_TAG] },
+);
