@@ -5,15 +5,15 @@ import { logInfo, logError } from "@/lib/logger";
 import { isValidEmail } from "@/lib/validation";
 import { rateLimit, FORM_RATE_LIMIT } from "@/lib/rateLimit";
 import { sanitizeObjectForLog } from "@/lib/sanitize";
+import { prisma } from "@/lib/prisma";
 import { headers } from "next/headers";
 
 /**
  * Server action for contact form submissions.
  *
- * Currently logs the submission. Integration point for:
+ * Persists to DB and logs. Integration point for:
  * - Email service (Resend, SendGrid, etc.)
  * - CRM API
- * - Database persistence
  */
 export async function submitContactForm(
   data: ContactFormData,
@@ -65,6 +65,16 @@ export async function submitContactForm(
         subject: data.subject,
       }),
     );
+
+    await prisma.contactSubmission.create({
+      data: {
+        name: data.name,
+        email: data.email,
+        subject: data.subject,
+        message: data.message,
+        ip,
+      },
+    });
 
     return {
       success: true,

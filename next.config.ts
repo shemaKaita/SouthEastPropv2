@@ -63,6 +63,10 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  // Uploaded images are served by the route handler at
+  // src/app/uploads/[...path]/route.ts, which reads files from the
+  // Railway Volume (UPLOAD_DIR). next.config rewrites cannot target
+  // the filesystem, so no rewrite is needed here.
   async headers() {
     return [
       {
