@@ -57,3 +57,9 @@ prisma/*.db-journal
 .env.local
 .env.development
 .env.production
+
+# Test artifacts
+coverage/
+test-results/
+playwright-report/
+blob-report/
