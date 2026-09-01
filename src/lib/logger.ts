@@ -31,7 +31,20 @@ export function logInfo(
   message: string,
   context?: Record<string, unknown>,
 ): void {
-  if (!isProduction) {
+  if (isProduction) {
+    // Integration point: Sentry.captureMessage / observability sink
+    console.info("[INFO]", JSON.stringify({ message, ...context }));
+  } else {
     console.info("[INFO]", message, context);
   }
 }
+
+/**
+ * Namespace-style logger. `logger.info(...)` is the preferred call site —
+ * it keeps a stable import shape regardless of which sink is wired in
+ * later (Sentry, Datadog, etc.).
+ */
+export const logger = {
+  error: logError,
+  info: logInfo,
+};

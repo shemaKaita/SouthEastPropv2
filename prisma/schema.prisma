@@ -1,0 +1,108 @@
+// Prisma schema for SouthEast Properties CMS
+//
+// Database: PostgreSQL (Railway add-on or external)
+// Connection: DATABASE_URL env var (auto-injected by Railway)
+
+// Prisma 7+ uses prisma.config.ts for the datasource URL.
+// The provider is still declared here; the URL lives in prisma.config.ts.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ── Auth ──────────────────────────────────────────────────────
+
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String
+  role         Role     @default(ADMIN)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+enum Role {
+  ADMIN
+  EDITOR
+}
+
+// ── Property listings ─────────────────────────────────────────
+
+model Property {
+  id            String   @id @default(cuid())
+  slug          String   @unique
+  title         String
+  location      String
+  price         String
+  priceLabel    String
+  beds          Int
+  baths         Int
+  area          Int
+  lat           Float
+  lng           Float
+  availability  String
+  badge         String   @default("")
+  featuredImage String
+  galleryImages String[] // Postgres native text array
+  description   String
+  amenities     Json     // Array of { icon: AmenityIcon, label: string }
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@index([slug])
+}
+
+// ── Form submissions ──────────────────────────────────────────
+
+model ContactSubmission {
+  id        Int      @id @default(autoincrement())
+  name      String
+  email     String
+  subject   String
+  message   String
+  ip        String
+  createdAt DateTime @default(now())
+
+  @@index([createdAt])
+}
+
+model EnquirySubmission {
+  id           Int      @id @default(autoincrement())
+  name         String
+  email        String
+  moveInDate   String
+  message      String
+  propertySlug String
+  ip           String
+  createdAt    DateTime @default(now())
+
+  @@index([createdAt])
+}
+
+model LandlordSubmission {
+  id           Int      @id @default(autoincrement())
+  name         String
+  email        String
+  phone        String
+  location     String
+  propertyType String
+  units        String
+  ip           String
+  createdAt    DateTime @default(now())
+
+  @@index([createdAt])
+}
+
+// ── Editable site content ─────────────────────────────────────
+
+model SiteContent {
+  id    Int    @id @default(autoincrement())
+  key   String @unique
+  value Json
+
+  @@index([key])
+}
