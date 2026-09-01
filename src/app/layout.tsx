@@ -86,8 +86,10 @@ export default function RootLayout({ children }: LayoutProps<"/">): ReactElement
         />
       </head>
       <body className="flex min-h-full flex-col">
-        <Instrumentation />
-        <SiteChrome>{children}</SiteChrome>
+        <ThemeProvider>
+          <Instrumentation />
+          <SiteChrome>{children}</SiteChrome>
+        </ThemeProvider>
       </body>
     </html>
   );

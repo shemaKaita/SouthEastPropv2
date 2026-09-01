@@ -23,8 +23,10 @@ vi.mock("next/headers", () => ({
   ),
 }));
 
-// Mock next/cache globally (used by server actions)
+// Mock next/cache globally (used by server actions and cached lib reads).
+// unstable_cache passes through to the wrapped fn so callers get real data.
 vi.mock("next/cache", () => ({
   revalidatePath: vi.fn(),
   revalidateTag: vi.fn(),
+  unstable_cache: (fn: unknown) => fn,
 }));

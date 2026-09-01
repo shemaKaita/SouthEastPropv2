@@ -63,19 +63,10 @@ const nextConfig: NextConfig = {
       },
     ],
   },
-  // Serve uploaded images from the Railway Volume mount point.
-  // In production, UPLOAD_DIR points to the volume path.
-  // In dev, uploads go to public/uploads and are served statically.
-  async rewrites() {
-    const uploadDir = process.env.UPLOAD_DIR;
-    if (!uploadDir || uploadDir === "public/uploads") return [];
-    return [
-      {
-        source: "/uploads/:path*",
-        destination: `${uploadDir.replace(/\/$/, "")}/:path*`,
-      },
-    ];
-  },
+  // Uploaded images are served by the route handler at
+  // src/app/uploads/[...path]/route.ts, which reads files from the
+  // Railway Volume (UPLOAD_DIR). next.config rewrites cannot target
+  // the filesystem, so no rewrite is needed here.
   async headers() {
     return [
       {
