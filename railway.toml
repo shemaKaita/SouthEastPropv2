@@ -10,3 +10,16 @@ interval = 10
 [deploy.restart]
 policy = "ON_FAILURE"
 max_retries = 3
+
+# ── Environment variables ──────────────────────────────────────
+# Set these in Railway's dashboard or via `railway variables`.
+#
+# Required:
+#   DATABASE_URL       — Auto-injected by Railway Postgres add-on
+#   SESSION_SECRET     — Min 32 chars. Generate: openssl rand -hex 32
+#   ADMIN_EMAIL        — Default admin email for seeding
+#   ADMIN_PASSWORD     — Default admin password for seeding (set once)
+#   NEXT_PUBLIC_SITE_URL — Production URL (e.g., https://southeastproperties.co.za)
+#
+# Optional:
+#   ANALYZE            — Set to "true" to enable bundle analyzer
