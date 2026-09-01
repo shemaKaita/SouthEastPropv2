@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { Menu, X, Phone, Mail, MapPin, Sun, Moon } from "lucide-react";
@@ -21,25 +21,15 @@ function isLinkActive(href: string, pathname: string): boolean {
 
 export default function Navbar() {
   const pathname = usePathname();
-  const router = useRouter();
   const [mobileOpen, setMobileOpen] = useState<boolean>(false);
   const mounted = useMounted();
   const { theme, toggleTheme } = useTheme();
   const scrolled = useScrollPosition(8);
   const isActive = (href: string): boolean => isLinkActive(href, pathname);
 
-  // Eagerly prefetch all top-nav routes on mount so first click is instant.
-  // Next's <Link> uses IntersectionObserver (200px rootMargin) to gate prefetching,
-  // which creates a race condition on real networks: if the user clicks within
-  // ~300ms of page load, the RSC payload hasn't been fetched yet and the click
-  // triggers an on-demand fetch + full React reconciliation (~200-400ms delay).
-  // By calling router.prefetch() on mount we start all 4 other routes' RSC
-  // fetches immediately, eliminating the race.
-  useEffect(() => {
-    for (const item of NAV_ITEMS) {
-      if (item.href !== pathname) router.prefetch(item.href);
-    }
-  }, [router, pathname]);
+  // NOTE: The eager router.prefetch() loop was removed. With public routes
+  // statically prerendered, Next's default <Link> prefetch returns the cached
+  // RSC payload instantly — no race condition, and no aborted-request storm.
 
   useBodyScrollLock(mobileOpen);
 

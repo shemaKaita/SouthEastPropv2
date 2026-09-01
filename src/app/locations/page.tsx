@@ -18,6 +18,12 @@ export default async function LocationsPage() {
   const properties = await getAllProperties();
   return (
     <section className="bg-[var(--color-background)]">
+      {/* Warm up map tile hosts before Leaflet requests tiles: saves the
+          DNS + TLS round-trips on the first ~15 tile fetches. React hoists
+          these into <head>. */}
+      <link rel="preconnect" href="https://tile.openstreetmap.org" />
+      <link rel="preconnect" href="https://basemaps.cartocdn.com" />
+      <link rel="dns-prefetch" href="https://basemaps.cartocdn.com" />
       <div className="mx-auto w-full max-w-7xl px-6 py-16 sm:px-8 sm:py-20 lg:px-10 lg:py-24">
         {/* Section header */}
         <div className="max-w-2xl">

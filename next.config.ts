@@ -46,8 +46,16 @@ const securityHeaders = [
 
 const nextConfig: NextConfig = {
   output: "standalone",
+  // Scope Turbopack's file tracing to this repo. Without this, the bun.lock
+  // in the parent projects directory triggers a warning and broader tracing.
+  outputFileTracingRoot: __dirname,
   images: {
     formats: ["image/avif", "image/webp"],
+    // Cap generated image widths. The default deviceSizes includes 3840, which
+    // caused the hero to be requested at w=3840 (~82KB extra) plus a duplicate
+    // w=2048 fetch. Largest layout box on this site is ~2560px at 2x DPR.
+    deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2560],
+    imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
     remotePatterns: [
       {
         protocol: "https",
@@ -71,8 +79,26 @@ const nextConfig: NextConfig = {
   async headers() {
     return [
       {
+        // All routes get the security header baseline.
         source: "/(.*)",
         headers: securityHeaders,
+      },
+      {
+        // Public marketing pages are fully prerendered (Phase 1 CWV work).
+        // Allow shared/CDN caching with stale-while-revalidate so repeat
+        // visits and prefetches are served from cache while a fresh copy
+        // regenerates in the background. Excludes hashed build assets
+        // (immutable, handled by Next), the image optimizer, and uploads —
+        // all of which manage their own lifetimes.
+        source:
+          "/((?!_next/static|_next/image|uploads|admin|api|favicon.ico).*)",
+        headers: [
+          {
+            key: "Cache-Control",
+            value:
+              "public, max-age=0, s-maxage=3600, stale-while-revalidate=86400",
+          },
+        ],
       },
     ];
   },
