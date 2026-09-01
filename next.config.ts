@@ -63,6 +63,19 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  // Serve uploaded images from the Railway Volume mount point.
+  // In production, UPLOAD_DIR points to the volume path.
+  // In dev, uploads go to public/uploads and are served statically.
+  async rewrites() {
+    const uploadDir = process.env.UPLOAD_DIR;
+    if (!uploadDir || uploadDir === "public/uploads") return [];
+    return [
+      {
+        source: "/uploads/:path*",
+        destination: `${uploadDir.replace(/\/$/, "")}/:path*`,
+      },
+    ];
+  },
   async headers() {
     return [
       {

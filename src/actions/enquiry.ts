@@ -5,6 +5,7 @@ import { logInfo, logError } from "@/lib/logger";
 import { isValidEmail } from "@/lib/validation";
 import { rateLimit, FORM_RATE_LIMIT } from "@/lib/rateLimit";
 import { sanitizeObjectForLog } from "@/lib/sanitize";
+import { prisma } from "@/lib/prisma";
 import { headers } from "next/headers";
 
 /**
@@ -66,6 +67,17 @@ export async function submitEnquiryForm(
         moveInDate: data.moveInDate,
       }),
     );
+
+    await prisma.enquirySubmission.create({
+      data: {
+        name: data.name,
+        email: data.email,
+        moveInDate: data.moveInDate,
+        message: data.message,
+        propertySlug: data.propertySlug,
+        ip,
+      },
+    });
 
     return {
       success: true,

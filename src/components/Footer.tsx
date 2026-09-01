@@ -1,10 +1,20 @@
 import Link from "next/link";
-import { NAV_ITEMS, SOCIAL_LINKS, CONTACT_DETAILS } from "@/lib/constants";
+import {
+  getNavItems,
+  getSocialLinks,
+  getContactDetails,
+} from "@/lib/site-content";
 import { SOCIAL_ICONS, CONTACT_ICONS } from "@/lib/social";
 
 const currentYear: number = new Date().getFullYear();
 
-export default function Footer(): React.ReactElement {
+export default async function Footer(): Promise<React.ReactElement> {
+  const [NAV_ITEMS, SOCIAL_LINKS, CONTACT_DETAILS] = await Promise.all([
+    getNavItems(),
+    getSocialLinks(),
+    getContactDetails(),
+  ]);
+
   return (
     <footer
       className="bg-navy-900 border-t border-[var(--color-secondary)]/20 text-[var(--text-secondary)]"
