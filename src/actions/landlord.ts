@@ -5,6 +5,7 @@ import { logInfo, logError } from "@/lib/logger";
 import { isValidEmail } from "@/lib/validation";
 import { rateLimit, FORM_RATE_LIMIT } from "@/lib/rateLimit";
 import { sanitizeObjectForLog } from "@/lib/sanitize";
+import { prisma } from "@/lib/prisma";
 import { headers } from "next/headers";
 
 /**
@@ -59,6 +60,18 @@ export async function submitLandlordForm(
         units: data.units,
       }),
     );
+
+    const submissionData = {
+      name: data.name,
+      email: data.email,
+      phone: data.phone,
+      location: data.location,
+      propertyType: data.propertyType,
+      units: data.units,
+      ip,
+    };
+
+    await prisma.landlordSubmission.create({ data: submissionData });
 
     return {
       success: true,
