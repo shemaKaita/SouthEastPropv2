@@ -35,8 +35,23 @@ const propertySchema = z.object({
   lng: z.coerce.number(),
   availability: z.string().min(1),
   badge: z.string().default(""),
-  featuredImage: z.string().url("Must be a valid URL"),
-  galleryImages: z.array(z.string().url()).default([]),
+  featuredImage: z
+    .string()
+    .min(1, "Featured image is required")
+    .refine(
+      (val) => val.startsWith("/uploads/") || val.startsWith("http"),
+      "Must be a valid URL or uploaded file path",
+    ),
+  galleryImages: z
+    .array(
+      z
+        .string()
+        .refine(
+          (val) => val.startsWith("/uploads/") || val.startsWith("http"),
+          "Must be a valid URL or uploaded file path",
+        ),
+    )
+    .default([]),
   description: z.string().min(1, "Description is required"),
   amenities: z.array(amenitySchema).default([]),
 });

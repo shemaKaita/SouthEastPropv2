@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import AdminPageHeader from "@/components/admin/AdminPageHeader";
 import PropertyForm from "@/components/admin/PropertyForm";
 import { createPropertyAction } from "@/actions/admin/properties";
 
@@ -10,9 +11,12 @@ export const metadata: Metadata = {
 export default function NewPropertyPage() {
   return (
     <div>
-      <h1 className="mb-6 text-2xl font-bold text-[var(--text-primary)]">
-        New Property
-      </h1>
+      <AdminPageHeader
+        title="New Property"
+        subtitle="Add a new listing to the public catalog."
+        backHref="/admin/properties"
+        backLabel="Back to properties"
+      />
       <PropertyForm
         action={createPropertyAction}
         submitLabel="Create Property"

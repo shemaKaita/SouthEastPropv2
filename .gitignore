@@ -12,6 +12,13 @@
 
 # testing
 /coverage
+test-results/
+playwright-report/
+blob-report/
+
+# uploaded images (keep directory, ignore contents)
+public/uploads/*
+!public/uploads/.gitkeep
 
 # next.js
 /.next/
@@ -57,9 +64,3 @@ prisma/*.db-journal
 .env.local
 .env.development
 .env.production
-
-# Test artifacts
-coverage/
-test-results/
-playwright-report/
-blob-report/

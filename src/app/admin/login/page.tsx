@@ -21,10 +21,10 @@ export default async function AdminLoginPage({
   const { from } = await searchParams;
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-[var(--bg-base)] px-4">
+    <div className="flex min-h-screen items-center justify-center bg-[var(--bg-base)] px-4 py-12">
       <div className="w-full max-w-md">
         <div className="mb-8 text-center">
-          <h1 className="text-2xl font-bold text-[var(--text-primary)]">
+          <h1 className="text-2xl font-bold text-[var(--text-primary)] sm:text-3xl">
             Admin Login
           </h1>
           <p className="mt-2 text-sm text-[var(--text-secondary)]">
@@ -32,6 +32,9 @@ export default async function AdminLoginPage({
           </p>
         </div>
         <LoginForm redirectTo={from ?? "/admin"} />
+        <p className="mt-6 text-center text-xs text-[var(--text-secondary)]">
+          Need access? Contact the site administrator.
+        </p>
       </div>
     </div>
   );

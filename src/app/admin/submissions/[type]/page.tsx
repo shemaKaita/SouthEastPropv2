@@ -1,5 +1,8 @@
 import { notFound } from "next/navigation";
+import { Mail, MessageSquare } from "lucide-react";
 import { getSubmissions } from "@/actions/admin/submissions";
+import AdminPageHeader from "@/components/admin/AdminPageHeader";
+import EmptyState from "@/components/admin/EmptyState";
 import DeleteSubmissionButton from "@/components/admin/DeleteSubmissionButton";
 
 export const dynamic = "force-dynamic";
@@ -14,6 +17,13 @@ const labels: Record<SubmissionType, string> = {
   landlord: "Landlord Submissions",
 };
 
+const descriptions: Record<SubmissionType, string> = {
+  contact:
+    "Inbound messages from the public contact form on the website footer and contact page.",
+  enquiry: "Property enquiries submitted from individual property pages.",
+  landlord: "New landlord leads from the Landlords marketing page.",
+};
+
 export default async function SubmissionsPage({
   params,
 }: {
@@ -26,30 +36,37 @@ export default async function SubmissionsPage({
   const subType = type as SubmissionType;
   const { items, total } = await getSubmissions(subType, 1, 50);
 
+  const totalLabel =
+    total === 0
+      ? "No submissions yet"
+      : `${total} total submission${total !== 1 ? "s" : ""}`;
+
   return (
     <div>
-      <h1 className="mb-2 text-2xl font-bold text-[var(--text-primary)]">
-        {labels[subType]}
-      </h1>
-      <p className="mb-6 text-sm text-[var(--text-secondary)]">
-        {total} total submission{total !== 1 ? "s" : ""}
-      </p>
+      <AdminPageHeader
+        title={labels[subType]}
+        subtitle={totalLabel}
+        backHref="/admin"
+        backLabel="Back to dashboard"
+      />
 
       {items.length === 0 ? (
-        <p className="text-sm text-[var(--text-secondary)]">
-          No submissions yet.
-        </p>
+        <EmptyState
+          icon={subType === "contact" ? Mail : MessageSquare}
+          title={`No ${labels[subType].toLowerCase()} yet`}
+          description={descriptions[subType]}
+        />
       ) : (
         <div className="space-y-4">
           {items.map((item) => {
             const record = item as Record<string, string | number | Date>;
             return (
-              <div
+              <article
                 key={String(record.id)}
-                className="rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-surface)] p-4"
+                className="rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-surface)] p-4 md:p-5"
               >
-                <div className="flex items-start justify-between">
-                  <div>
+                <div className="flex items-start justify-between gap-3">
+                  <div className="min-w-0 flex-1">
                     <p className="font-semibold text-[var(--text-primary)]">
                       {String(record.name)}{" "}
                       <span className="font-normal text-[var(--text-secondary)]">
@@ -70,16 +87,16 @@ export default async function SubmissionsPage({
                     .filter(([k]) => !["id", "createdAt", "ip"].includes(k))
                     .map(([key, value]) => (
                       <div key={key} className="flex gap-2">
-                        <dt className="font-medium text-[var(--text-secondary)]">
+                        <dt className="shrink-0 font-medium text-[var(--text-secondary)] capitalize">
                           {key}:
                         </dt>
-                        <dd className="text-[var(--text-primary)]">
+                        <dd className="break-words text-[var(--text-primary)]">
                           {String(value)}
                         </dd>
                       </div>
                     ))}
                 </dl>
-              </div>
+              </article>
             );
           })}
         </div>
